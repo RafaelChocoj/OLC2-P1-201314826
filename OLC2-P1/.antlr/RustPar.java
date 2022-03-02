@@ -24,8 +24,8 @@ public class RustPar extends Parser {
 	public static final int
 		PRINT_CON=1, T_NUMBER=2, T_FLOAT=3, T_STRING=4, TRUE=5, FALSE=6, AS=7, 
 		NUMBER=8, FLOAT=9, STRING=10, PUNTO=11, PTCOMA=12, IGUAL=13, MAYORIGUAL=14, 
-		MENORIGUAL=15, MAYOR=16, MENOR=17, MUL=18, DIV=19, ADD=20, SUB=21, PARIZQ=22, 
-		PARDER=23, LLAVEIZQ=24, LLAVEDER=25, WHITESPACE=26;
+		MENORIGUAL=15, MAYOR=16, MENOR=17, MUL=18, DIV=19, ADD=20, SUB=21, MOD=22, 
+		PARIZQ=23, PARDER=24, LLAVEIZQ=25, LLAVEDER=26, WHITESPACE=27;
 	public static final int
 		RULE_start = 0, RULE_instrucciones = 1, RULE_instruccion = 2, RULE_printconsola = 3, 
 		RULE_expression = 4, RULE_expr_arit = 5, RULE_casteo = 6, RULE_tipo_cast = 7, 
@@ -42,7 +42,7 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "'println!'", "'i64'", "'f64'", "'string'", "'true'", "'false'", 
 			"'as'", null, null, null, "'.'", "';'", "'='", "'>='", "'<='", "'>'", 
-			"'<'", "'*'", "'/'", "'+'", "'-'", "'('", "')'", "'{'", "'}'"
+			"'<'", "'*'", "'/'", "'+'", "'-'", "'%'", "'('", "')'", "'{'", "'}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -50,7 +50,7 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "PRINT_CON", "T_NUMBER", "T_FLOAT", "T_STRING", "TRUE", "FALSE", 
 			"AS", "NUMBER", "FLOAT", "STRING", "PUNTO", "PTCOMA", "IGUAL", "MAYORIGUAL", 
-			"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "PARIZQ", 
+			"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "PARIZQ", 
 			"PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE"
 		};
 	}
@@ -343,6 +343,7 @@ public class RustPar extends Parser {
 		}
 		public TerminalNode MUL() { return getToken(RustPar.MUL, 0); }
 		public TerminalNode DIV() { return getToken(RustPar.DIV, 0); }
+		public TerminalNode MOD() { return getToken(RustPar.MOD, 0); }
 		public TerminalNode ADD() { return getToken(RustPar.ADD, 0); }
 		public Expr_aritContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -427,7 +428,7 @@ public class RustPar extends Parser {
 						setState(61);
 						((Expr_aritContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==MUL || _la==DIV) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
 							((Expr_aritContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -486,17 +487,18 @@ public class RustPar extends Parser {
 
 	public static class CasteoContext extends ParserRuleContext {
 		public interfaces.Expresion p;
+		public Token PARIZQ;
 		public ExpressionContext expression;
-		public Tipo_castContext tipo_cast;
+		public Tipo_castContext typec;
 		public TerminalNode PARIZQ() { return getToken(RustPar.PARIZQ, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public TerminalNode AS() { return getToken(RustPar.AS, 0); }
+		public TerminalNode PARDER() { return getToken(RustPar.PARDER, 0); }
 		public Tipo_castContext tipo_cast() {
 			return getRuleContext(Tipo_castContext.class,0);
 		}
-		public TerminalNode PARDER() { return getToken(RustPar.PARDER, 0); }
 		public CasteoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -510,16 +512,16 @@ public class RustPar extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(75);
-			match(PARIZQ);
+			((CasteoContext)_localctx).PARIZQ = match(PARIZQ);
 			setState(76);
 			((CasteoContext)_localctx).expression = expression();
 			setState(77);
 			match(AS);
 			setState(78);
-			((CasteoContext)_localctx).tipo_cast = tipo_cast();
+			((CasteoContext)_localctx).typec = tipo_cast();
 			setState(79);
 			match(PARDER);
-			_localctx.p = expresion.NewCasteo(((CasteoContext)_localctx).expression.p, ((CasteoContext)_localctx).tipo_cast.tc)
+			_localctx.p = expresion.NewCasteo(((CasteoContext)_localctx).expression.p, ((CasteoContext)_localctx).typec.tc, (((CasteoContext)_localctx).PARIZQ!=null?((CasteoContext)_localctx).PARIZQ.getLine():0), localctx.(*CasteoContext).Get_PARIZQ().GetColumn() )
 			}
 		}
 		catch (RecognitionException re) {
@@ -681,29 +683,29 @@ public class RustPar extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\34e\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35e\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\3\2"+
 		"\3\3\7\3\31\n\3\f\3\16\3\34\13\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3"+
 		"\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
 		"\3\7\3\7\3\7\3\7\5\7=\n\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7"+
 		"I\n\7\f\7\16\7L\13\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\5\tY"+
 		"\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\nc\n\n\3\n\2\3\f\13\2\4\6\b\n\f"+
-		"\16\20\22\2\4\3\2\24\25\3\2\26\27\2e\2\24\3\2\2\2\4\32\3\2\2\2\6\37\3"+
-		"\2\2\2\b#\3\2\2\2\n)\3\2\2\2\f<\3\2\2\2\16M\3\2\2\2\20X\3\2\2\2\22b\3"+
-		"\2\2\2\24\25\5\4\3\2\25\26\b\2\1\2\26\3\3\2\2\2\27\31\5\6\4\2\30\27\3"+
-		"\2\2\2\31\34\3\2\2\2\32\30\3\2\2\2\32\33\3\2\2\2\33\35\3\2\2\2\34\32\3"+
-		"\2\2\2\35\36\b\3\1\2\36\5\3\2\2\2\37 \5\b\5\2 !\7\16\2\2!\"\b\4\1\2\""+
-		"\7\3\2\2\2#$\7\3\2\2$%\7\30\2\2%&\5\n\6\2&\'\7\31\2\2\'(\b\5\1\2(\t\3"+
-		"\2\2\2)*\5\f\7\2*+\b\6\1\2+\13\3\2\2\2,-\b\7\1\2-.\7\27\2\2./\5\n\6\2"+
-		"/\60\b\7\1\2\60=\3\2\2\2\61\62\5\22\n\2\62\63\b\7\1\2\63=\3\2\2\2\64\65"+
-		"\7\30\2\2\65\66\5\n\6\2\66\67\7\31\2\2\678\b\7\1\28=\3\2\2\29:\5\16\b"+
-		"\2:;\b\7\1\2;=\3\2\2\2<,\3\2\2\2<\61\3\2\2\2<\64\3\2\2\2<9\3\2\2\2=J\3"+
-		"\2\2\2>?\f\7\2\2?@\t\2\2\2@A\5\f\7\bAB\b\7\1\2BI\3\2\2\2CD\f\6\2\2DE\t"+
-		"\3\2\2EF\5\f\7\7FG\b\7\1\2GI\3\2\2\2H>\3\2\2\2HC\3\2\2\2IL\3\2\2\2JH\3"+
-		"\2\2\2JK\3\2\2\2K\r\3\2\2\2LJ\3\2\2\2MN\7\30\2\2NO\5\n\6\2OP\7\t\2\2P"+
-		"Q\5\20\t\2QR\7\31\2\2RS\b\b\1\2S\17\3\2\2\2TU\7\5\2\2UY\b\t\1\2VW\7\4"+
-		"\2\2WY\b\t\1\2XT\3\2\2\2XV\3\2\2\2Y\21\3\2\2\2Z[\7\n\2\2[c\b\n\1\2\\]"+
-		"\7\13\2\2]c\b\n\1\2^_\7\7\2\2_c\b\n\1\2`a\7\b\2\2ac\b\n\1\2bZ\3\2\2\2"+
+		"\16\20\22\2\4\4\2\24\25\30\30\3\2\26\27\2e\2\24\3\2\2\2\4\32\3\2\2\2\6"+
+		"\37\3\2\2\2\b#\3\2\2\2\n)\3\2\2\2\f<\3\2\2\2\16M\3\2\2\2\20X\3\2\2\2\22"+
+		"b\3\2\2\2\24\25\5\4\3\2\25\26\b\2\1\2\26\3\3\2\2\2\27\31\5\6\4\2\30\27"+
+		"\3\2\2\2\31\34\3\2\2\2\32\30\3\2\2\2\32\33\3\2\2\2\33\35\3\2\2\2\34\32"+
+		"\3\2\2\2\35\36\b\3\1\2\36\5\3\2\2\2\37 \5\b\5\2 !\7\16\2\2!\"\b\4\1\2"+
+		"\"\7\3\2\2\2#$\7\3\2\2$%\7\31\2\2%&\5\n\6\2&\'\7\32\2\2\'(\b\5\1\2(\t"+
+		"\3\2\2\2)*\5\f\7\2*+\b\6\1\2+\13\3\2\2\2,-\b\7\1\2-.\7\27\2\2./\5\n\6"+
+		"\2/\60\b\7\1\2\60=\3\2\2\2\61\62\5\22\n\2\62\63\b\7\1\2\63=\3\2\2\2\64"+
+		"\65\7\31\2\2\65\66\5\n\6\2\66\67\7\32\2\2\678\b\7\1\28=\3\2\2\29:\5\16"+
+		"\b\2:;\b\7\1\2;=\3\2\2\2<,\3\2\2\2<\61\3\2\2\2<\64\3\2\2\2<9\3\2\2\2="+
+		"J\3\2\2\2>?\f\7\2\2?@\t\2\2\2@A\5\f\7\bAB\b\7\1\2BI\3\2\2\2CD\f\6\2\2"+
+		"DE\t\3\2\2EF\5\f\7\7FG\b\7\1\2GI\3\2\2\2H>\3\2\2\2HC\3\2\2\2IL\3\2\2\2"+
+		"JH\3\2\2\2JK\3\2\2\2K\r\3\2\2\2LJ\3\2\2\2MN\7\31\2\2NO\5\n\6\2OP\7\t\2"+
+		"\2PQ\5\20\t\2QR\7\32\2\2RS\b\b\1\2S\17\3\2\2\2TU\7\5\2\2UY\b\t\1\2VW\7"+
+		"\4\2\2WY\b\t\1\2XT\3\2\2\2XV\3\2\2\2Y\21\3\2\2\2Z[\7\n\2\2[c\b\n\1\2\\"+
+		"]\7\13\2\2]c\b\n\1\2^_\7\7\2\2_c\b\n\1\2`a\7\b\2\2ac\b\n\1\2bZ\3\2\2\2"+
 		"b\\\3\2\2\2b^\3\2\2\2b`\3\2\2\2c\23\3\2\2\2\b\32<HJXb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

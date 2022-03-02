@@ -21,7 +21,7 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 28, 101,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 29, 101,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 3, 2, 3, 2, 3, 2, 3, 3, 7, 3, 25,
 	10, 3, 12, 3, 14, 3, 28, 11, 3, 3, 3, 3, 3, 3, 4, 3, 4, 3, 4, 3, 4, 3,
@@ -31,47 +31,47 @@ var parserATN = []uint16{
 	7, 3, 7, 7, 7, 73, 10, 7, 12, 7, 14, 7, 76, 11, 7, 3, 8, 3, 8, 3, 8, 3,
 	8, 3, 8, 3, 8, 3, 8, 3, 9, 3, 9, 3, 9, 3, 9, 5, 9, 89, 10, 9, 3, 10, 3,
 	10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 99, 10, 10, 3, 10,
-	2, 3, 12, 11, 2, 4, 6, 8, 10, 12, 14, 16, 18, 2, 4, 3, 2, 20, 21, 3, 2,
-	22, 23, 2, 101, 2, 20, 3, 2, 2, 2, 4, 26, 3, 2, 2, 2, 6, 31, 3, 2, 2, 2,
-	8, 35, 3, 2, 2, 2, 10, 41, 3, 2, 2, 2, 12, 60, 3, 2, 2, 2, 14, 77, 3, 2,
-	2, 2, 16, 88, 3, 2, 2, 2, 18, 98, 3, 2, 2, 2, 20, 21, 5, 4, 3, 2, 21, 22,
-	8, 2, 1, 2, 22, 3, 3, 2, 2, 2, 23, 25, 5, 6, 4, 2, 24, 23, 3, 2, 2, 2,
-	25, 28, 3, 2, 2, 2, 26, 24, 3, 2, 2, 2, 26, 27, 3, 2, 2, 2, 27, 29, 3,
-	2, 2, 2, 28, 26, 3, 2, 2, 2, 29, 30, 8, 3, 1, 2, 30, 5, 3, 2, 2, 2, 31,
-	32, 5, 8, 5, 2, 32, 33, 7, 14, 2, 2, 33, 34, 8, 4, 1, 2, 34, 7, 3, 2, 2,
-	2, 35, 36, 7, 3, 2, 2, 36, 37, 7, 24, 2, 2, 37, 38, 5, 10, 6, 2, 38, 39,
-	7, 25, 2, 2, 39, 40, 8, 5, 1, 2, 40, 9, 3, 2, 2, 2, 41, 42, 5, 12, 7, 2,
-	42, 43, 8, 6, 1, 2, 43, 11, 3, 2, 2, 2, 44, 45, 8, 7, 1, 2, 45, 46, 7,
-	23, 2, 2, 46, 47, 5, 10, 6, 2, 47, 48, 8, 7, 1, 2, 48, 61, 3, 2, 2, 2,
-	49, 50, 5, 18, 10, 2, 50, 51, 8, 7, 1, 2, 51, 61, 3, 2, 2, 2, 52, 53, 7,
-	24, 2, 2, 53, 54, 5, 10, 6, 2, 54, 55, 7, 25, 2, 2, 55, 56, 8, 7, 1, 2,
-	56, 61, 3, 2, 2, 2, 57, 58, 5, 14, 8, 2, 58, 59, 8, 7, 1, 2, 59, 61, 3,
-	2, 2, 2, 60, 44, 3, 2, 2, 2, 60, 49, 3, 2, 2, 2, 60, 52, 3, 2, 2, 2, 60,
-	57, 3, 2, 2, 2, 61, 74, 3, 2, 2, 2, 62, 63, 12, 7, 2, 2, 63, 64, 9, 2,
-	2, 2, 64, 65, 5, 12, 7, 8, 65, 66, 8, 7, 1, 2, 66, 73, 3, 2, 2, 2, 67,
-	68, 12, 6, 2, 2, 68, 69, 9, 3, 2, 2, 69, 70, 5, 12, 7, 7, 70, 71, 8, 7,
-	1, 2, 71, 73, 3, 2, 2, 2, 72, 62, 3, 2, 2, 2, 72, 67, 3, 2, 2, 2, 73, 76,
-	3, 2, 2, 2, 74, 72, 3, 2, 2, 2, 74, 75, 3, 2, 2, 2, 75, 13, 3, 2, 2, 2,
-	76, 74, 3, 2, 2, 2, 77, 78, 7, 24, 2, 2, 78, 79, 5, 10, 6, 2, 79, 80, 7,
-	9, 2, 2, 80, 81, 5, 16, 9, 2, 81, 82, 7, 25, 2, 2, 82, 83, 8, 8, 1, 2,
-	83, 15, 3, 2, 2, 2, 84, 85, 7, 5, 2, 2, 85, 89, 8, 9, 1, 2, 86, 87, 7,
-	4, 2, 2, 87, 89, 8, 9, 1, 2, 88, 84, 3, 2, 2, 2, 88, 86, 3, 2, 2, 2, 89,
-	17, 3, 2, 2, 2, 90, 91, 7, 10, 2, 2, 91, 99, 8, 10, 1, 2, 92, 93, 7, 11,
-	2, 2, 93, 99, 8, 10, 1, 2, 94, 95, 7, 7, 2, 2, 95, 99, 8, 10, 1, 2, 96,
-	97, 7, 8, 2, 2, 97, 99, 8, 10, 1, 2, 98, 90, 3, 2, 2, 2, 98, 92, 3, 2,
-	2, 2, 98, 94, 3, 2, 2, 2, 98, 96, 3, 2, 2, 2, 99, 19, 3, 2, 2, 2, 8, 26,
-	60, 72, 74, 88, 98,
+	2, 3, 12, 11, 2, 4, 6, 8, 10, 12, 14, 16, 18, 2, 4, 4, 2, 20, 21, 24, 24,
+	3, 2, 22, 23, 2, 101, 2, 20, 3, 2, 2, 2, 4, 26, 3, 2, 2, 2, 6, 31, 3, 2,
+	2, 2, 8, 35, 3, 2, 2, 2, 10, 41, 3, 2, 2, 2, 12, 60, 3, 2, 2, 2, 14, 77,
+	3, 2, 2, 2, 16, 88, 3, 2, 2, 2, 18, 98, 3, 2, 2, 2, 20, 21, 5, 4, 3, 2,
+	21, 22, 8, 2, 1, 2, 22, 3, 3, 2, 2, 2, 23, 25, 5, 6, 4, 2, 24, 23, 3, 2,
+	2, 2, 25, 28, 3, 2, 2, 2, 26, 24, 3, 2, 2, 2, 26, 27, 3, 2, 2, 2, 27, 29,
+	3, 2, 2, 2, 28, 26, 3, 2, 2, 2, 29, 30, 8, 3, 1, 2, 30, 5, 3, 2, 2, 2,
+	31, 32, 5, 8, 5, 2, 32, 33, 7, 14, 2, 2, 33, 34, 8, 4, 1, 2, 34, 7, 3,
+	2, 2, 2, 35, 36, 7, 3, 2, 2, 36, 37, 7, 25, 2, 2, 37, 38, 5, 10, 6, 2,
+	38, 39, 7, 26, 2, 2, 39, 40, 8, 5, 1, 2, 40, 9, 3, 2, 2, 2, 41, 42, 5,
+	12, 7, 2, 42, 43, 8, 6, 1, 2, 43, 11, 3, 2, 2, 2, 44, 45, 8, 7, 1, 2, 45,
+	46, 7, 23, 2, 2, 46, 47, 5, 10, 6, 2, 47, 48, 8, 7, 1, 2, 48, 61, 3, 2,
+	2, 2, 49, 50, 5, 18, 10, 2, 50, 51, 8, 7, 1, 2, 51, 61, 3, 2, 2, 2, 52,
+	53, 7, 25, 2, 2, 53, 54, 5, 10, 6, 2, 54, 55, 7, 26, 2, 2, 55, 56, 8, 7,
+	1, 2, 56, 61, 3, 2, 2, 2, 57, 58, 5, 14, 8, 2, 58, 59, 8, 7, 1, 2, 59,
+	61, 3, 2, 2, 2, 60, 44, 3, 2, 2, 2, 60, 49, 3, 2, 2, 2, 60, 52, 3, 2, 2,
+	2, 60, 57, 3, 2, 2, 2, 61, 74, 3, 2, 2, 2, 62, 63, 12, 7, 2, 2, 63, 64,
+	9, 2, 2, 2, 64, 65, 5, 12, 7, 8, 65, 66, 8, 7, 1, 2, 66, 73, 3, 2, 2, 2,
+	67, 68, 12, 6, 2, 2, 68, 69, 9, 3, 2, 2, 69, 70, 5, 12, 7, 7, 70, 71, 8,
+	7, 1, 2, 71, 73, 3, 2, 2, 2, 72, 62, 3, 2, 2, 2, 72, 67, 3, 2, 2, 2, 73,
+	76, 3, 2, 2, 2, 74, 72, 3, 2, 2, 2, 74, 75, 3, 2, 2, 2, 75, 13, 3, 2, 2,
+	2, 76, 74, 3, 2, 2, 2, 77, 78, 7, 25, 2, 2, 78, 79, 5, 10, 6, 2, 79, 80,
+	7, 9, 2, 2, 80, 81, 5, 16, 9, 2, 81, 82, 7, 26, 2, 2, 82, 83, 8, 8, 1,
+	2, 83, 15, 3, 2, 2, 2, 84, 85, 7, 5, 2, 2, 85, 89, 8, 9, 1, 2, 86, 87,
+	7, 4, 2, 2, 87, 89, 8, 9, 1, 2, 88, 84, 3, 2, 2, 2, 88, 86, 3, 2, 2, 2,
+	89, 17, 3, 2, 2, 2, 90, 91, 7, 10, 2, 2, 91, 99, 8, 10, 1, 2, 92, 93, 7,
+	11, 2, 2, 93, 99, 8, 10, 1, 2, 94, 95, 7, 7, 2, 2, 95, 99, 8, 10, 1, 2,
+	96, 97, 7, 8, 2, 2, 97, 99, 8, 10, 1, 2, 98, 90, 3, 2, 2, 2, 98, 92, 3,
+	2, 2, 2, 98, 94, 3, 2, 2, 2, 98, 96, 3, 2, 2, 2, 99, 19, 3, 2, 2, 2, 8,
+	26, 60, 72, 74, 88, 98,
 }
 var literalNames = []string{
 	"", "'println!'", "'i64'", "'f64'", "'string'", "'true'", "'false'", "'as'",
 	"", "", "", "'.'", "';'", "'='", "'>='", "'<='", "'>'", "'<'", "'*'", "'/'",
-	"'+'", "'-'", "'('", "')'", "'{'", "'}'",
+	"'+'", "'-'", "'%'", "'('", "')'", "'{'", "'}'",
 }
 var symbolicNames = []string{
 	"", "PRINT_CON", "T_NUMBER", "T_FLOAT", "T_STRING", "TRUE", "FALSE", "AS",
 	"NUMBER", "FLOAT", "STRING", "PUNTO", "PTCOMA", "IGUAL", "MAYORIGUAL",
-	"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "PARIZQ", "PARDER",
-	"LLAVEIZQ", "LLAVEDER", "WHITESPACE",
+	"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "PARIZQ",
+	"PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE",
 }
 
 var ruleNames = []string{
@@ -132,11 +132,12 @@ const (
 	RustParDIV        = 19
 	RustParADD        = 20
 	RustParSUB        = 21
-	RustParPARIZQ     = 22
-	RustParPARDER     = 23
-	RustParLLAVEIZQ   = 24
-	RustParLLAVEDER   = 25
-	RustParWHITESPACE = 26
+	RustParMOD        = 22
+	RustParPARIZQ     = 23
+	RustParPARDER     = 24
+	RustParLLAVEIZQ   = 25
+	RustParLLAVEDER   = 26
+	RustParWHITESPACE = 27
 )
 
 // RustPar rules.
@@ -1057,6 +1058,10 @@ func (s *Expr_aritContext) DIV() antlr.TerminalNode {
 	return s.GetToken(RustParDIV, 0)
 }
 
+func (s *Expr_aritContext) MOD() antlr.TerminalNode {
+	return s.GetToken(RustParMOD, 0)
+}
+
 func (s *Expr_aritContext) ADD() antlr.TerminalNode {
 	return s.GetToken(RustParADD, 0)
 }
@@ -1215,7 +1220,7 @@ func (p *RustPar) expr_arit(_p int) (localctx IExpr_aritContext) {
 
 					_la = p.GetTokenStream().LA(1)
 
-					if !(_la == RustParMUL || _la == RustParDIV) {
+					if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<RustParMUL)|(1<<RustParDIV)|(1<<RustParMOD))) != 0) {
 						var _ri = p.GetErrorHandler().RecoverInline(p)
 
 						localctx.(*Expr_aritContext).op = _ri
@@ -1311,17 +1316,23 @@ type ICasteoContext interface {
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
+	// Get_PARIZQ returns the _PARIZQ token.
+	Get_PARIZQ() antlr.Token
+
+	// Set_PARIZQ sets the _PARIZQ token.
+	Set_PARIZQ(antlr.Token)
+
 	// Get_expression returns the _expression rule contexts.
 	Get_expression() IExpressionContext
 
-	// Get_tipo_cast returns the _tipo_cast rule contexts.
-	Get_tipo_cast() ITipo_castContext
+	// GetTypec returns the typec rule contexts.
+	GetTypec() ITipo_castContext
 
 	// Set_expression sets the _expression rule contexts.
 	Set_expression(IExpressionContext)
 
-	// Set_tipo_cast sets the _tipo_cast rule contexts.
-	Set_tipo_cast(ITipo_castContext)
+	// SetTypec sets the typec rule contexts.
+	SetTypec(ITipo_castContext)
 
 	// GetP returns the p attribute.
 	GetP() interfaces.Expresion
@@ -1337,8 +1348,9 @@ type CasteoContext struct {
 	*antlr.BaseParserRuleContext
 	parser      antlr.Parser
 	p           interfaces.Expresion
+	_PARIZQ     antlr.Token
 	_expression IExpressionContext
-	_tipo_cast  ITipo_castContext
+	typec       ITipo_castContext
 }
 
 func NewEmptyCasteoContext() *CasteoContext {
@@ -1363,13 +1375,17 @@ func NewCasteoContext(parser antlr.Parser, parent antlr.ParserRuleContext, invok
 
 func (s *CasteoContext) GetParser() antlr.Parser { return s.parser }
 
+func (s *CasteoContext) Get_PARIZQ() antlr.Token { return s._PARIZQ }
+
+func (s *CasteoContext) Set_PARIZQ(v antlr.Token) { s._PARIZQ = v }
+
 func (s *CasteoContext) Get_expression() IExpressionContext { return s._expression }
 
-func (s *CasteoContext) Get_tipo_cast() ITipo_castContext { return s._tipo_cast }
+func (s *CasteoContext) GetTypec() ITipo_castContext { return s.typec }
 
 func (s *CasteoContext) Set_expression(v IExpressionContext) { s._expression = v }
 
-func (s *CasteoContext) Set_tipo_cast(v ITipo_castContext) { s._tipo_cast = v }
+func (s *CasteoContext) SetTypec(v ITipo_castContext) { s.typec = v }
 
 func (s *CasteoContext) GetP() interfaces.Expresion { return s.p }
 
@@ -1393,6 +1409,10 @@ func (s *CasteoContext) AS() antlr.TerminalNode {
 	return s.GetToken(RustParAS, 0)
 }
 
+func (s *CasteoContext) PARDER() antlr.TerminalNode {
+	return s.GetToken(RustParPARDER, 0)
+}
+
 func (s *CasteoContext) Tipo_cast() ITipo_castContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*ITipo_castContext)(nil)).Elem(), 0)
 
@@ -1401,10 +1421,6 @@ func (s *CasteoContext) Tipo_cast() ITipo_castContext {
 	}
 
 	return t.(ITipo_castContext)
-}
-
-func (s *CasteoContext) PARDER() antlr.TerminalNode {
-	return s.GetToken(RustParPARDER, 0)
 }
 
 func (s *CasteoContext) GetRuleContext() antlr.RuleContext {
@@ -1453,7 +1469,10 @@ func (p *RustPar) Casteo() (localctx ICasteoContext) {
 	p.EnterOuterAlt(localctx, 1)
 	{
 		p.SetState(75)
-		p.Match(RustParPARIZQ)
+
+		var _m = p.Match(RustParPARIZQ)
+
+		localctx.(*CasteoContext)._PARIZQ = _m
 	}
 	{
 		p.SetState(76)
@@ -1471,13 +1490,19 @@ func (p *RustPar) Casteo() (localctx ICasteoContext) {
 
 		var _x = p.Tipo_cast()
 
-		localctx.(*CasteoContext)._tipo_cast = _x
+		localctx.(*CasteoContext).typec = _x
 	}
 	{
 		p.SetState(79)
 		p.Match(RustParPARDER)
 	}
-	localctx.(*CasteoContext).p = expresion.NewCasteo(localctx.(*CasteoContext).Get_expression().GetP(), localctx.(*CasteoContext).Get_tipo_cast().GetTc())
+	localctx.(*CasteoContext).p = expresion.NewCasteo(localctx.(*CasteoContext).Get_expression().GetP(), localctx.(*CasteoContext).GetTypec().GetTc(), (func() int {
+		if localctx.(*CasteoContext).Get_PARIZQ() == nil {
+			return 0
+		} else {
+			return localctx.(*CasteoContext).Get_PARIZQ().GetLine()
+		}
+	}()), localctx.(*CasteoContext).Get_PARIZQ().GetColumn())
 
 	return localctx
 }

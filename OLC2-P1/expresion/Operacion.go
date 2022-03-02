@@ -4,6 +4,7 @@ import (
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -199,7 +200,12 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 			dominante = res_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 
 			if dominante == interfaces.INTEGER {
-				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: retornoIzq.Valor.(int) / retornoDer.Valor.(int)}
+				if retornoDer.Valor.(int) == 0 {
+					err.NewError("No se pude dividir un número entre 0", "Divición 0", p.Line, p.Column)
+
+				} else {
+					return interfaces.Symbol{Id: "", Tipo: dominante, Valor: retornoIzq.Valor.(int) / retornoDer.Valor.(int)}
+				}
 
 			} else if dominante == interfaces.FLOAT {
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
@@ -210,6 +216,33 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 				//fmt.Print("ERROR: No es posible Dividir")
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
 				err.NewError("Tipos incompatibles en Divición "+desc, "Divición", p.Line, p.Column)
+			}
+
+		}
+
+	case "%":
+		{
+			dominante = res_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.INTEGER {
+				if retornoDer.Valor.(int) == 0 {
+					err.NewError("No se pude dividir(%) un número entre 0", "Modulo 0", p.Line, p.Column)
+
+				} else {
+					return interfaces.Symbol{Id: "", Tipo: dominante, Valor: retornoIzq.Valor.(int) % retornoDer.Valor.(int)}
+				}
+
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+
+				modval := math.Mod(val1, val2)
+				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: modval}
+
+			} else {
+				//fmt.Print("ERROR: No es posible Dividir")
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Módulo "+desc, "Módulo", p.Line, p.Column)
 			}
 
 		}

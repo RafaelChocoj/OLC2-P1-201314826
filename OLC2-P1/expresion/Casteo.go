@@ -1,22 +1,23 @@
 package expresion
 
 import (
+	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
 	"strconv"
 )
 
 type Casteo struct {
-	Expre interfaces.Expresion
-	Tipo  interfaces.TipoExpresion
-	/*Line   int
-	Column int*/
+	Expre  interfaces.Expresion
+	Tipo   interfaces.TipoExpresion
+	Line   int
+	Column int
 }
 
-func NewCasteo(Expre interfaces.Expresion, Tipo interfaces.TipoExpresion /*, line int, column int*/) Casteo {
+func NewCasteo(Expre interfaces.Expresion, Tipo interfaces.TipoExpresion, line int, column int) Casteo {
 
 	//fmt.Println("entra en new casteo")
-	exp := Casteo{Expre, Tipo /*, line, column*/}
+	exp := Casteo{Expre, Tipo, line, column}
 	return exp
 }
 
@@ -26,15 +27,23 @@ func (p Casteo) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 	retornoExp = p.Expre.Ejecutar( /*env*/ )
 	var resultado interface{}
 
-	fmt.Println("retornoExp.Valor: ", retornoExp.Valor)
-	fmt.Println("retornoExp.Tipo: ", retornoExp.Tipo)
-	fmt.Println("p.Tipo: ", p.Tipo)
-	//fmt.Println("interfaces.FLOAT: ", interfaces.FLOAT)
+	//fmt.Println("=======================================p.Line: ", p.Line)
+
+	//fmt.Println("retornoExp.Valor: ", retornoExp.Valor)
+	//fmt.Println("retornoExp.Tipo: ", retornoExp.Tipo)
+	//fmt.Println("p.Tipo: ", p.Tipo)
 
 	if p.Tipo == interfaces.FLOAT {
 
-		valexp, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoExp.Valor), 64)
-		return interfaces.Symbol{Id: "", Tipo: interfaces.FLOAT, Valor: valexp}
+		//entero, float
+		if retornoExp.Tipo == interfaces.INTEGER || retornoExp.Tipo == interfaces.FLOAT {
+			valexp, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoExp.Valor), 64)
+			return interfaces.Symbol{Id: "", Tipo: interfaces.FLOAT, Valor: valexp}
+
+		} else {
+			desc := fmt.Sprintf("%v a %v", interfaces.GetType(retornoExp.Tipo), interfaces.GetType(p.Tipo))
+			err.NewError("No se puede castear de "+desc, "casteo", p.Line, p.Column)
+		}
 
 	} else if p.Tipo == interfaces.INTEGER { //dominante
 
@@ -45,8 +54,17 @@ func (p Casteo) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 
 		} else if retornoExp.Tipo == interfaces.BOOLEAN {
 
-			//fmt.Println("retornoExp.Valor: ", retornoExp.Valor)
-			//return interfaces.Symbol{Id: "", Tipo: interfaces.INTEGER, Valor: retornoExp.Valor.(int)}
+			var booleanval int
+			if retornoExp.Valor == true {
+				booleanval = 1
+			} else if retornoExp.Valor == false {
+				booleanval = 0
+			}
+			return interfaces.Symbol{Id: "", Tipo: interfaces.INTEGER, Valor: booleanval}
+
+		} else {
+			desc := fmt.Sprintf("%v a %v", interfaces.GetType(retornoExp.Tipo), interfaces.GetType(p.Tipo))
+			err.NewError("No se puede castear de "+desc, "casteo", p.Line, p.Column)
 		}
 	}
 

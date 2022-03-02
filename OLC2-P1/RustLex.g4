@@ -37,6 +37,7 @@ MUL:            '*';
 DIV:            '/';
 ADD:            '+';
 SUB:            '-';
+MOD:            '%';
 
 PARIZQ:         '(';
 PARDER:         ')';
