@@ -1,0 +1,10 @@
+println!(5+1);
+println!( ((3*2+1) as f64) +2.5 );
+
+println!( (5 as f64) );
+println!( (5.5+4.6 as i64) );
+
+println!( (3 as i64) );
+println!( (2.2 as i64) );
+println!( (true as i64) );
+println!( (false as i64) );

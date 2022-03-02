@@ -1,0 +1,2 @@
+antlr4 -Dlanguage=Go -o parser RustLex.g4
+antlr4 -Dlanguage=Go -o parser RustPar.g4
