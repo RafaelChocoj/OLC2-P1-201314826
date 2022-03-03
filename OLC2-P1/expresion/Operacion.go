@@ -247,6 +247,41 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 
 		}
 
+	case "pow":
+		{
+			dominante = res_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.INTEGER {
+
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				val_pow := math.Pow(val1, val2)
+
+				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: int(val_pow)}
+
+			} else {
+				desc := fmt.Sprintf("%v , %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en i64::pow "+desc, "Potencia", p.Line, p.Column)
+			}
+		}
+
+	case "powf":
+		{
+			dominante = res_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.FLOAT {
+
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				val_pow := math.Pow(val1, val2)
+
+				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: val_pow}
+			} else {
+				desc := fmt.Sprintf("%v , %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en f64::pow "+desc, "Potencia f64", p.Line, p.Column)
+			}
+		}
+
 		/*case "<":
 			{
 				dominante = relacional_dominante[retornoIzq.Tipo][retornoDer.Tipo]

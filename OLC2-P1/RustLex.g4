@@ -3,8 +3,8 @@ lexer grammar RustLex;
 
 // Tokens
 
-//CONSOLE:  'console';
-//LOG:      'log';
+// reserved words
+//Types
 PRINT_CON: 'println!';
 T_NUMBER:   'i64';
 T_FLOAT:   'f64';
@@ -18,13 +18,18 @@ FALSE: 'false';
 
 AS:       'as';
 
+POW:   'pow';
+POWF:   'powf';
+
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;
 STRING: '"'~["]*'"';
 //ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
 
 PUNTO:          '.';
+COMA:          ',';
 PTCOMA:         ';';
+DOSPUNTO:         '::';
 
 //DIFERENTE:      '!';
 IGUAL:          '=';
@@ -44,8 +49,8 @@ PARDER:         ')';
 LLAVEIZQ:       '{';
 LLAVEDER:       '}';
 
-
 WHITESPACE: [ \\\r\n\t]+ -> skip;
+L_COMMENT : '//' ~[\r\n]* -> skip;
 
 fragment
 ESC_SEQ
