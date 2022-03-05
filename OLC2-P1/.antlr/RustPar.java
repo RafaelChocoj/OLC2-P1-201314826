@@ -24,9 +24,10 @@ public class RustPar extends Parser {
 	public static final int
 		PRINT_CON=1, T_NUMBER=2, T_FLOAT=3, T_STRING=4, TRUE=5, FALSE=6, AS=7, 
 		POW=8, POWF=9, TO_STRING=10, TO_OWNED=11, NUMBER=12, FLOAT=13, STRING=14, 
-		PUNTO=15, COMA=16, PTCOMA=17, DOSPUNTO=18, IGUAL=19, MAYORIGUAL=20, MENORIGUAL=21, 
-		MAYOR=22, MENOR=23, MUL=24, DIV=25, ADD=26, SUB=27, MOD=28, AMP=29, PARIZQ=30, 
-		PARDER=31, LLAVEIZQ=32, LLAVEDER=33, WHITESPACE=34, L_COMMENT=35;
+		PUNTO=15, COMA=16, PTCOMA=17, DOSPUNTO=18, DISTINTO=19, IGUAL=20, MAYORIGUAL=21, 
+		MENORIGUAL=22, MAYOR=23, MENOR=24, MUL=25, DIV=26, ADD=27, SUB=28, MOD=29, 
+		AMP=30, PARIZQ=31, PARDER=32, LLAVEIZQ=33, LLAVEDER=34, WHITESPACE=35, 
+		L_COMMENT=36;
 	public static final int
 		RULE_start = 0, RULE_instrucciones = 1, RULE_instruccion = 2, RULE_printconsola = 3, 
 		RULE_expression = 4, RULE_expr_arit = 5, RULE_casteo = 6, RULE_tipo_cast = 7, 
@@ -43,8 +44,9 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "'println!'", "'i64'", "'f64'", "'string'", "'true'", "'false'", 
 			"'as'", "'pow'", "'powf'", "'.to_string()'", "'.to_owned()'", null, null, 
-			null, "'.'", "','", "';'", "'::'", "'='", "'>='", "'<='", "'>'", "'<'", 
-			"'*'", "'/'", "'+'", "'-'", "'%'", "'&'", "'('", "')'", "'{'", "'}'"
+			null, "'.'", "','", "';'", "'::'", "'!='", "'=='", "'>='", "'<='", "'>'", 
+			"'<'", "'*'", "'/'", "'+'", "'-'", "'%'", "'&'", "'('", "')'", "'{'", 
+			"'}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -52,9 +54,9 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "PRINT_CON", "T_NUMBER", "T_FLOAT", "T_STRING", "TRUE", "FALSE", 
 			"AS", "POW", "POWF", "TO_STRING", "TO_OWNED", "NUMBER", "FLOAT", "STRING", 
-			"PUNTO", "COMA", "PTCOMA", "DOSPUNTO", "IGUAL", "MAYORIGUAL", "MENORIGUAL", 
-			"MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "AMP", "PARIZQ", 
-			"PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE", "L_COMMENT"
+			"PUNTO", "COMA", "PTCOMA", "DOSPUNTO", "DISTINTO", "IGUAL", "MAYORIGUAL", 
+			"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "AMP", 
+			"PARIZQ", "PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE", "L_COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -354,6 +356,12 @@ public class RustPar extends Parser {
 		public TerminalNode DIV() { return getToken(RustPar.DIV, 0); }
 		public TerminalNode MOD() { return getToken(RustPar.MOD, 0); }
 		public TerminalNode ADD() { return getToken(RustPar.ADD, 0); }
+		public TerminalNode MENOR() { return getToken(RustPar.MENOR, 0); }
+		public TerminalNode MENORIGUAL() { return getToken(RustPar.MENORIGUAL, 0); }
+		public TerminalNode MAYORIGUAL() { return getToken(RustPar.MAYORIGUAL, 0); }
+		public TerminalNode MAYOR() { return getToken(RustPar.MAYOR, 0); }
+		public TerminalNode IGUAL() { return getToken(RustPar.IGUAL, 0); }
+		public TerminalNode DISTINTO() { return getToken(RustPar.DISTINTO, 0); }
 		public Expr_aritContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -384,7 +392,7 @@ public class RustPar extends Parser {
 				setState(45);
 				((Expr_aritContext)_localctx).op = match(SUB);
 				setState(46);
-				((Expr_aritContext)_localctx).opU = expr_arit(8);
+				((Expr_aritContext)_localctx).opU = expr_arit(9);
 				_localctx.p = expresion.NewOperacion(((Expr_aritContext)_localctx).opU.p,"-",nil,true, (((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getLine():0), localctx.(*Expr_aritContext).GetOp().GetColumn())
 				}
 				break;
@@ -457,7 +465,7 @@ public class RustPar extends Parser {
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(94);
+			setState(99);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -465,7 +473,7 @@ public class RustPar extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(92);
+					setState(97);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 					case 1:
@@ -475,7 +483,7 @@ public class RustPar extends Parser {
 						_localctx.opIz = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr_arit);
 						setState(82);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(83);
 						((Expr_aritContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
@@ -488,7 +496,7 @@ public class RustPar extends Parser {
 							consume();
 						}
 						setState(84);
-						((Expr_aritContext)_localctx).opDe = expr_arit(6);
+						((Expr_aritContext)_localctx).opDe = expr_arit(7);
 						_localctx.p = expresion.NewOperacion(((Expr_aritContext)_localctx).opIz.p,(((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getText():null),((Expr_aritContext)_localctx).opDe.p,false, (((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getLine():0), localctx.(*Expr_aritContext).GetOp().GetColumn())
 						}
 						break;
@@ -499,7 +507,7 @@ public class RustPar extends Parser {
 						_localctx.opIz = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr_arit);
 						setState(87);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(88);
 						((Expr_aritContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
@@ -512,6 +520,30 @@ public class RustPar extends Parser {
 							consume();
 						}
 						setState(89);
+						((Expr_aritContext)_localctx).opDe = expr_arit(6);
+						_localctx.p = expresion.NewOperacion(((Expr_aritContext)_localctx).opIz.p,(((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getText():null),((Expr_aritContext)_localctx).opDe.p,false, (((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getLine():0), localctx.(*Expr_aritContext).GetOp().GetColumn())
+						}
+						break;
+					case 3:
+						{
+						_localctx = new Expr_aritContext(_parentctx, _parentState);
+						_localctx.opIz = _prevctx;
+						_localctx.opIz = _prevctx;
+						pushNewRecursionContext(_localctx, _startState, RULE_expr_arit);
+						setState(92);
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						setState(93);
+						((Expr_aritContext)_localctx).op = _input.LT(1);
+						_la = _input.LA(1);
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DISTINTO) | (1L << IGUAL) | (1L << MAYORIGUAL) | (1L << MENORIGUAL) | (1L << MAYOR) | (1L << MENOR))) != 0)) ) {
+							((Expr_aritContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
+							consume();
+						}
+						setState(94);
 						((Expr_aritContext)_localctx).opDe = expr_arit(5);
 						_localctx.p = expresion.NewOperacion(((Expr_aritContext)_localctx).opIz.p,(((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getText():null),((Expr_aritContext)_localctx).opDe.p,false, (((Expr_aritContext)_localctx).op!=null?((Expr_aritContext)_localctx).op.getLine():0), localctx.(*Expr_aritContext).GetOp().GetColumn())
 						}
@@ -519,7 +551,7 @@ public class RustPar extends Parser {
 					}
 					} 
 				}
-				setState(96);
+				setState(101);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
 			}
@@ -562,15 +594,15 @@ public class RustPar extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97);
+			setState(102);
 			((CasteoContext)_localctx).PARIZQ = match(PARIZQ);
-			setState(98);
+			setState(103);
 			((CasteoContext)_localctx).expression = expression();
-			setState(99);
+			setState(104);
 			match(AS);
-			setState(100);
+			setState(105);
 			((CasteoContext)_localctx).typec = tipo_cast();
-			setState(101);
+			setState(106);
 			match(PARDER);
 			_localctx.p = expresion.NewCasteo(((CasteoContext)_localctx).expression.p, ((CasteoContext)_localctx).typec.tc, (((CasteoContext)_localctx).PARIZQ!=null?((CasteoContext)_localctx).PARIZQ.getLine():0), localctx.(*CasteoContext).Get_PARIZQ().GetColumn() )
 			}
@@ -600,13 +632,13 @@ public class RustPar extends Parser {
 		Tipo_castContext _localctx = new Tipo_castContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_tipo_cast);
 		try {
-			setState(108);
+			setState(113);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T_FLOAT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(104);
+				setState(109);
 				match(T_FLOAT);
 				_localctx.tc = interfaces.FLOAT
 				}
@@ -614,7 +646,7 @@ public class RustPar extends Parser {
 			case T_NUMBER:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(106);
+				setState(111);
 				match(T_NUMBER);
 				_localctx.tc = interfaces.INTEGER
 				}
@@ -658,13 +690,13 @@ public class RustPar extends Parser {
 		PrimitivoContext _localctx = new PrimitivoContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_primitivo);
 		try {
-			setState(121);
+			setState(126);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(110);
+				setState(115);
 				((PrimitivoContext)_localctx).NUMBER = match(NUMBER);
 
 				            	num,err := strconv.Atoi((((PrimitivoContext)_localctx).NUMBER!=null?((PrimitivoContext)_localctx).NUMBER.getText():null))
@@ -678,7 +710,7 @@ public class RustPar extends Parser {
 			case FLOAT:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(112);
+				setState(117);
 				((PrimitivoContext)_localctx).FLOAT = match(FLOAT);
 
 				              num,err := strconv.ParseFloat((((PrimitivoContext)_localctx).FLOAT!=null?((PrimitivoContext)_localctx).FLOAT.getText():null),64)
@@ -693,7 +725,7 @@ public class RustPar extends Parser {
 			case AMP:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(114);
+				setState(119);
 				((PrimitivoContext)_localctx).strings = strings();
 				_localctx.p = ((PrimitivoContext)_localctx).strings.p
 				}
@@ -701,7 +733,7 @@ public class RustPar extends Parser {
 			case TRUE:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(117);
+				setState(122);
 				((PrimitivoContext)_localctx).TRUE = match(TRUE);
 				 _localctx.p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, (((PrimitivoContext)_localctx).TRUE!=null?((PrimitivoContext)_localctx).TRUE.getLine():0), localctx.(*PrimitivoContext).Get_TRUE().GetColumn())
 				}
@@ -709,7 +741,7 @@ public class RustPar extends Parser {
 			case FALSE:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(119);
+				setState(124);
 				((PrimitivoContext)_localctx).FALSE = match(FALSE);
 				 _localctx.p = expresion.NewPrimitivo(false,interfaces.BOOLEAN, (((PrimitivoContext)_localctx).FALSE!=null?((PrimitivoContext)_localctx).FALSE.getLine():0), localctx.(*PrimitivoContext).Get_FALSE().GetColumn())
 				}
@@ -750,34 +782,34 @@ public class RustPar extends Parser {
 		enterRule(_localctx, 18, RULE_strings);
 		int _la;
 		try {
-			setState(138);
+			setState(143);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(124); 
+				setState(129); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(123);
+					setState(128);
 					match(AMP);
 					}
 					}
-					setState(126); 
+					setState(131); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==AMP );
-				setState(128);
+				setState(133);
 				((StringsContext)_localctx).STRING = match(STRING);
-				setState(130);
+				setState(135);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 				case 1:
 					{
-					setState(129);
+					setState(134);
 					_la = _input.LA(1);
 					if ( !(_la==TO_STRING || _la==TO_OWNED) ) {
 					_errHandler.recoverInline(this);
@@ -798,9 +830,9 @@ public class RustPar extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(133);
+				setState(138);
 				((StringsContext)_localctx).STRING = match(STRING);
-				setState(134);
+				setState(139);
 				_la = _input.LA(1);
 				if ( !(_la==TO_STRING || _la==TO_OWNED) ) {
 				_errHandler.recoverInline(this);
@@ -818,7 +850,7 @@ public class RustPar extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(136);
+				setState(141);
 				((StringsContext)_localctx).STRING = match(STRING);
 				 
 				      str:= (((StringsContext)_localctx).STRING!=null?((StringsContext)_localctx).STRING.getText():null)[1:len((((StringsContext)_localctx).STRING!=null?((StringsContext)_localctx).STRING.getText():null))-1]
@@ -848,51 +880,56 @@ public class RustPar extends Parser {
 	private boolean expr_arit_sempred(Expr_aritContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 5);
+			return precpred(_ctx, 6);
 		case 1:
+			return precpred(_ctx, 5);
+		case 2:
 			return precpred(_ctx, 4);
 		}
 		return true;
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3%\u008f\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3&\u0094\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\3\2\3\2\3\2\3\3\7\3\33\n\3\f\3\16\3\36\13\3\3\3\3\3\3\4\3\4\3\4\3"+
 		"\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
 		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3"+
 		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7S\n\7\3\7\3\7\3\7\3\7\3"+
-		"\7\3\7\3\7\3\7\3\7\3\7\7\7_\n\7\f\7\16\7b\13\7\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\3\t\3\t\3\t\3\t\5\to\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n"+
-		"\3\n\5\n|\n\n\3\13\6\13\177\n\13\r\13\16\13\u0080\3\13\3\13\5\13\u0085"+
-		"\n\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13\u008d\n\13\3\13\2\3\f\f\2\4\6"+
-		"\b\n\f\16\20\22\24\2\5\4\2\32\33\36\36\3\2\34\35\3\2\f\r\2\u0095\2\26"+
-		"\3\2\2\2\4\34\3\2\2\2\6!\3\2\2\2\b%\3\2\2\2\n+\3\2\2\2\fR\3\2\2\2\16c"+
-		"\3\2\2\2\20n\3\2\2\2\22{\3\2\2\2\24\u008c\3\2\2\2\26\27\5\4\3\2\27\30"+
-		"\b\2\1\2\30\3\3\2\2\2\31\33\5\6\4\2\32\31\3\2\2\2\33\36\3\2\2\2\34\32"+
-		"\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2\36\34\3\2\2\2\37 \b\3\1\2 \5\3\2"+
-		"\2\2!\"\5\b\5\2\"#\7\23\2\2#$\b\4\1\2$\7\3\2\2\2%&\7\3\2\2&\'\7 \2\2\'"+
-		"(\5\n\6\2()\7!\2\2)*\b\5\1\2*\t\3\2\2\2+,\5\f\7\2,-\b\6\1\2-\13\3\2\2"+
-		"\2./\b\7\1\2/\60\7\35\2\2\60\61\5\f\7\n\61\62\b\7\1\2\62S\3\2\2\2\63\64"+
-		"\7\4\2\2\64\65\7\24\2\2\65\66\7\n\2\2\66\67\7 \2\2\678\5\f\7\289\7\22"+
-		"\2\29:\5\f\7\2:;\7!\2\2;<\b\7\1\2<S\3\2\2\2=>\7\5\2\2>?\7\24\2\2?@\7\13"+
-		"\2\2@A\7 \2\2AB\5\f\7\2BC\7\22\2\2CD\5\f\7\2DE\7!\2\2EF\b\7\1\2FS\3\2"+
-		"\2\2GH\5\22\n\2HI\b\7\1\2IS\3\2\2\2JK\7 \2\2KL\5\n\6\2LM\7!\2\2MN\b\7"+
-		"\1\2NS\3\2\2\2OP\5\16\b\2PQ\b\7\1\2QS\3\2\2\2R.\3\2\2\2R\63\3\2\2\2R="+
-		"\3\2\2\2RG\3\2\2\2RJ\3\2\2\2RO\3\2\2\2S`\3\2\2\2TU\f\7\2\2UV\t\2\2\2V"+
-		"W\5\f\7\bWX\b\7\1\2X_\3\2\2\2YZ\f\6\2\2Z[\t\3\2\2[\\\5\f\7\7\\]\b\7\1"+
-		"\2]_\3\2\2\2^T\3\2\2\2^Y\3\2\2\2_b\3\2\2\2`^\3\2\2\2`a\3\2\2\2a\r\3\2"+
-		"\2\2b`\3\2\2\2cd\7 \2\2de\5\n\6\2ef\7\t\2\2fg\5\20\t\2gh\7!\2\2hi\b\b"+
-		"\1\2i\17\3\2\2\2jk\7\5\2\2ko\b\t\1\2lm\7\4\2\2mo\b\t\1\2nj\3\2\2\2nl\3"+
-		"\2\2\2o\21\3\2\2\2pq\7\16\2\2q|\b\n\1\2rs\7\17\2\2s|\b\n\1\2tu\5\24\13"+
-		"\2uv\b\n\1\2v|\3\2\2\2wx\7\7\2\2x|\b\n\1\2yz\7\b\2\2z|\b\n\1\2{p\3\2\2"+
-		"\2{r\3\2\2\2{t\3\2\2\2{w\3\2\2\2{y\3\2\2\2|\23\3\2\2\2}\177\7\37\2\2~"+
-		"}\3\2\2\2\177\u0080\3\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082"+
-		"\3\2\2\2\u0082\u0084\7\20\2\2\u0083\u0085\t\4\2\2\u0084\u0083\3\2\2\2"+
-		"\u0084\u0085\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u008d\b\13\1\2\u0087\u0088"+
-		"\7\20\2\2\u0088\u0089\t\4\2\2\u0089\u008d\b\13\1\2\u008a\u008b\7\20\2"+
-		"\2\u008b\u008d\b\13\1\2\u008c~\3\2\2\2\u008c\u0087\3\2\2\2\u008c\u008a"+
-		"\3\2\2\2\u008d\25\3\2\2\2\13\34R^`n{\u0080\u0084\u008c";
+		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7d\n\7\f\7\16\7g\13\7\3\b"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\5\tt\n\t\3\n\3\n\3\n\3\n\3\n"+
+		"\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u0081\n\n\3\13\6\13\u0084\n\13\r\13\16\13"+
+		"\u0085\3\13\3\13\5\13\u008a\n\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13\u0092"+
+		"\n\13\3\13\2\3\f\f\2\4\6\b\n\f\16\20\22\24\2\6\4\2\33\34\37\37\3\2\35"+
+		"\36\3\2\25\32\3\2\f\r\2\u009b\2\26\3\2\2\2\4\34\3\2\2\2\6!\3\2\2\2\b%"+
+		"\3\2\2\2\n+\3\2\2\2\fR\3\2\2\2\16h\3\2\2\2\20s\3\2\2\2\22\u0080\3\2\2"+
+		"\2\24\u0091\3\2\2\2\26\27\5\4\3\2\27\30\b\2\1\2\30\3\3\2\2\2\31\33\5\6"+
+		"\4\2\32\31\3\2\2\2\33\36\3\2\2\2\34\32\3\2\2\2\34\35\3\2\2\2\35\37\3\2"+
+		"\2\2\36\34\3\2\2\2\37 \b\3\1\2 \5\3\2\2\2!\"\5\b\5\2\"#\7\23\2\2#$\b\4"+
+		"\1\2$\7\3\2\2\2%&\7\3\2\2&\'\7!\2\2\'(\5\n\6\2()\7\"\2\2)*\b\5\1\2*\t"+
+		"\3\2\2\2+,\5\f\7\2,-\b\6\1\2-\13\3\2\2\2./\b\7\1\2/\60\7\36\2\2\60\61"+
+		"\5\f\7\13\61\62\b\7\1\2\62S\3\2\2\2\63\64\7\4\2\2\64\65\7\24\2\2\65\66"+
+		"\7\n\2\2\66\67\7!\2\2\678\5\f\7\289\7\22\2\29:\5\f\7\2:;\7\"\2\2;<\b\7"+
+		"\1\2<S\3\2\2\2=>\7\5\2\2>?\7\24\2\2?@\7\13\2\2@A\7!\2\2AB\5\f\7\2BC\7"+
+		"\22\2\2CD\5\f\7\2DE\7\"\2\2EF\b\7\1\2FS\3\2\2\2GH\5\22\n\2HI\b\7\1\2I"+
+		"S\3\2\2\2JK\7!\2\2KL\5\n\6\2LM\7\"\2\2MN\b\7\1\2NS\3\2\2\2OP\5\16\b\2"+
+		"PQ\b\7\1\2QS\3\2\2\2R.\3\2\2\2R\63\3\2\2\2R=\3\2\2\2RG\3\2\2\2RJ\3\2\2"+
+		"\2RO\3\2\2\2Se\3\2\2\2TU\f\b\2\2UV\t\2\2\2VW\5\f\7\tWX\b\7\1\2Xd\3\2\2"+
+		"\2YZ\f\7\2\2Z[\t\3\2\2[\\\5\f\7\b\\]\b\7\1\2]d\3\2\2\2^_\f\6\2\2_`\t\4"+
+		"\2\2`a\5\f\7\7ab\b\7\1\2bd\3\2\2\2cT\3\2\2\2cY\3\2\2\2c^\3\2\2\2dg\3\2"+
+		"\2\2ec\3\2\2\2ef\3\2\2\2f\r\3\2\2\2ge\3\2\2\2hi\7!\2\2ij\5\n\6\2jk\7\t"+
+		"\2\2kl\5\20\t\2lm\7\"\2\2mn\b\b\1\2n\17\3\2\2\2op\7\5\2\2pt\b\t\1\2qr"+
+		"\7\4\2\2rt\b\t\1\2so\3\2\2\2sq\3\2\2\2t\21\3\2\2\2uv\7\16\2\2v\u0081\b"+
+		"\n\1\2wx\7\17\2\2x\u0081\b\n\1\2yz\5\24\13\2z{\b\n\1\2{\u0081\3\2\2\2"+
+		"|}\7\7\2\2}\u0081\b\n\1\2~\177\7\b\2\2\177\u0081\b\n\1\2\u0080u\3\2\2"+
+		"\2\u0080w\3\2\2\2\u0080y\3\2\2\2\u0080|\3\2\2\2\u0080~\3\2\2\2\u0081\23"+
+		"\3\2\2\2\u0082\u0084\7 \2\2\u0083\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085"+
+		"\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0089\7\20"+
+		"\2\2\u0088\u008a\t\5\2\2\u0089\u0088\3\2\2\2\u0089\u008a\3\2\2\2\u008a"+
+		"\u008b\3\2\2\2\u008b\u0092\b\13\1\2\u008c\u008d\7\20\2\2\u008d\u008e\t"+
+		"\5\2\2\u008e\u0092\b\13\1\2\u008f\u0090\7\20\2\2\u0090\u0092\b\13\1\2"+
+		"\u0091\u0083\3\2\2\2\u0091\u008c\3\2\2\2\u0091\u008f\3\2\2\2\u0092\25"+
+		"\3\2\2\2\13\34Rces\u0080\u0085\u0089\u0091";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

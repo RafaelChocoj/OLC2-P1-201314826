@@ -60,7 +60,8 @@ expr_arit returns[interfaces.Expresion p]
     | opIz = expr_arit op=('*'|'/'|'%') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
     //| opIz = expr_arit op= '%' opDe = expr_arit     {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
     | opIz = expr_arit op=('+'|'-') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
-    //| opIz = expr_arit op=('<'|'<='|'>='|'>') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false)}   
+    
+    | opIz = expr_arit op=('<'|'<='|'>='|'>'|'=='|'!=') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())} 
     | primitivo {$p = $primitivo.p}
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
@@ -105,14 +106,7 @@ primitivo returns[interfaces.Expresion p]
       }
 
     | strings {$p = $strings.p} 
-    /*| AMP STRING { 
-      str:= $STRING.text[1:len($STRING.text)-1]
-      $p = expresion.NewPrimitivo(str,interfaces.STR, $STRING.line, localctx.(*PrimitivoContext).Get_STRING().GetColumn())}
 
-    | STRING { 
-      str:= $STRING.text[1:len($STRING.text)-1]
-      $p = expresion.NewPrimitivo(str,interfaces.STRING, $STRING.line, localctx.(*PrimitivoContext).Get_STRING().GetColumn())}
-    */
     /*| ID { 
       $p = expresion.NewCallVariable($ID.text)}*/
     | TRUE  { $p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, $TRUE.line, localctx.(*PrimitivoContext).Get_TRUE().GetColumn())}

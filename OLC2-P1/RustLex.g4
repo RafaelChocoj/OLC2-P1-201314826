@@ -36,8 +36,9 @@ COMA:          ',';
 PTCOMA:         ';';
 DOSPUNTO:         '::';
 
-//DIFERENTE:      '!';
-IGUAL:          '=';
+//RELACIONALES
+DISTINTO:      '!=';
+IGUAL:          '==';
 MAYORIGUAL:     '>=';
 MENORIGUAL:     '<=';
 MAYOR:          '>';

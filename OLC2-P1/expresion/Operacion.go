@@ -22,6 +22,7 @@ import (
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }*/
 
+/****ARITMETICAS***/
 /*
 horizontal segundo
 vertical primero*/
@@ -35,6 +36,26 @@ var res_dominante = [6][6]interfaces.TipoExpresion{
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL},
 	//STR
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//BOOLEAN
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//NULL
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+}
+
+/****RELACIONALES***/
+/*
+horizontal segundo
+vertical primero*/
+var rel_dominante = [6][6]interfaces.TipoExpresion{
+	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //NULL
+	//INTEGER
+	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//FLOAT
+	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//STRING
+	{interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//STR
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STR, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//NULL
@@ -289,69 +310,190 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 			}
 		}
 
-		/*case "<":
-			{
-				dominante = relacional_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+	case "<":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 
-				if dominante == interfaces.INTEGER {
+			if dominante == interfaces.INTEGER {
 
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) < retornoDer.Valor.(int)}
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) < retornoDer.Valor.(int)}
 
-				} else if dominante == interfaces.FLOAT {
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) < retornoDer.Valor.(float64)}
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 < val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) < retornoDer.Valor.(float64)}
 
-				} else {
-					fmt.Print("ERROR: No es posible comparar <")
-				}
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 < r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 < r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (<) "+desc, "Relacional <", p.Line, p.Column)
 			}
 
-		case ">":
-			{
-				dominante = relacional_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+		}
 
-				if dominante == interfaces.INTEGER {
+	case ">":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) > retornoDer.Valor.(int)}
+			if dominante == interfaces.INTEGER {
 
-				} else if dominante == interfaces.FLOAT {
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) > retornoDer.Valor.(float64)}
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) > retornoDer.Valor.(int)}
 
-				} else {
-					fmt.Print("ERROR: No es posible comparar <")
-				}
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 > val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) > retornoDer.Valor.(float64)}
+
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 > r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 > r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (>) "+desc, "Relacional >", p.Line, p.Column)
+			}
+		}
+
+	case "<=":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.INTEGER {
+
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) <= retornoDer.Valor.(int)}
+
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 <= val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) <= retornoDer.Valor.(float64)}
+
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 <= r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 <= r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (<=) "+desc, "Relacional <=", p.Line, p.Column)
+			}
+		}
+
+	case ">=":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.INTEGER {
+
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) >= retornoDer.Valor.(int)}
+
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 >= val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) >= retornoDer.Valor.(float64)}
+
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 >= r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 >= r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (>=) "+desc, "Relacional >=", p.Line, p.Column)
 			}
 
-		case "<=":
-			{
-				dominante = relacional_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+		}
 
-				if dominante == interfaces.INTEGER {
+	case "==":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) <= retornoDer.Valor.(int)}
+			if dominante == interfaces.INTEGER {
 
-				} else if dominante == interfaces.FLOAT {
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) <= retornoDer.Valor.(float64)}
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) == retornoDer.Valor.(int)}
 
-				} else {
-					fmt.Print("ERROR: No es posible comparar <")
-				}
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 == val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) == retornoDer.Valor.(float64)}
+
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 == r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 == r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (==) "+desc, "Relacional ==", p.Line, p.Column)
 			}
 
-		case ">=":
-			{
-				dominante = relacional_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+		}
 
-				if dominante == interfaces.INTEGER {
+	case "!=":
+		{
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) >= retornoDer.Valor.(int)}
+			if dominante == interfaces.INTEGER {
 
-				} else if dominante == interfaces.FLOAT {
-					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) >= retornoDer.Valor.(float64)}
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(int) != retornoDer.Valor.(int)}
 
-				} else {
-					fmt.Print("ERROR: No es posible comparar <")
-				}
-			}*/
+			} else if dominante == interfaces.FLOAT {
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoIzq.Valor), 64)
+				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", retornoDer.Valor), 64)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: val1 != val2}
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(float64) != retornoDer.Valor.(float64)}
+
+			} else if dominante == interfaces.STRING {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 != r2}
+
+			} else if dominante == interfaces.STR {
+				r1 := fmt.Sprintf("%v", retornoIzq.Valor)
+				r2 := fmt.Sprintf("%v", retornoDer.Valor)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: r1 != r2}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles en Relaciónal (!=) "+desc, "Relacional !=", p.Line, p.Column)
+			}
+
+		}
+
 	}
 
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
