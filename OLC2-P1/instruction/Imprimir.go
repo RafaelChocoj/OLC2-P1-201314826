@@ -21,6 +21,7 @@ func (p Imprimir) Ejecutar( /*env interface{}*/ ) interface{} {
 
 	result = p.Expresion.Ejecutar( /*env*/ )
 
+	fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
 	//fmt.Println(result.Valor)
 	printcon := fmt.Sprintf("%v", result.Valor) + "\n"
 	console.Console += printcon

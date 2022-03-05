@@ -22,18 +22,23 @@ import (
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }*/
 
-var res_dominante = [5][5]interfaces.TipoExpresion{
-	//INTEGER			//FLOAT			   //STRING			  //BOOLEAN		   //NULL
+/*
+horizontal segundo
+vertical primero*/
+var res_dominante = [6][6]interfaces.TipoExpresion{
+	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //NULL
 	//INTEGER
-	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//FLOAT
-	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//STRING
-	{interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL},
+	//STR
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//NULL
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }
 
 var suma_dominante = [5][5]interfaces.TipoExpresion{
@@ -143,6 +148,8 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 
 	case "-":
 		{
+			//fmt.Println("p.Unario: ", p.Unario)
+			//fmt.Println("retornoIzq.Valor: ", retornoIzq.Valor)
 			if p.Unario {
 
 				/*if retornoIzq.Tipo != interfaces.INTEGER && retornoIzq.Tipo != entorno.FLOAT {

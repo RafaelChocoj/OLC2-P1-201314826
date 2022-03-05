@@ -21,6 +21,11 @@ AS:       'as';
 POW:   'pow';
 POWF:   'powf';
 
+//functions
+TO_STRING:   '.to_string()';
+TO_OWNED:   '.to_owned()';
+
+
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;
 STRING: '"'~["]*'"';
@@ -38,11 +43,15 @@ MENORIGUAL:     '<=';
 MAYOR:          '>';
 MENOR:          '<';
 
+//aritment
 MUL:            '*';
 DIV:            '/';
 ADD:            '+';
 SUB:            '-';
 MOD:            '%';
+
+//signos
+AMP:            '&';
 
 PARIZQ:         '(';
 PARDER:         ')';

@@ -74,3 +74,9 @@ func (s *BaseRustParListener) EnterPrimitivo(ctx *PrimitivoContext) {}
 
 // ExitPrimitivo is called when production primitivo is exited.
 func (s *BaseRustParListener) ExitPrimitivo(ctx *PrimitivoContext) {}
+
+// EnterStrings is called when production strings is entered.
+func (s *BaseRustParListener) EnterStrings(ctx *StringsContext) {}
+
+// ExitStrings is called when production strings is exited.
+func (s *BaseRustParListener) ExitStrings(ctx *StringsContext) {}

@@ -53,7 +53,7 @@ expression returns[interfaces.Expresion p]
 ;
 
 expr_arit returns[interfaces.Expresion p]
-    : op='-' opU = expression                           {$p = expresion.NewOperacion($opU.p,"-",nil,true, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
+    : op='-' opU = expr_arit {$p = expresion.NewOperacion($opU.p,"-",nil,true, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
     //| opIz = expr_arit op=('*'|'/'|'%') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())} 
     | T_NUMBER DOSPUNTO op=POW PARIZQ opIz = expr_arit COMA opDe = expr_arit PARDER {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
     | T_FLOAT DOSPUNTO op=POWF PARIZQ opIz = expr_arit COMA opDe = expr_arit PARDER {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
@@ -103,11 +103,34 @@ primitivo returns[interfaces.Expresion p]
               }
               $p = expresion.NewPrimitivo (num,interfaces.FLOAT, $FLOAT.line, localctx.(*PrimitivoContext).Get_FLOAT().GetColumn())
       }
-    /*| STRING { 
+
+    | strings {$p = $strings.p} 
+    /*| AMP STRING { 
       str:= $STRING.text[1:len($STRING.text)-1]
-      $p = expresion.NewPrimitivo(str,interfaces.STRING)}*/
+      $p = expresion.NewPrimitivo(str,interfaces.STR, $STRING.line, localctx.(*PrimitivoContext).Get_STRING().GetColumn())}
+
+    | STRING { 
+      str:= $STRING.text[1:len($STRING.text)-1]
+      $p = expresion.NewPrimitivo(str,interfaces.STRING, $STRING.line, localctx.(*PrimitivoContext).Get_STRING().GetColumn())}
+    */
     /*| ID { 
       $p = expresion.NewCallVariable($ID.text)}*/
     | TRUE  { $p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, $TRUE.line, localctx.(*PrimitivoContext).Get_TRUE().GetColumn())}
     | FALSE { $p = expresion.NewPrimitivo(false,interfaces.BOOLEAN, $FALSE.line, localctx.(*PrimitivoContext).Get_FALSE().GetColumn())}
+;
+
+
+strings returns[interfaces.Expresion p]
+    : AMP+ STRING (TO_STRING|TO_OWNED)? { 
+      str:= $STRING.text[1:len($STRING.text)-1]
+      $p = expresion.NewPrimitivo(str,interfaces.STR, $STRING.line, localctx.(*StringsContext).Get_STRING().GetColumn())}
+    
+    | STRING (TO_STRING|TO_OWNED) { 
+      str:= $STRING.text[1:len($STRING.text)-1]
+      $p = expresion.NewPrimitivo(str,interfaces.STRING, $STRING.line, localctx.(*StringsContext).Get_STRING().GetColumn())}
+
+    | STRING { 
+      str:= $STRING.text[1:len($STRING.text)-1]
+      $p = expresion.NewPrimitivo(str,interfaces.STR, $STRING.line, localctx.(*StringsContext).Get_STRING().GetColumn())}
+    
 ;

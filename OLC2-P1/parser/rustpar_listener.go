@@ -35,6 +35,9 @@ type RustParListener interface {
 	// EnterPrimitivo is called when entering the primitivo production.
 	EnterPrimitivo(c *PrimitivoContext)
 
+	// EnterStrings is called when entering the strings production.
+	EnterStrings(c *StringsContext)
+
 	// ExitStart is called when exiting the start production.
 	ExitStart(c *StartContext)
 
@@ -61,4 +64,7 @@ type RustParListener interface {
 
 	// ExitPrimitivo is called when exiting the primitivo production.
 	ExitPrimitivo(c *PrimitivoContext)
+
+	// ExitStrings is called when exiting the strings production.
+	ExitStrings(c *StringsContext)
 }

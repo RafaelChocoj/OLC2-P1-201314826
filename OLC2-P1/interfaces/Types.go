@@ -6,14 +6,16 @@ const (
 	INTEGER TipoExpresion = iota
 	FLOAT
 	STRING
+	STR
 	BOOLEAN
 	NULL
 )
 
-var nametype = [5]string{
+var nametype = [6]string{
 	"i64",
 	"f64",
 	"String",
+	"&str",
 	"bool",
 	"NULL",
 }
