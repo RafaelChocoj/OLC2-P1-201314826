@@ -7,11 +7,9 @@ type Symbol struct {
 }
 
 type Expresion interface {
-	//Ejecutar(env interface{}) Symbol
-	Ejecutar() Symbol
+	Ejecutar(env interface{}) Symbol
 }
 
 type Instruction interface {
-	//Ejecutar(env interface{}) interface{}
-	Ejecutar() interface{}
+	Ejecutar(env interface{}) interface{}
 }

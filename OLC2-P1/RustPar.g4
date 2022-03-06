@@ -114,8 +114,9 @@ primitivo returns[interfaces.Expresion p]
 
     | strings {$p = $strings.p} 
 
-    /*| ID { 
-      $p = expresion.NewCallVariable($ID.text)}*/
+    | ID { 
+      $p = expresion.NewIdentificador($ID.text, $ID.line, localctx.(*PrimitivoContext).Get_ID().GetColumn() )}
+
     | TRUE  { $p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, $TRUE.line, localctx.(*PrimitivoContext).Get_TRUE().GetColumn())}
     | FALSE { $p = expresion.NewPrimitivo(false,interfaces.BOOLEAN, $FALSE.line, localctx.(*PrimitivoContext).Get_FALSE().GetColumn())}
 ;

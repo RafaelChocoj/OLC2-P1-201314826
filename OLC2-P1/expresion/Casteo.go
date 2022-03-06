@@ -21,10 +21,10 @@ func NewCasteo(Expre interfaces.Expresion, Tipo interfaces.TipoExpresion, line i
 	return exp
 }
 
-func (p Casteo) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
+func (p Casteo) Ejecutar(env interface{}) interfaces.Symbol {
 
 	var retornoExp interfaces.Symbol
-	retornoExp = p.Expre.Ejecutar( /*env*/ )
+	retornoExp = p.Expre.Ejecutar(env)
 	var resultado interface{}
 
 	//fmt.Println("=======================================p.Line: ", p.Line)

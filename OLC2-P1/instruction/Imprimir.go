@@ -15,11 +15,11 @@ func NewImprimir(val interfaces.Expresion) Imprimir {
 	return exp
 }
 
-func (p Imprimir) Ejecutar( /*env interface{}*/ ) interface{} {
+func (p Imprimir) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
 
-	result = p.Expresion.Ejecutar( /*env*/ )
+	result = p.Expresion.Ejecutar(env)
 
 	fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
 	//fmt.Println(result.Valor)

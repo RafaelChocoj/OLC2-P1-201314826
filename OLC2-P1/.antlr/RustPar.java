@@ -24,10 +24,10 @@ public class RustPar extends Parser {
 	public static final int
 		PRINT_CON=1, T_NUMBER=2, T_FLOAT=3, T_STRING=4, TRUE=5, FALSE=6, AS=7, 
 		POW=8, POWF=9, TO_STRING=10, TO_OWNED=11, NUMBER=12, FLOAT=13, STRING=14, 
-		PUNTO=15, COMA=16, PTCOMA=17, DOSPUNTO=18, DISTINTO=19, IGUAL=20, MAYORIGUAL=21, 
-		MENORIGUAL=22, MAYOR=23, MENOR=24, MUL=25, DIV=26, ADD=27, SUB=28, MOD=29, 
-		AND=30, OR=31, NOT=32, AMP=33, PARIZQ=34, PARDER=35, LLAVEIZQ=36, LLAVEDER=37, 
-		WHITESPACE=38, L_COMMENT=39;
+		ID=15, PUNTO=16, COMA=17, PTCOMA=18, DOSPUNTO=19, DISTINTO=20, IGUAL=21, 
+		MAYORIGUAL=22, MENORIGUAL=23, MAYOR=24, MENOR=25, MUL=26, DIV=27, ADD=28, 
+		SUB=29, MOD=30, AND=31, OR=32, NOT=33, AMP=34, PARIZQ=35, PARDER=36, LLAVEIZQ=37, 
+		LLAVEDER=38, WHITESPACE=39, L_COMMENT=40;
 	public static final int
 		RULE_start = 0, RULE_instrucciones = 1, RULE_instruccion = 2, RULE_printconsola = 3, 
 		RULE_expression = 4, RULE_expr_arit = 5, RULE_casteo = 6, RULE_tipo_cast = 7, 
@@ -44,9 +44,9 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "'println!'", "'i64'", "'f64'", "'string'", "'true'", "'false'", 
 			"'as'", "'pow'", "'powf'", "'.to_string()'", "'.to_owned()'", null, null, 
-			null, "'.'", "','", "';'", "'::'", "'!='", "'=='", "'>='", "'<='", "'>'", 
-			"'<'", "'*'", "'/'", "'+'", "'-'", "'%'", "'&&'", "'||'", "'!'", "'&'", 
-			"'('", "')'", "'{'", "'}'"
+			null, null, "'.'", "','", "';'", "'::'", "'!='", "'=='", "'>='", "'<='", 
+			"'>'", "'<'", "'*'", "'/'", "'+'", "'-'", "'%'", "'&&'", "'||'", "'!'", 
+			"'&'", "'('", "')'", "'{'", "'}'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -54,7 +54,7 @@ public class RustPar extends Parser {
 		return new String[] {
 			null, "PRINT_CON", "T_NUMBER", "T_FLOAT", "T_STRING", "TRUE", "FALSE", 
 			"AS", "POW", "POWF", "TO_STRING", "TO_OWNED", "NUMBER", "FLOAT", "STRING", 
-			"PUNTO", "COMA", "PTCOMA", "DOSPUNTO", "DISTINTO", "IGUAL", "MAYORIGUAL", 
+			"ID", "PUNTO", "COMA", "PTCOMA", "DOSPUNTO", "DISTINTO", "IGUAL", "MAYORIGUAL", 
 			"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "AND", 
 			"OR", "NOT", "AMP", "PARIZQ", "PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE", 
 			"L_COMMENT"
@@ -714,6 +714,7 @@ public class RustPar extends Parser {
 		public Token NUMBER;
 		public Token FLOAT;
 		public StringsContext strings;
+		public Token ID;
 		public Token TRUE;
 		public Token FALSE;
 		public TerminalNode NUMBER() { return getToken(RustPar.NUMBER, 0); }
@@ -721,6 +722,7 @@ public class RustPar extends Parser {
 		public StringsContext strings() {
 			return getRuleContext(StringsContext.class,0);
 		}
+		public TerminalNode ID() { return getToken(RustPar.ID, 0); }
 		public TerminalNode TRUE() { return getToken(RustPar.TRUE, 0); }
 		public TerminalNode FALSE() { return getToken(RustPar.FALSE, 0); }
 		public PrimitivoContext(ParserRuleContext parent, int invokingState) {
@@ -733,7 +735,7 @@ public class RustPar extends Parser {
 		PrimitivoContext _localctx = new PrimitivoContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_primitivo);
 		try {
-			setState(140);
+			setState(142);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NUMBER:
@@ -773,18 +775,27 @@ public class RustPar extends Parser {
 				_localctx.p = ((PrimitivoContext)_localctx).strings.p
 				}
 				break;
-			case TRUE:
+			case ID:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(136);
+				((PrimitivoContext)_localctx).ID = match(ID);
+				 
+				      _localctx.p = expresion.NewIdentificador((((PrimitivoContext)_localctx).ID!=null?((PrimitivoContext)_localctx).ID.getText():null), (((PrimitivoContext)_localctx).ID!=null?((PrimitivoContext)_localctx).ID.getLine():0), localctx.(*PrimitivoContext).Get_ID().GetColumn() )
+				}
+				break;
+			case TRUE:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(138);
 				((PrimitivoContext)_localctx).TRUE = match(TRUE);
 				 _localctx.p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, (((PrimitivoContext)_localctx).TRUE!=null?((PrimitivoContext)_localctx).TRUE.getLine():0), localctx.(*PrimitivoContext).Get_TRUE().GetColumn())
 				}
 				break;
 			case FALSE:
-				enterOuterAlt(_localctx, 5);
+				enterOuterAlt(_localctx, 6);
 				{
-				setState(138);
+				setState(140);
 				((PrimitivoContext)_localctx).FALSE = match(FALSE);
 				 _localctx.p = expresion.NewPrimitivo(false,interfaces.BOOLEAN, (((PrimitivoContext)_localctx).FALSE!=null?((PrimitivoContext)_localctx).FALSE.getLine():0), localctx.(*PrimitivoContext).Get_FALSE().GetColumn())
 				}
@@ -825,34 +836,34 @@ public class RustPar extends Parser {
 		enterRule(_localctx, 18, RULE_strings);
 		int _la;
 		try {
-			setState(157);
+			setState(159);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(143); 
+				setState(145); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(142);
+					setState(144);
 					match(AMP);
 					}
 					}
-					setState(145); 
+					setState(147); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				} while ( _la==AMP );
-				setState(147);
-				((StringsContext)_localctx).STRING = match(STRING);
 				setState(149);
+				((StringsContext)_localctx).STRING = match(STRING);
+				setState(151);
 				_errHandler.sync(this);
 				switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 				case 1:
 					{
-					setState(148);
+					setState(150);
 					_la = _input.LA(1);
 					if ( !(_la==TO_STRING || _la==TO_OWNED) ) {
 					_errHandler.recoverInline(this);
@@ -873,9 +884,9 @@ public class RustPar extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(152);
+				setState(154);
 				((StringsContext)_localctx).STRING = match(STRING);
-				setState(153);
+				setState(155);
 				_la = _input.LA(1);
 				if ( !(_la==TO_STRING || _la==TO_OWNED) ) {
 				_errHandler.recoverInline(this);
@@ -893,7 +904,7 @@ public class RustPar extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(155);
+				setState(157);
 				((StringsContext)_localctx).STRING = match(STRING);
 				 
 				      str:= (((StringsContext)_localctx).STRING!=null?((StringsContext)_localctx).STRING.getText():null)[1:len((((StringsContext)_localctx).STRING!=null?((StringsContext)_localctx).STRING.getText():null))-1]
@@ -937,7 +948,7 @@ public class RustPar extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3)\u00a2\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3*\u00a4\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\3\2\3\2\3\2\3\3\7\3\33\n\3\f\3\16\3\36\13\3\3\3\3\3\3\4\3\4\3\4\3"+
 		"\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
@@ -946,42 +957,43 @@ public class RustPar extends Parser {
 		"\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7"+
 		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\7\7r\n\7\f\7\16\7u\13\7\3\b\3\b\3\b\3\b\3"+
 		"\b\3\b\3\b\3\t\3\t\3\t\3\t\5\t\u0082\n\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3"+
-		"\n\3\n\3\n\3\n\5\n\u008f\n\n\3\13\6\13\u0092\n\13\r\13\16\13\u0093\3\13"+
-		"\3\13\5\13\u0098\n\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13\u00a0\n\13\3"+
-		"\13\2\3\f\f\2\4\6\b\n\f\16\20\22\24\2\6\4\2\33\34\37\37\3\2\35\36\3\2"+
-		"\25\32\3\2\f\r\2\u00ac\2\26\3\2\2\2\4\34\3\2\2\2\6!\3\2\2\2\b%\3\2\2\2"+
-		"\n+\3\2\2\2\fV\3\2\2\2\16v\3\2\2\2\20\u0081\3\2\2\2\22\u008e\3\2\2\2\24"+
-		"\u009f\3\2\2\2\26\27\5\4\3\2\27\30\b\2\1\2\30\3\3\2\2\2\31\33\5\6\4\2"+
+		"\n\3\n\3\n\3\n\3\n\3\n\5\n\u0091\n\n\3\13\6\13\u0094\n\13\r\13\16\13\u0095"+
+		"\3\13\3\13\5\13\u009a\n\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13\u00a2\n"+
+		"\13\3\13\2\3\f\f\2\4\6\b\n\f\16\20\22\24\2\6\4\2\34\35  \3\2\36\37\3\2"+
+		"\26\33\3\2\f\r\2\u00af\2\26\3\2\2\2\4\34\3\2\2\2\6!\3\2\2\2\b%\3\2\2\2"+
+		"\n+\3\2\2\2\fV\3\2\2\2\16v\3\2\2\2\20\u0081\3\2\2\2\22\u0090\3\2\2\2\24"+
+		"\u00a1\3\2\2\2\26\27\5\4\3\2\27\30\b\2\1\2\30\3\3\2\2\2\31\33\5\6\4\2"+
 		"\32\31\3\2\2\2\33\36\3\2\2\2\34\32\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2"+
-		"\36\34\3\2\2\2\37 \b\3\1\2 \5\3\2\2\2!\"\5\b\5\2\"#\7\23\2\2#$\b\4\1\2"+
-		"$\7\3\2\2\2%&\7\3\2\2&\'\7$\2\2\'(\5\n\6\2()\7%\2\2)*\b\5\1\2*\t\3\2\2"+
-		"\2+,\5\f\7\2,-\b\6\1\2-\13\3\2\2\2./\b\7\1\2/\60\7\36\2\2\60\61\5\f\7"+
-		"\16\61\62\b\7\1\2\62W\3\2\2\2\63\64\7\4\2\2\64\65\7\24\2\2\65\66\7\n\2"+
-		"\2\66\67\7$\2\2\678\5\f\7\289\7\22\2\29:\5\f\7\2:;\7%\2\2;<\b\7\1\2<W"+
-		"\3\2\2\2=>\7\5\2\2>?\7\24\2\2?@\7\13\2\2@A\7$\2\2AB\5\f\7\2BC\7\22\2\2"+
-		"CD\5\f\7\2DE\7%\2\2EF\b\7\1\2FW\3\2\2\2GH\7\"\2\2HI\5\f\7\bIJ\b\7\1\2"+
-		"JW\3\2\2\2KL\5\22\n\2LM\b\7\1\2MW\3\2\2\2NO\7$\2\2OP\5\n\6\2PQ\7%\2\2"+
-		"QR\b\7\1\2RW\3\2\2\2ST\5\16\b\2TU\b\7\1\2UW\3\2\2\2V.\3\2\2\2V\63\3\2"+
-		"\2\2V=\3\2\2\2VG\3\2\2\2VK\3\2\2\2VN\3\2\2\2VS\3\2\2\2Ws\3\2\2\2XY\f\13"+
+		"\36\34\3\2\2\2\37 \b\3\1\2 \5\3\2\2\2!\"\5\b\5\2\"#\7\24\2\2#$\b\4\1\2"+
+		"$\7\3\2\2\2%&\7\3\2\2&\'\7%\2\2\'(\5\n\6\2()\7&\2\2)*\b\5\1\2*\t\3\2\2"+
+		"\2+,\5\f\7\2,-\b\6\1\2-\13\3\2\2\2./\b\7\1\2/\60\7\37\2\2\60\61\5\f\7"+
+		"\16\61\62\b\7\1\2\62W\3\2\2\2\63\64\7\4\2\2\64\65\7\25\2\2\65\66\7\n\2"+
+		"\2\66\67\7%\2\2\678\5\f\7\289\7\23\2\29:\5\f\7\2:;\7&\2\2;<\b\7\1\2<W"+
+		"\3\2\2\2=>\7\5\2\2>?\7\25\2\2?@\7\13\2\2@A\7%\2\2AB\5\f\7\2BC\7\23\2\2"+
+		"CD\5\f\7\2DE\7&\2\2EF\b\7\1\2FW\3\2\2\2GH\7#\2\2HI\5\f\7\bIJ\b\7\1\2J"+
+		"W\3\2\2\2KL\5\22\n\2LM\b\7\1\2MW\3\2\2\2NO\7%\2\2OP\5\n\6\2PQ\7&\2\2Q"+
+		"R\b\7\1\2RW\3\2\2\2ST\5\16\b\2TU\b\7\1\2UW\3\2\2\2V.\3\2\2\2V\63\3\2\2"+
+		"\2V=\3\2\2\2VG\3\2\2\2VK\3\2\2\2VN\3\2\2\2VS\3\2\2\2Ws\3\2\2\2XY\f\13"+
 		"\2\2YZ\t\2\2\2Z[\5\f\7\f[\\\b\7\1\2\\r\3\2\2\2]^\f\n\2\2^_\t\3\2\2_`\5"+
 		"\f\7\13`a\b\7\1\2ar\3\2\2\2bc\f\t\2\2cd\t\4\2\2de\5\f\7\nef\b\7\1\2fr"+
-		"\3\2\2\2gh\f\7\2\2hi\7 \2\2ij\5\f\7\bjk\b\7\1\2kr\3\2\2\2lm\f\6\2\2mn"+
-		"\7!\2\2no\5\f\7\7op\b\7\1\2pr\3\2\2\2qX\3\2\2\2q]\3\2\2\2qb\3\2\2\2qg"+
-		"\3\2\2\2ql\3\2\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2t\r\3\2\2\2us\3\2\2\2"+
-		"vw\7$\2\2wx\5\n\6\2xy\7\t\2\2yz\5\20\t\2z{\7%\2\2{|\b\b\1\2|\17\3\2\2"+
+		"\3\2\2\2gh\f\7\2\2hi\7!\2\2ij\5\f\7\bjk\b\7\1\2kr\3\2\2\2lm\f\6\2\2mn"+
+		"\7\"\2\2no\5\f\7\7op\b\7\1\2pr\3\2\2\2qX\3\2\2\2q]\3\2\2\2qb\3\2\2\2q"+
+		"g\3\2\2\2ql\3\2\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2t\r\3\2\2\2us\3\2\2\2"+
+		"vw\7%\2\2wx\5\n\6\2xy\7\t\2\2yz\5\20\t\2z{\7&\2\2{|\b\b\1\2|\17\3\2\2"+
 		"\2}~\7\5\2\2~\u0082\b\t\1\2\177\u0080\7\4\2\2\u0080\u0082\b\t\1\2\u0081"+
 		"}\3\2\2\2\u0081\177\3\2\2\2\u0082\21\3\2\2\2\u0083\u0084\7\16\2\2\u0084"+
-		"\u008f\b\n\1\2\u0085\u0086\7\17\2\2\u0086\u008f\b\n\1\2\u0087\u0088\5"+
-		"\24\13\2\u0088\u0089\b\n\1\2\u0089\u008f\3\2\2\2\u008a\u008b\7\7\2\2\u008b"+
-		"\u008f\b\n\1\2\u008c\u008d\7\b\2\2\u008d\u008f\b\n\1\2\u008e\u0083\3\2"+
-		"\2\2\u008e\u0085\3\2\2\2\u008e\u0087\3\2\2\2\u008e\u008a\3\2\2\2\u008e"+
-		"\u008c\3\2\2\2\u008f\23\3\2\2\2\u0090\u0092\7#\2\2\u0091\u0090\3\2\2\2"+
-		"\u0092\u0093\3\2\2\2\u0093\u0091\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095"+
-		"\3\2\2\2\u0095\u0097\7\20\2\2\u0096\u0098\t\5\2\2\u0097\u0096\3\2\2\2"+
-		"\u0097\u0098\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u00a0\b\13\1\2\u009a\u009b"+
-		"\7\20\2\2\u009b\u009c\t\5\2\2\u009c\u00a0\b\13\1\2\u009d\u009e\7\20\2"+
-		"\2\u009e\u00a0\b\13\1\2\u009f\u0091\3\2\2\2\u009f\u009a\3\2\2\2\u009f"+
-		"\u009d\3\2\2\2\u00a0\25\3\2\2\2\13\34Vqs\u0081\u008e\u0093\u0097\u009f";
+		"\u0091\b\n\1\2\u0085\u0086\7\17\2\2\u0086\u0091\b\n\1\2\u0087\u0088\5"+
+		"\24\13\2\u0088\u0089\b\n\1\2\u0089\u0091\3\2\2\2\u008a\u008b\7\21\2\2"+
+		"\u008b\u0091\b\n\1\2\u008c\u008d\7\7\2\2\u008d\u0091\b\n\1\2\u008e\u008f"+
+		"\7\b\2\2\u008f\u0091\b\n\1\2\u0090\u0083\3\2\2\2\u0090\u0085\3\2\2\2\u0090"+
+		"\u0087\3\2\2\2\u0090\u008a\3\2\2\2\u0090\u008c\3\2\2\2\u0090\u008e\3\2"+
+		"\2\2\u0091\23\3\2\2\2\u0092\u0094\7$\2\2\u0093\u0092\3\2\2\2\u0094\u0095"+
+		"\3\2\2\2\u0095\u0093\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0097\3\2\2\2\u0097"+
+		"\u0099\7\20\2\2\u0098\u009a\t\5\2\2\u0099\u0098\3\2\2\2\u0099\u009a\3"+
+		"\2\2\2\u009a\u009b\3\2\2\2\u009b\u00a2\b\13\1\2\u009c\u009d\7\20\2\2\u009d"+
+		"\u009e\t\5\2\2\u009e\u00a2\b\13\1\2\u009f\u00a0\7\20\2\2\u00a0\u00a2\b"+
+		"\13\1\2\u00a1\u0093\3\2\2\2\u00a1\u009c\3\2\2\2\u00a1\u009f\3\2\2\2\u00a2"+
+		"\25\3\2\2\2\13\34Vqs\u0081\u0090\u0095\u0099\u00a1";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

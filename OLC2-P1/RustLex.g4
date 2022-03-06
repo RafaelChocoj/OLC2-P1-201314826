@@ -29,7 +29,7 @@ TO_OWNED:   '.to_owned()';
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;
 STRING: '"'~["]*'"';
-//ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
+ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
 
 PUNTO:          '.';
 COMA:          ',';

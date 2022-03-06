@@ -21,7 +21,7 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 41, 162,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 42, 164,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 3, 2, 3, 2, 3, 2, 3,
 	3, 7, 3, 27, 10, 3, 12, 3, 14, 3, 30, 11, 3, 3, 3, 3, 3, 3, 4, 3, 4, 3,
@@ -34,76 +34,78 @@ var parserATN = []uint16{
 	7, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 3, 7, 7, 7, 114, 10, 7, 12, 7, 14, 7,
 	117, 11, 7, 3, 8, 3, 8, 3, 8, 3, 8, 3, 8, 3, 8, 3, 8, 3, 9, 3, 9, 3, 9,
 	3, 9, 5, 9, 130, 10, 9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10,
-	3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 143, 10, 10, 3, 11, 6, 11, 146, 10,
-	11, 13, 11, 14, 11, 147, 3, 11, 3, 11, 5, 11, 152, 10, 11, 3, 11, 3, 11,
-	3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 160, 10, 11, 3, 11, 2, 3, 12, 12, 2,
-	4, 6, 8, 10, 12, 14, 16, 18, 20, 2, 6, 4, 2, 27, 28, 31, 31, 3, 2, 29,
-	30, 3, 2, 21, 26, 3, 2, 12, 13, 2, 172, 2, 22, 3, 2, 2, 2, 4, 28, 3, 2,
-	2, 2, 6, 33, 3, 2, 2, 2, 8, 37, 3, 2, 2, 2, 10, 43, 3, 2, 2, 2, 12, 86,
-	3, 2, 2, 2, 14, 118, 3, 2, 2, 2, 16, 129, 3, 2, 2, 2, 18, 142, 3, 2, 2,
-	2, 20, 159, 3, 2, 2, 2, 22, 23, 5, 4, 3, 2, 23, 24, 8, 2, 1, 2, 24, 3,
-	3, 2, 2, 2, 25, 27, 5, 6, 4, 2, 26, 25, 3, 2, 2, 2, 27, 30, 3, 2, 2, 2,
-	28, 26, 3, 2, 2, 2, 28, 29, 3, 2, 2, 2, 29, 31, 3, 2, 2, 2, 30, 28, 3,
-	2, 2, 2, 31, 32, 8, 3, 1, 2, 32, 5, 3, 2, 2, 2, 33, 34, 5, 8, 5, 2, 34,
-	35, 7, 19, 2, 2, 35, 36, 8, 4, 1, 2, 36, 7, 3, 2, 2, 2, 37, 38, 7, 3, 2,
-	2, 38, 39, 7, 36, 2, 2, 39, 40, 5, 10, 6, 2, 40, 41, 7, 37, 2, 2, 41, 42,
-	8, 5, 1, 2, 42, 9, 3, 2, 2, 2, 43, 44, 5, 12, 7, 2, 44, 45, 8, 6, 1, 2,
-	45, 11, 3, 2, 2, 2, 46, 47, 8, 7, 1, 2, 47, 48, 7, 30, 2, 2, 48, 49, 5,
-	12, 7, 14, 49, 50, 8, 7, 1, 2, 50, 87, 3, 2, 2, 2, 51, 52, 7, 4, 2, 2,
-	52, 53, 7, 20, 2, 2, 53, 54, 7, 10, 2, 2, 54, 55, 7, 36, 2, 2, 55, 56,
-	5, 12, 7, 2, 56, 57, 7, 18, 2, 2, 57, 58, 5, 12, 7, 2, 58, 59, 7, 37, 2,
-	2, 59, 60, 8, 7, 1, 2, 60, 87, 3, 2, 2, 2, 61, 62, 7, 5, 2, 2, 62, 63,
-	7, 20, 2, 2, 63, 64, 7, 11, 2, 2, 64, 65, 7, 36, 2, 2, 65, 66, 5, 12, 7,
-	2, 66, 67, 7, 18, 2, 2, 67, 68, 5, 12, 7, 2, 68, 69, 7, 37, 2, 2, 69, 70,
-	8, 7, 1, 2, 70, 87, 3, 2, 2, 2, 71, 72, 7, 34, 2, 2, 72, 73, 5, 12, 7,
-	8, 73, 74, 8, 7, 1, 2, 74, 87, 3, 2, 2, 2, 75, 76, 5, 18, 10, 2, 76, 77,
-	8, 7, 1, 2, 77, 87, 3, 2, 2, 2, 78, 79, 7, 36, 2, 2, 79, 80, 5, 10, 6,
-	2, 80, 81, 7, 37, 2, 2, 81, 82, 8, 7, 1, 2, 82, 87, 3, 2, 2, 2, 83, 84,
-	5, 14, 8, 2, 84, 85, 8, 7, 1, 2, 85, 87, 3, 2, 2, 2, 86, 46, 3, 2, 2, 2,
-	86, 51, 3, 2, 2, 2, 86, 61, 3, 2, 2, 2, 86, 71, 3, 2, 2, 2, 86, 75, 3,
-	2, 2, 2, 86, 78, 3, 2, 2, 2, 86, 83, 3, 2, 2, 2, 87, 115, 3, 2, 2, 2, 88,
-	89, 12, 11, 2, 2, 89, 90, 9, 2, 2, 2, 90, 91, 5, 12, 7, 12, 91, 92, 8,
-	7, 1, 2, 92, 114, 3, 2, 2, 2, 93, 94, 12, 10, 2, 2, 94, 95, 9, 3, 2, 2,
-	95, 96, 5, 12, 7, 11, 96, 97, 8, 7, 1, 2, 97, 114, 3, 2, 2, 2, 98, 99,
-	12, 9, 2, 2, 99, 100, 9, 4, 2, 2, 100, 101, 5, 12, 7, 10, 101, 102, 8,
-	7, 1, 2, 102, 114, 3, 2, 2, 2, 103, 104, 12, 7, 2, 2, 104, 105, 7, 32,
-	2, 2, 105, 106, 5, 12, 7, 8, 106, 107, 8, 7, 1, 2, 107, 114, 3, 2, 2, 2,
-	108, 109, 12, 6, 2, 2, 109, 110, 7, 33, 2, 2, 110, 111, 5, 12, 7, 7, 111,
-	112, 8, 7, 1, 2, 112, 114, 3, 2, 2, 2, 113, 88, 3, 2, 2, 2, 113, 93, 3,
-	2, 2, 2, 113, 98, 3, 2, 2, 2, 113, 103, 3, 2, 2, 2, 113, 108, 3, 2, 2,
-	2, 114, 117, 3, 2, 2, 2, 115, 113, 3, 2, 2, 2, 115, 116, 3, 2, 2, 2, 116,
-	13, 3, 2, 2, 2, 117, 115, 3, 2, 2, 2, 118, 119, 7, 36, 2, 2, 119, 120,
-	5, 10, 6, 2, 120, 121, 7, 9, 2, 2, 121, 122, 5, 16, 9, 2, 122, 123, 7,
-	37, 2, 2, 123, 124, 8, 8, 1, 2, 124, 15, 3, 2, 2, 2, 125, 126, 7, 5, 2,
-	2, 126, 130, 8, 9, 1, 2, 127, 128, 7, 4, 2, 2, 128, 130, 8, 9, 1, 2, 129,
-	125, 3, 2, 2, 2, 129, 127, 3, 2, 2, 2, 130, 17, 3, 2, 2, 2, 131, 132, 7,
-	14, 2, 2, 132, 143, 8, 10, 1, 2, 133, 134, 7, 15, 2, 2, 134, 143, 8, 10,
-	1, 2, 135, 136, 5, 20, 11, 2, 136, 137, 8, 10, 1, 2, 137, 143, 3, 2, 2,
-	2, 138, 139, 7, 7, 2, 2, 139, 143, 8, 10, 1, 2, 140, 141, 7, 8, 2, 2, 141,
-	143, 8, 10, 1, 2, 142, 131, 3, 2, 2, 2, 142, 133, 3, 2, 2, 2, 142, 135,
-	3, 2, 2, 2, 142, 138, 3, 2, 2, 2, 142, 140, 3, 2, 2, 2, 143, 19, 3, 2,
-	2, 2, 144, 146, 7, 35, 2, 2, 145, 144, 3, 2, 2, 2, 146, 147, 3, 2, 2, 2,
-	147, 145, 3, 2, 2, 2, 147, 148, 3, 2, 2, 2, 148, 149, 3, 2, 2, 2, 149,
-	151, 7, 16, 2, 2, 150, 152, 9, 5, 2, 2, 151, 150, 3, 2, 2, 2, 151, 152,
-	3, 2, 2, 2, 152, 153, 3, 2, 2, 2, 153, 160, 8, 11, 1, 2, 154, 155, 7, 16,
-	2, 2, 155, 156, 9, 5, 2, 2, 156, 160, 8, 11, 1, 2, 157, 158, 7, 16, 2,
-	2, 158, 160, 8, 11, 1, 2, 159, 145, 3, 2, 2, 2, 159, 154, 3, 2, 2, 2, 159,
-	157, 3, 2, 2, 2, 160, 21, 3, 2, 2, 2, 11, 28, 86, 113, 115, 129, 142, 147,
-	151, 159,
+	3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 145, 10, 10, 3, 11, 6,
+	11, 148, 10, 11, 13, 11, 14, 11, 149, 3, 11, 3, 11, 5, 11, 154, 10, 11,
+	3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 162, 10, 11, 3, 11, 2,
+	3, 12, 12, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 2, 6, 4, 2, 28, 29, 32,
+	32, 3, 2, 30, 31, 3, 2, 22, 27, 3, 2, 12, 13, 2, 175, 2, 22, 3, 2, 2, 2,
+	4, 28, 3, 2, 2, 2, 6, 33, 3, 2, 2, 2, 8, 37, 3, 2, 2, 2, 10, 43, 3, 2,
+	2, 2, 12, 86, 3, 2, 2, 2, 14, 118, 3, 2, 2, 2, 16, 129, 3, 2, 2, 2, 18,
+	144, 3, 2, 2, 2, 20, 161, 3, 2, 2, 2, 22, 23, 5, 4, 3, 2, 23, 24, 8, 2,
+	1, 2, 24, 3, 3, 2, 2, 2, 25, 27, 5, 6, 4, 2, 26, 25, 3, 2, 2, 2, 27, 30,
+	3, 2, 2, 2, 28, 26, 3, 2, 2, 2, 28, 29, 3, 2, 2, 2, 29, 31, 3, 2, 2, 2,
+	30, 28, 3, 2, 2, 2, 31, 32, 8, 3, 1, 2, 32, 5, 3, 2, 2, 2, 33, 34, 5, 8,
+	5, 2, 34, 35, 7, 20, 2, 2, 35, 36, 8, 4, 1, 2, 36, 7, 3, 2, 2, 2, 37, 38,
+	7, 3, 2, 2, 38, 39, 7, 37, 2, 2, 39, 40, 5, 10, 6, 2, 40, 41, 7, 38, 2,
+	2, 41, 42, 8, 5, 1, 2, 42, 9, 3, 2, 2, 2, 43, 44, 5, 12, 7, 2, 44, 45,
+	8, 6, 1, 2, 45, 11, 3, 2, 2, 2, 46, 47, 8, 7, 1, 2, 47, 48, 7, 31, 2, 2,
+	48, 49, 5, 12, 7, 14, 49, 50, 8, 7, 1, 2, 50, 87, 3, 2, 2, 2, 51, 52, 7,
+	4, 2, 2, 52, 53, 7, 21, 2, 2, 53, 54, 7, 10, 2, 2, 54, 55, 7, 37, 2, 2,
+	55, 56, 5, 12, 7, 2, 56, 57, 7, 19, 2, 2, 57, 58, 5, 12, 7, 2, 58, 59,
+	7, 38, 2, 2, 59, 60, 8, 7, 1, 2, 60, 87, 3, 2, 2, 2, 61, 62, 7, 5, 2, 2,
+	62, 63, 7, 21, 2, 2, 63, 64, 7, 11, 2, 2, 64, 65, 7, 37, 2, 2, 65, 66,
+	5, 12, 7, 2, 66, 67, 7, 19, 2, 2, 67, 68, 5, 12, 7, 2, 68, 69, 7, 38, 2,
+	2, 69, 70, 8, 7, 1, 2, 70, 87, 3, 2, 2, 2, 71, 72, 7, 35, 2, 2, 72, 73,
+	5, 12, 7, 8, 73, 74, 8, 7, 1, 2, 74, 87, 3, 2, 2, 2, 75, 76, 5, 18, 10,
+	2, 76, 77, 8, 7, 1, 2, 77, 87, 3, 2, 2, 2, 78, 79, 7, 37, 2, 2, 79, 80,
+	5, 10, 6, 2, 80, 81, 7, 38, 2, 2, 81, 82, 8, 7, 1, 2, 82, 87, 3, 2, 2,
+	2, 83, 84, 5, 14, 8, 2, 84, 85, 8, 7, 1, 2, 85, 87, 3, 2, 2, 2, 86, 46,
+	3, 2, 2, 2, 86, 51, 3, 2, 2, 2, 86, 61, 3, 2, 2, 2, 86, 71, 3, 2, 2, 2,
+	86, 75, 3, 2, 2, 2, 86, 78, 3, 2, 2, 2, 86, 83, 3, 2, 2, 2, 87, 115, 3,
+	2, 2, 2, 88, 89, 12, 11, 2, 2, 89, 90, 9, 2, 2, 2, 90, 91, 5, 12, 7, 12,
+	91, 92, 8, 7, 1, 2, 92, 114, 3, 2, 2, 2, 93, 94, 12, 10, 2, 2, 94, 95,
+	9, 3, 2, 2, 95, 96, 5, 12, 7, 11, 96, 97, 8, 7, 1, 2, 97, 114, 3, 2, 2,
+	2, 98, 99, 12, 9, 2, 2, 99, 100, 9, 4, 2, 2, 100, 101, 5, 12, 7, 10, 101,
+	102, 8, 7, 1, 2, 102, 114, 3, 2, 2, 2, 103, 104, 12, 7, 2, 2, 104, 105,
+	7, 33, 2, 2, 105, 106, 5, 12, 7, 8, 106, 107, 8, 7, 1, 2, 107, 114, 3,
+	2, 2, 2, 108, 109, 12, 6, 2, 2, 109, 110, 7, 34, 2, 2, 110, 111, 5, 12,
+	7, 7, 111, 112, 8, 7, 1, 2, 112, 114, 3, 2, 2, 2, 113, 88, 3, 2, 2, 2,
+	113, 93, 3, 2, 2, 2, 113, 98, 3, 2, 2, 2, 113, 103, 3, 2, 2, 2, 113, 108,
+	3, 2, 2, 2, 114, 117, 3, 2, 2, 2, 115, 113, 3, 2, 2, 2, 115, 116, 3, 2,
+	2, 2, 116, 13, 3, 2, 2, 2, 117, 115, 3, 2, 2, 2, 118, 119, 7, 37, 2, 2,
+	119, 120, 5, 10, 6, 2, 120, 121, 7, 9, 2, 2, 121, 122, 5, 16, 9, 2, 122,
+	123, 7, 38, 2, 2, 123, 124, 8, 8, 1, 2, 124, 15, 3, 2, 2, 2, 125, 126,
+	7, 5, 2, 2, 126, 130, 8, 9, 1, 2, 127, 128, 7, 4, 2, 2, 128, 130, 8, 9,
+	1, 2, 129, 125, 3, 2, 2, 2, 129, 127, 3, 2, 2, 2, 130, 17, 3, 2, 2, 2,
+	131, 132, 7, 14, 2, 2, 132, 145, 8, 10, 1, 2, 133, 134, 7, 15, 2, 2, 134,
+	145, 8, 10, 1, 2, 135, 136, 5, 20, 11, 2, 136, 137, 8, 10, 1, 2, 137, 145,
+	3, 2, 2, 2, 138, 139, 7, 17, 2, 2, 139, 145, 8, 10, 1, 2, 140, 141, 7,
+	7, 2, 2, 141, 145, 8, 10, 1, 2, 142, 143, 7, 8, 2, 2, 143, 145, 8, 10,
+	1, 2, 144, 131, 3, 2, 2, 2, 144, 133, 3, 2, 2, 2, 144, 135, 3, 2, 2, 2,
+	144, 138, 3, 2, 2, 2, 144, 140, 3, 2, 2, 2, 144, 142, 3, 2, 2, 2, 145,
+	19, 3, 2, 2, 2, 146, 148, 7, 36, 2, 2, 147, 146, 3, 2, 2, 2, 148, 149,
+	3, 2, 2, 2, 149, 147, 3, 2, 2, 2, 149, 150, 3, 2, 2, 2, 150, 151, 3, 2,
+	2, 2, 151, 153, 7, 16, 2, 2, 152, 154, 9, 5, 2, 2, 153, 152, 3, 2, 2, 2,
+	153, 154, 3, 2, 2, 2, 154, 155, 3, 2, 2, 2, 155, 162, 8, 11, 1, 2, 156,
+	157, 7, 16, 2, 2, 157, 158, 9, 5, 2, 2, 158, 162, 8, 11, 1, 2, 159, 160,
+	7, 16, 2, 2, 160, 162, 8, 11, 1, 2, 161, 147, 3, 2, 2, 2, 161, 156, 3,
+	2, 2, 2, 161, 159, 3, 2, 2, 2, 162, 21, 3, 2, 2, 2, 11, 28, 86, 113, 115,
+	129, 144, 149, 153, 161,
 }
 var literalNames = []string{
 	"", "'println!'", "'i64'", "'f64'", "'string'", "'true'", "'false'", "'as'",
-	"'pow'", "'powf'", "'.to_string()'", "'.to_owned()'", "", "", "", "'.'",
+	"'pow'", "'powf'", "'.to_string()'", "'.to_owned()'", "", "", "", "", "'.'",
 	"','", "';'", "'::'", "'!='", "'=='", "'>='", "'<='", "'>'", "'<'", "'*'",
 	"'/'", "'+'", "'-'", "'%'", "'&&'", "'||'", "'!'", "'&'", "'('", "')'",
 	"'{'", "'}'",
 }
 var symbolicNames = []string{
 	"", "PRINT_CON", "T_NUMBER", "T_FLOAT", "T_STRING", "TRUE", "FALSE", "AS",
-	"POW", "POWF", "TO_STRING", "TO_OWNED", "NUMBER", "FLOAT", "STRING", "PUNTO",
-	"COMA", "PTCOMA", "DOSPUNTO", "DISTINTO", "IGUAL", "MAYORIGUAL", "MENORIGUAL",
-	"MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "AND", "OR", "NOT",
-	"AMP", "PARIZQ", "PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE", "L_COMMENT",
+	"POW", "POWF", "TO_STRING", "TO_OWNED", "NUMBER", "FLOAT", "STRING", "ID",
+	"PUNTO", "COMA", "PTCOMA", "DOSPUNTO", "DISTINTO", "IGUAL", "MAYORIGUAL",
+	"MENORIGUAL", "MAYOR", "MENOR", "MUL", "DIV", "ADD", "SUB", "MOD", "AND",
+	"OR", "NOT", "AMP", "PARIZQ", "PARDER", "LLAVEIZQ", "LLAVEDER", "WHITESPACE",
+	"L_COMMENT",
 }
 
 var ruleNames = []string{
@@ -157,31 +159,32 @@ const (
 	RustParNUMBER     = 12
 	RustParFLOAT      = 13
 	RustParSTRING     = 14
-	RustParPUNTO      = 15
-	RustParCOMA       = 16
-	RustParPTCOMA     = 17
-	RustParDOSPUNTO   = 18
-	RustParDISTINTO   = 19
-	RustParIGUAL      = 20
-	RustParMAYORIGUAL = 21
-	RustParMENORIGUAL = 22
-	RustParMAYOR      = 23
-	RustParMENOR      = 24
-	RustParMUL        = 25
-	RustParDIV        = 26
-	RustParADD        = 27
-	RustParSUB        = 28
-	RustParMOD        = 29
-	RustParAND        = 30
-	RustParOR         = 31
-	RustParNOT        = 32
-	RustParAMP        = 33
-	RustParPARIZQ     = 34
-	RustParPARDER     = 35
-	RustParLLAVEIZQ   = 36
-	RustParLLAVEDER   = 37
-	RustParWHITESPACE = 38
-	RustParL_COMMENT  = 39
+	RustParID         = 15
+	RustParPUNTO      = 16
+	RustParCOMA       = 17
+	RustParPTCOMA     = 18
+	RustParDOSPUNTO   = 19
+	RustParDISTINTO   = 20
+	RustParIGUAL      = 21
+	RustParMAYORIGUAL = 22
+	RustParMENORIGUAL = 23
+	RustParMAYOR      = 24
+	RustParMENOR      = 25
+	RustParMUL        = 26
+	RustParDIV        = 27
+	RustParADD        = 28
+	RustParSUB        = 29
+	RustParMOD        = 30
+	RustParAND        = 31
+	RustParOR         = 32
+	RustParNOT        = 33
+	RustParAMP        = 34
+	RustParPARIZQ     = 35
+	RustParPARDER     = 36
+	RustParLLAVEIZQ   = 37
+	RustParLLAVEDER   = 38
+	RustParWHITESPACE = 39
+	RustParL_COMMENT  = 40
 )
 
 // RustPar rules.
@@ -2008,6 +2011,9 @@ type IPrimitivoContext interface {
 	// Get_FLOAT returns the _FLOAT token.
 	Get_FLOAT() antlr.Token
 
+	// Get_ID returns the _ID token.
+	Get_ID() antlr.Token
+
 	// Get_TRUE returns the _TRUE token.
 	Get_TRUE() antlr.Token
 
@@ -2019,6 +2025,9 @@ type IPrimitivoContext interface {
 
 	// Set_FLOAT sets the _FLOAT token.
 	Set_FLOAT(antlr.Token)
+
+	// Set_ID sets the _ID token.
+	Set_ID(antlr.Token)
 
 	// Set_TRUE sets the _TRUE token.
 	Set_TRUE(antlr.Token)
@@ -2049,6 +2058,7 @@ type PrimitivoContext struct {
 	_NUMBER  antlr.Token
 	_FLOAT   antlr.Token
 	_strings IStringsContext
+	_ID      antlr.Token
 	_TRUE    antlr.Token
 	_FALSE   antlr.Token
 }
@@ -2079,6 +2089,8 @@ func (s *PrimitivoContext) Get_NUMBER() antlr.Token { return s._NUMBER }
 
 func (s *PrimitivoContext) Get_FLOAT() antlr.Token { return s._FLOAT }
 
+func (s *PrimitivoContext) Get_ID() antlr.Token { return s._ID }
+
 func (s *PrimitivoContext) Get_TRUE() antlr.Token { return s._TRUE }
 
 func (s *PrimitivoContext) Get_FALSE() antlr.Token { return s._FALSE }
@@ -2086,6 +2098,8 @@ func (s *PrimitivoContext) Get_FALSE() antlr.Token { return s._FALSE }
 func (s *PrimitivoContext) Set_NUMBER(v antlr.Token) { s._NUMBER = v }
 
 func (s *PrimitivoContext) Set_FLOAT(v antlr.Token) { s._FLOAT = v }
+
+func (s *PrimitivoContext) Set_ID(v antlr.Token) { s._ID = v }
 
 func (s *PrimitivoContext) Set_TRUE(v antlr.Token) { s._TRUE = v }
 
@@ -2115,6 +2129,10 @@ func (s *PrimitivoContext) Strings() IStringsContext {
 	}
 
 	return t.(IStringsContext)
+}
+
+func (s *PrimitivoContext) ID() antlr.TerminalNode {
+	return s.GetToken(RustParID, 0)
 }
 
 func (s *PrimitivoContext) TRUE() antlr.TerminalNode {
@@ -2168,7 +2186,7 @@ func (p *RustPar) Primitivo() (localctx IPrimitivoContext) {
 		}
 	}()
 
-	p.SetState(140)
+	p.SetState(142)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -2239,10 +2257,34 @@ func (p *RustPar) Primitivo() (localctx IPrimitivoContext) {
 		}
 		localctx.(*PrimitivoContext).p = localctx.(*PrimitivoContext).Get_strings().GetP()
 
-	case RustParTRUE:
+	case RustParID:
 		p.EnterOuterAlt(localctx, 4)
 		{
 			p.SetState(136)
+
+			var _m = p.Match(RustParID)
+
+			localctx.(*PrimitivoContext)._ID = _m
+		}
+
+		localctx.(*PrimitivoContext).p = expresion.NewIdentificador((func() string {
+			if localctx.(*PrimitivoContext).Get_ID() == nil {
+				return ""
+			} else {
+				return localctx.(*PrimitivoContext).Get_ID().GetText()
+			}
+		}()), (func() int {
+			if localctx.(*PrimitivoContext).Get_ID() == nil {
+				return 0
+			} else {
+				return localctx.(*PrimitivoContext).Get_ID().GetLine()
+			}
+		}()), localctx.(*PrimitivoContext).Get_ID().GetColumn())
+
+	case RustParTRUE:
+		p.EnterOuterAlt(localctx, 5)
+		{
+			p.SetState(138)
 
 			var _m = p.Match(RustParTRUE)
 
@@ -2257,9 +2299,9 @@ func (p *RustPar) Primitivo() (localctx IPrimitivoContext) {
 		}()), localctx.(*PrimitivoContext).Get_TRUE().GetColumn())
 
 	case RustParFALSE:
-		p.EnterOuterAlt(localctx, 5)
+		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(138)
+			p.SetState(140)
 
 			var _m = p.Match(RustParFALSE)
 
@@ -2404,38 +2446,38 @@ func (p *RustPar) Strings() (localctx IStringsContext) {
 		}
 	}()
 
-	p.SetState(157)
+	p.SetState(159)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
-		p.SetState(143)
+		p.SetState(145)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == RustParAMP {
 			{
-				p.SetState(142)
+				p.SetState(144)
 				p.Match(RustParAMP)
 			}
 
-			p.SetState(145)
+			p.SetState(147)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(147)
+			p.SetState(149)
 
 			var _m = p.Match(RustParSTRING)
 
 			localctx.(*StringsContext)._STRING = _m
 		}
-		p.SetState(149)
+		p.SetState(151)
 		p.GetErrorHandler().Sync(p)
 
 		if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 7, p.GetParserRuleContext()) == 1 {
 			{
-				p.SetState(148)
+				p.SetState(150)
 				_la = p.GetTokenStream().LA(1)
 
 				if !(_la == RustParTO_STRING || _la == RustParTO_OWNED) {
@@ -2472,14 +2514,14 @@ func (p *RustPar) Strings() (localctx IStringsContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(152)
+			p.SetState(154)
 
 			var _m = p.Match(RustParSTRING)
 
 			localctx.(*StringsContext)._STRING = _m
 		}
 		{
-			p.SetState(153)
+			p.SetState(155)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(_la == RustParTO_STRING || _la == RustParTO_OWNED) {
@@ -2514,7 +2556,7 @@ func (p *RustPar) Strings() (localctx IStringsContext) {
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(155)
+			p.SetState(157)
 
 			var _m = p.Match(RustParSTRING)
 

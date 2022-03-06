@@ -54,3 +54,5 @@ println!( i64::pow( 2, 2) );
 
 println!(!true);
 println!(!false);
+
+println!(var1);

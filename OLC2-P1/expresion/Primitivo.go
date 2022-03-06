@@ -11,7 +11,7 @@ type Primitivo struct {
 	Column int
 }
 
-func (p Primitivo) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
+func (p Primitivo) Ejecutar(env interface{}) interfaces.Symbol {
 
 	return interfaces.Symbol{
 		Id:    "",
