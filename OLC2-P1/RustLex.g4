@@ -51,6 +51,11 @@ ADD:            '+';
 SUB:            '-';
 MOD:            '%';
 
+//LOGIC
+AND:        '&&';
+OR:         '||';
+NOT:         '!' ;
+
 //signos
 AMP:            '&';
 

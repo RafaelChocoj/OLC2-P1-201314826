@@ -37,7 +37,7 @@ var res_dominante = [6][6]interfaces.TipoExpresion{
 	//STR
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL},
 	//NULL
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }
@@ -57,7 +57,7 @@ var rel_dominante = [6][6]interfaces.TipoExpresion{
 	//STR
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STR, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL},
 	//NULL
 	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }
@@ -490,6 +490,60 @@ func (p Aritmetica) Ejecutar( /*env interface{}*/ ) interfaces.Symbol {
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
 				err.NewError("Tipos incompatibles en Relaciónal (!=) "+desc, "Relacional !=", p.Line, p.Column)
+			}
+
+		}
+
+	case "&&":
+		{
+
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+			//fmt.Println("retornoIzq.Valor: ", retornoIzq.Valor)
+			//fmt.Println("retornoDer.Valor: ", retornoDer.Valor)
+			//fmt.Println("dominante: ", dominante)
+
+			if dominante == interfaces.BOOLEAN {
+
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(bool) && retornoDer.Valor.(bool)}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles Logicos (&&) "+desc, "Logico AND", p.Line, p.Column)
+			}
+
+		}
+
+	case "||":
+		{
+
+			dominante = rel_dominante[retornoIzq.Tipo][retornoDer.Tipo]
+
+			if dominante == interfaces.BOOLEAN {
+
+				return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: retornoIzq.Valor.(bool) || retornoDer.Valor.(bool)}
+
+			} else {
+				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				err.NewError("Tipos incompatibles Logicos (||) "+desc, "Logico OR", p.Line, p.Column)
+			}
+
+		}
+	case "!":
+		{
+
+			//fmt.Println("p.Unario ", p.Unario)
+			if p.Unario {
+
+				//fmt.Println("retornoIzq.Tipo: ", retornoIzq.Tipo)
+				if retornoIzq.Tipo == interfaces.BOOLEAN {
+
+					return interfaces.Symbol{Id: "", Tipo: interfaces.BOOLEAN, Valor: !retornoIzq.Valor.(bool)}
+
+				} else {
+					desc := fmt.Sprintf("%v ", interfaces.GetType(retornoIzq.Tipo))
+					err.NewError("Tipos incompatibles Logicos (!) "+desc, "Logico NOT", p.Line, p.Column)
+				}
+
 			}
 
 		}

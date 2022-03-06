@@ -34,11 +34,23 @@ println!( i64::pow( 2, 2) );
 //println!("hola".to_string() + &&&"2");
 //println!("hola1".to_string() + &&&&"xd1".to_string());
 
-println!(5 != 2);
-println!(2.0 != 5.5);
-println!("a" != "b");
-println!("b" != "a");  
-println!("a".to_string() != "b".to_owned());
+//println!(5 != 2);
+//println!(2.0 != 5.5);
+//println!("a" != "b");
+//println!("b" != "a");  
+//println!("a".to_string() != "b".to_owned());
 
-println!("hola" != "hola");
-println!(3 != 3);
+//println!("hola" != "hola");
+//println!(3 != 3);
+
+////////////////////
+//println!(((5 > 2) || (1 < 2)) );
+//println!( 5 > 2 || 1 < 2 && 5 > 10 );
+//println!( !5 > 2 || !1 < 2 || 5 > 10 );
+//println!(  !(5 > 2 || 1 > 2) );
+
+//println!(true || false);
+//println!( !!!!(5 > 2 && 1 < 2) );
+
+println!(!true);
+println!(!false);
