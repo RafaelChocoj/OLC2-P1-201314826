@@ -20,6 +20,18 @@ type RustParListener interface {
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
+	// EnterDeclaracion is called when entering the declaracion production.
+	EnterDeclaracion(c *DeclaracionContext)
+
+	// EnterIs_mut is called when entering the is_mut production.
+	EnterIs_mut(c *Is_mutContext)
+
+	// EnterAsignacion is called when entering the asignacion production.
+	EnterAsignacion(c *AsignacionContext)
+
+	// EnterTipos_var is called when entering the tipos_var production.
+	EnterTipos_var(c *Tipos_varContext)
+
 	// EnterExpression is called when entering the expression production.
 	EnterExpression(c *ExpressionContext)
 
@@ -49,6 +61,18 @@ type RustParListener interface {
 
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)
+
+	// ExitDeclaracion is called when exiting the declaracion production.
+	ExitDeclaracion(c *DeclaracionContext)
+
+	// ExitIs_mut is called when exiting the is_mut production.
+	ExitIs_mut(c *Is_mutContext)
+
+	// ExitAsignacion is called when exiting the asignacion production.
+	ExitAsignacion(c *AsignacionContext)
+
+	// ExitTipos_var is called when exiting the tipos_var production.
+	ExitTipos_var(c *Tipos_varContext)
 
 	// ExitExpression is called when exiting the expression production.
 	ExitExpression(c *ExpressionContext)

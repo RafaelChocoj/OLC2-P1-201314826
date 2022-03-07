@@ -8,8 +8,10 @@ lexer grammar RustLex;
 PRINT_CON: 'println!';
 T_NUMBER:   'i64';
 T_FLOAT:   'f64';
+T_STRING:   'String';
+T_BOOL:   'bool';
+T_STR:   '&str';
 
-T_STRING:   'string';
 //P_IF:       'if';
 //P_WHILE:       'while';
 
@@ -20,6 +22,9 @@ AS:       'as';
 
 POW:   'pow';
 POWF:   'powf';
+
+LET:   'let';
+MUT:   'mut';
 
 //functions
 TO_STRING:   '.to_string()';
@@ -35,6 +40,9 @@ PUNTO:          '.';
 COMA:          ',';
 PTCOMA:         ';';
 DOSPUNTO:         '::';
+DPUNTO2:         ':';
+
+ASIGNACION:         '=';
 
 //RELACIONALES
 DISTINTO:      '!=';

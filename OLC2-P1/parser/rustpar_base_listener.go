@@ -45,6 +45,30 @@ func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 // ExitPrintconsola is called when production printconsola is exited.
 func (s *BaseRustParListener) ExitPrintconsola(ctx *PrintconsolaContext) {}
 
+// EnterDeclaracion is called when production declaracion is entered.
+func (s *BaseRustParListener) EnterDeclaracion(ctx *DeclaracionContext) {}
+
+// ExitDeclaracion is called when production declaracion is exited.
+func (s *BaseRustParListener) ExitDeclaracion(ctx *DeclaracionContext) {}
+
+// EnterIs_mut is called when production is_mut is entered.
+func (s *BaseRustParListener) EnterIs_mut(ctx *Is_mutContext) {}
+
+// ExitIs_mut is called when production is_mut is exited.
+func (s *BaseRustParListener) ExitIs_mut(ctx *Is_mutContext) {}
+
+// EnterAsignacion is called when production asignacion is entered.
+func (s *BaseRustParListener) EnterAsignacion(ctx *AsignacionContext) {}
+
+// ExitAsignacion is called when production asignacion is exited.
+func (s *BaseRustParListener) ExitAsignacion(ctx *AsignacionContext) {}
+
+// EnterTipos_var is called when production tipos_var is entered.
+func (s *BaseRustParListener) EnterTipos_var(ctx *Tipos_varContext) {}
+
+// ExitTipos_var is called when production tipos_var is exited.
+func (s *BaseRustParListener) ExitTipos_var(ctx *Tipos_varContext) {}
+
 // EnterExpression is called when production expression is entered.
 func (s *BaseRustParListener) EnterExpression(ctx *ExpressionContext) {}
 

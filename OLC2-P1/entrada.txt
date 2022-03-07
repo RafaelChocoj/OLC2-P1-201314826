@@ -54,5 +54,38 @@ println!( i64::pow( 2, 2) );
 
 println!(!true);
 println!(!false);
+println!("/**********/");
+//let mut var1 : i64 = 8200;
+//println!(var1);
+//let mut var2 : f64 = 3.5;
+//println!(var2);
 
-println!(var1);
+//let string1: String = "hello".to_string();
+//println!(string1);
+
+//let string2: &str = "world";
+//println!(string2);
+
+//println!(string1+" "+string2);
+
+//let mut x : i64 = (3*5);
+//println!(x);
+
+//let mut string1 : i64 = 5;
+//let mut str : i64 = "Saludo";
+//let mut var1 : String = true;
+
+//let mut x1 : i64 = 5;
+//println!(x1);
+
+//let var = 1234;
+//println!(var);
+
+let mut x: i64 = 8200;
+println!(x);
+x = 33;
+println!(x);
+
+let y = "Hola";
+//y = "Adiós";
+println!(y.to_string() + " Adiós");

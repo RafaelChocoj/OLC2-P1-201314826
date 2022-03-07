@@ -4,6 +4,7 @@ type Symbol struct {
 	Id    string
 	Tipo  TipoExpresion
 	Valor interface{}
+	IsMut bool
 }
 
 type Expresion interface {

@@ -32,12 +32,40 @@ instrucciones returns [*arrayList.List l]
 
 instruccion returns [interfaces.Instruction instr]
   : printconsola ';' {$instr = $printconsola.instr}
-  /*| declaracion ';' {$instr = $declaracion.instr}
-  | if_instr {$instr = $if_instr.instr}*/
+  | declaracion ';' {$instr = $declaracion.instr}
+  | asignacion ';' {$instr = $asignacion.instr}
+  /*| if_instr {$instr = $if_instr.instr}*/
 ;
 
 printconsola returns [interfaces.Instruction instr]
     : PRINT_CON PARIZQ expression PARDER {$instr = instruction.NewImprimir($expression.p)}
+;
+
+declaracion returns [interfaces.Instruction instr]
+    : LET isMut=is_mut id=ID ':' tipos_var asig ='=' expression {
+                        $instr = instruction.NewDeclaration($id.text, $tipos_var.tipo, $expression.p, $isMut.mut, $asig.line, localctx.(*DeclaracionContext).GetAsig().GetColumn())
+                      }
+    | LET isMut=is_mut id=ID asig ='=' expression {
+                      $instr = instruction.NewDeclaration($id.text, interfaces.NULL, $expression.p, $isMut.mut, $asig.line, localctx.(*DeclaracionContext).GetAsig().GetColumn())
+                    }
+;
+
+is_mut returns [bool mut]
+   : MUT { $mut = true }
+   |
+;
+
+asignacion returns [interfaces.Instruction instr]
+    : id=ID '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
+;
+
+tipos_var returns[interfaces.TipoExpresion tipo]
+    : T_NUMBER {$tipo = interfaces.INTEGER}
+    | T_STRING  {$tipo = interfaces.STRING}
+    | T_FLOAT {$tipo = interfaces.FLOAT}
+    | T_BOOL  {$tipo = interfaces.BOOLEAN}
+    | T_STR {$tipo = interfaces.STR}
+    //| VOIDTYPE  {$tipo = interfaces.VOID}
 ;
 
 /*instruccion returns [interfaces.Instruction instr]
