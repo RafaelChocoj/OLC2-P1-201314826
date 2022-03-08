@@ -12,8 +12,11 @@ T_STRING:   'String';
 T_BOOL:   'bool';
 T_STR:   '&str';
 
-//P_IF:       'if';
+//sentences
+IF:       'if';
+ELSE:       'else';
 //P_WHILE:       'while';
+
 
 TRUE: 'true';
 FALSE: 'false';

@@ -29,6 +29,18 @@ type RustParListener interface {
 	// EnterAsignacion is called when entering the asignacion production.
 	EnterAsignacion(c *AsignacionContext)
 
+	// EnterIf_sent is called when entering the if_sent production.
+	EnterIf_sent(c *If_sentContext)
+
+	// EnterList_elseif is called when entering the list_elseif production.
+	EnterList_elseif(c *List_elseifContext)
+
+	// EnterElse_if is called when entering the else_if production.
+	EnterElse_if(c *Else_ifContext)
+
+	// EnterBloque_inst is called when entering the bloque_inst production.
+	EnterBloque_inst(c *Bloque_instContext)
+
 	// EnterTipos_var is called when entering the tipos_var production.
 	EnterTipos_var(c *Tipos_varContext)
 
@@ -70,6 +82,18 @@ type RustParListener interface {
 
 	// ExitAsignacion is called when exiting the asignacion production.
 	ExitAsignacion(c *AsignacionContext)
+
+	// ExitIf_sent is called when exiting the if_sent production.
+	ExitIf_sent(c *If_sentContext)
+
+	// ExitList_elseif is called when exiting the list_elseif production.
+	ExitList_elseif(c *List_elseifContext)
+
+	// ExitElse_if is called when exiting the else_if production.
+	ExitElse_if(c *Else_ifContext)
+
+	// ExitBloque_inst is called when exiting the bloque_inst production.
+	ExitBloque_inst(c *Bloque_instContext)
 
 	// ExitTipos_var is called when exiting the tipos_var production.
 	ExitTipos_var(c *Tipos_varContext)

@@ -34,7 +34,7 @@ instruccion returns [interfaces.Instruction instr]
   : printconsola ';' {$instr = $printconsola.instr}
   | declaracion ';' {$instr = $declaracion.instr}
   | asignacion ';' {$instr = $asignacion.instr}
-  /*| if_instr {$instr = $if_instr.instr}*/
+  | if_sent  {$instr = $if_sent.instr}
 ;
 
 printconsola returns [interfaces.Instruction instr]
@@ -58,6 +58,35 @@ is_mut returns [bool mut]
 asignacion returns [interfaces.Instruction instr]
     : id=ID '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
 ;
+
+//  IF
+if_sent  returns [interfaces.Instruction instr]
+    : IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    | IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    | IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
+        $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
+    }
+;
+
+list_elseif returns [*arrayList.List lista]
+@init{ $lista = arrayList.New()}
+: list += else_if+ {
+                    listInt := localctx.(*List_elseifContext).GetList()
+                    for _, e := range listInt {
+                        $lista.Add(e.GetInstr())
+                    }
+                    }
+;
+
+else_if returns [interfaces.Instruction instr]
+    : ELSE IF expression bloque_inst  {$instr = instruction.NewIf($expression.p,$bloque_inst.l,nil,nil, $ELSE.line, localctx.(*Else_ifContext).Get_ELSE().GetColumn() )}
+;
+
+bloque_inst returns [ *arrayList.List  l]
+    : LLAVEIZQ instrucciones LLAVEDER   {$l = $instrucciones.l }
+    | LLAVEIZQ LLAVEDER   {$l = arrayList.New()}
+;
+
 
 tipos_var returns[interfaces.TipoExpresion tipo]
     : T_NUMBER {$tipo = interfaces.INTEGER}

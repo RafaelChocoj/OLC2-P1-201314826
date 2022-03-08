@@ -63,6 +63,30 @@ func (s *BaseRustParListener) EnterAsignacion(ctx *AsignacionContext) {}
 // ExitAsignacion is called when production asignacion is exited.
 func (s *BaseRustParListener) ExitAsignacion(ctx *AsignacionContext) {}
 
+// EnterIf_sent is called when production if_sent is entered.
+func (s *BaseRustParListener) EnterIf_sent(ctx *If_sentContext) {}
+
+// ExitIf_sent is called when production if_sent is exited.
+func (s *BaseRustParListener) ExitIf_sent(ctx *If_sentContext) {}
+
+// EnterList_elseif is called when production list_elseif is entered.
+func (s *BaseRustParListener) EnterList_elseif(ctx *List_elseifContext) {}
+
+// ExitList_elseif is called when production list_elseif is exited.
+func (s *BaseRustParListener) ExitList_elseif(ctx *List_elseifContext) {}
+
+// EnterElse_if is called when production else_if is entered.
+func (s *BaseRustParListener) EnterElse_if(ctx *Else_ifContext) {}
+
+// ExitElse_if is called when production else_if is exited.
+func (s *BaseRustParListener) ExitElse_if(ctx *Else_ifContext) {}
+
+// EnterBloque_inst is called when production bloque_inst is entered.
+func (s *BaseRustParListener) EnterBloque_inst(ctx *Bloque_instContext) {}
+
+// ExitBloque_inst is called when production bloque_inst is exited.
+func (s *BaseRustParListener) ExitBloque_inst(ctx *Bloque_instContext) {}
+
 // EnterTipos_var is called when production tipos_var is entered.
 func (s *BaseRustParListener) EnterTipos_var(ctx *Tipos_varContext) {}
 

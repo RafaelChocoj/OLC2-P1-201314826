@@ -81,11 +81,34 @@ println!("/**********/");
 //let var = 1234;
 //println!(var);
 
-let mut x: i64 = 8200;
-println!(x);
-x = 33;
-println!(x);
+//let mut x: i64 = 8200;
+//println!(x);
+//x = 33;
+//println!(x);
 
-let y = "Hola";
+//let y = "Hola".to_string();
 //y = "Adiós";
-println!(y.to_string() + " Adiós");
+//println!(y + " Adiós");
+
+let x: i64 = 30;
+// Ejemplo 1
+//if x + 5 {
+
+if x == 5 {
+    println!("x es cinco!");
+} else if x < 26 {
+    println!(x);
+    println!("x ES MENOR A 25");
+
+} else if x < 30 {
+    println!(x);
+    println!("x ES MENOR A 30");
+
+} else {
+    println!(x);
+    println!(y);
+    z = 1;
+    println!("NO ES CINCO xd");
+}
+
+println!("--***fin if");
