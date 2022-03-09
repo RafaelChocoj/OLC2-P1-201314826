@@ -63,9 +63,24 @@ asignacion returns [interfaces.Instruction instr]
 if_sent  returns [interfaces.Instruction instr]
     : IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
     | IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    /*if as expression*/
+    //| IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$instr = instruction.NewIf($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn(), true, $bprin_e.p, $belse_e.p )}
+
     | IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
         $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
     }
+;
+
+//  IF as EXPRESION
+if_exp returns [interfaces.Expresion p]
+    //: IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    //| IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    /*if as expression*/
+    : IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$p = instruction.NewIfExpre($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, $belse_e.p )}
+
+    /*| IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
+        $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
+    }*/
 ;
 
 list_elseif returns [*arrayList.List lista]
@@ -87,6 +102,11 @@ bloque_inst returns [ *arrayList.List  l]
     | LLAVEIZQ LLAVEDER   {$l = arrayList.New()}
 ;
 
+bloque_exp returns [interfaces.Expresion p]
+    : LLAVEIZQ expression LLAVEDER   {$p = $expression.p}
+;
+
+
 
 tipos_var returns[interfaces.TipoExpresion tipo]
     : T_NUMBER {$tipo = interfaces.INTEGER}
@@ -107,6 +127,7 @@ tipos_var returns[interfaces.TipoExpresion tipo]
 
 expression returns[interfaces.Expresion p]
     : expr_arit    {$p = $expr_arit.p}
+    //| if_exp {$p = $if_exp.p}
 ;
 
 expr_arit returns[interfaces.Expresion p]
@@ -129,6 +150,7 @@ expr_arit returns[interfaces.Expresion p]
     | primitivo {$p = $primitivo.p}
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
+    | if_exp {$p = $if_exp.p}
 ;
 
 /*casteo returns[interfaces.Expresion p]

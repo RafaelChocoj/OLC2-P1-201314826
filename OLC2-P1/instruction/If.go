@@ -19,6 +19,7 @@ type If struct {
 }
 
 func NewIf(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb_IfElse *arrayList.List, lb_Else *arrayList.List, line int, column int) If {
+
 	return If{
 		Condicion:    condicion,
 		LB_Principal: lb_Principal,
@@ -41,7 +42,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.BOOLEAN), interfaces.GetType(result.Tipo))
 		err.NewError("Condición invalida "+desc, env.(environment.Environment).Nombre, i.Line, i.Column)
 		return nil
-		//return result.Valor
+		//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 	}
 
 	if result.Valor == true {
@@ -54,7 +55,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 		}
 
 	} else {
-		/*ELSE IF*/
+		////////ELSE IF
 		if i.LB_IfElse != nil {
 
 			for _, s := range i.LB_IfElse.ToArray() {
@@ -70,6 +71,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 					desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.BOOLEAN), interfaces.GetType(elseif.Tipo))
 					err.NewError("Condición invalida "+desc, env.(environment.Environment).Nombre, s.(If).Line, s.(If).Column)
 					return nil
+					//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 				}
 
 				if elseif.Valor == true {
@@ -82,13 +84,15 @@ func (i If) Ejecutar(env interface{}) interface{} {
 					}
 
 					return nil
+					//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 
 				}
 
 			}
 
 		}
-		/*ELSE*/
+		//////ELSE
+
 		if i.LB_Else != nil {
 			var tmpEnv environment.Environment
 			tmpEnv = environment.NewEnvironment("else", env.(environment.Environment))
@@ -100,5 +104,5 @@ func (i If) Ejecutar(env interface{}) interface{} {
 	}
 
 	return nil
-	//return result.Valor
+	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 }

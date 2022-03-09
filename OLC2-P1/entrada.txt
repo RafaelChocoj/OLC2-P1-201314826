@@ -89,26 +89,42 @@ println!("/**********/");
 //let y = "Hola".to_string();
 //y = "Adiós";
 //println!(y + " Adiós");
-
-let x: i64 = 30;
-// Ejemplo 1
-//if x + 5 {
-
-if x == 5 {
-    println!("x es cinco!");
-} else if x < 26 {
-    println!(x);
-    println!("x ES MENOR A 25");
-
-} else if x < 30 {
-    println!(x);
-    println!("x ES MENOR A 30");
-
-} else {
-    println!(x);
-    println!(y);
-    z = 1;
-    println!("NO ES CINCO xd");
-}
+//////////////////////
+//let x: i64 = 25;
+//if x == 5 {
+//    println!("x es cinco!");
+//} else if x < 26 {
+//    println!(x);
+//    println!("x ES MENOR A 26");
+//
+//} else if x < 30 {
+//    println!(x);
+//    println!("x ES MENOR A 30");
+//
+//} else {
+//    println!(x);
+//    //println!(y);
+//    //z = 1;
+//    println!("NO ES CINCO xd");
+//}
 
 println!("--***fin if");
+println!("");
+
+
+//////////////////////////
+let x: i64 = 90;
+let y = if x == 5 { 10 } else { "hola 15" };
+println!(y );
+
+println!("fin de ifexpre");
+if x == 5 {
+    println!("*** if normal, es 5");
+} else {
+    println!("*** if normal, no es 5");
+}
+println!(x);
+
+//println!("****************");
+let xd = 10 + if x == 5 { 10 } else { 15 } + 1;
+println!(xd);

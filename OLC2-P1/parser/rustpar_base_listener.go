@@ -69,6 +69,12 @@ func (s *BaseRustParListener) EnterIf_sent(ctx *If_sentContext) {}
 // ExitIf_sent is called when production if_sent is exited.
 func (s *BaseRustParListener) ExitIf_sent(ctx *If_sentContext) {}
 
+// EnterIf_exp is called when production if_exp is entered.
+func (s *BaseRustParListener) EnterIf_exp(ctx *If_expContext) {}
+
+// ExitIf_exp is called when production if_exp is exited.
+func (s *BaseRustParListener) ExitIf_exp(ctx *If_expContext) {}
+
 // EnterList_elseif is called when production list_elseif is entered.
 func (s *BaseRustParListener) EnterList_elseif(ctx *List_elseifContext) {}
 
@@ -86,6 +92,12 @@ func (s *BaseRustParListener) EnterBloque_inst(ctx *Bloque_instContext) {}
 
 // ExitBloque_inst is called when production bloque_inst is exited.
 func (s *BaseRustParListener) ExitBloque_inst(ctx *Bloque_instContext) {}
+
+// EnterBloque_exp is called when production bloque_exp is entered.
+func (s *BaseRustParListener) EnterBloque_exp(ctx *Bloque_expContext) {}
+
+// ExitBloque_exp is called when production bloque_exp is exited.
+func (s *BaseRustParListener) ExitBloque_exp(ctx *Bloque_expContext) {}
 
 // EnterTipos_var is called when production tipos_var is entered.
 func (s *BaseRustParListener) EnterTipos_var(ctx *Tipos_varContext) {}

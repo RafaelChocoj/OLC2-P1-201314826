@@ -32,6 +32,9 @@ type RustParListener interface {
 	// EnterIf_sent is called when entering the if_sent production.
 	EnterIf_sent(c *If_sentContext)
 
+	// EnterIf_exp is called when entering the if_exp production.
+	EnterIf_exp(c *If_expContext)
+
 	// EnterList_elseif is called when entering the list_elseif production.
 	EnterList_elseif(c *List_elseifContext)
 
@@ -40,6 +43,9 @@ type RustParListener interface {
 
 	// EnterBloque_inst is called when entering the bloque_inst production.
 	EnterBloque_inst(c *Bloque_instContext)
+
+	// EnterBloque_exp is called when entering the bloque_exp production.
+	EnterBloque_exp(c *Bloque_expContext)
 
 	// EnterTipos_var is called when entering the tipos_var production.
 	EnterTipos_var(c *Tipos_varContext)
@@ -86,6 +92,9 @@ type RustParListener interface {
 	// ExitIf_sent is called when exiting the if_sent production.
 	ExitIf_sent(c *If_sentContext)
 
+	// ExitIf_exp is called when exiting the if_exp production.
+	ExitIf_exp(c *If_expContext)
+
 	// ExitList_elseif is called when exiting the list_elseif production.
 	ExitList_elseif(c *List_elseifContext)
 
@@ -94,6 +103,9 @@ type RustParListener interface {
 
 	// ExitBloque_inst is called when exiting the bloque_inst production.
 	ExitBloque_inst(c *Bloque_instContext)
+
+	// ExitBloque_exp is called when exiting the bloque_exp production.
+	ExitBloque_exp(c *Bloque_expContext)
 
 	// ExitTipos_var is called when exiting the tipos_var production.
 	ExitTipos_var(c *Tipos_varContext)
