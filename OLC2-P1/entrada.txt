@@ -90,41 +90,57 @@ println!("/**********/");
 //y = "Adiós";
 //println!(y + " Adiós");
 //////////////////////
-//let x: i64 = 25;
-//if x == 5 {
-//    println!("x es cinco!");
-//} else if x < 26 {
-//    println!(x);
-//    println!("x ES MENOR A 26");
-//
-//} else if x < 30 {
-//    println!(x);
-//    println!("x ES MENOR A 30");
-//
-//} else {
-//    println!(x);
-//    //println!(y);
-//    //z = 1;
-//    println!("NO ES CINCO xd");
-//}
+let x: i64 = 27;
+if x == 5 {
+    println!("x es cinco!");
+} else if x < 26 {
+    println!(x);
+    println!("x ES MENOR A 26");
+
+} else if x < 30 {
+    println!(x);
+    println!("x ES MENOR A 30");
+
+} else {
+    println!(x);
+    //println!(y);
+    //z = 1;
+    println!("NO ES CINCO xd");
+}
 
 println!("--***fin if");
 println!("");
 
 
 //////////////////////////
-let x: i64 = 90;
+//let x: i64 = 15;
+
+
+//println!("-------------fin de ifexpre");
+//if x == 5 {
+//    println!("*** if normal, es 5");
+//} else {
+//    println!("*** if normal, no es 5");
+//}
+//println!(x);
+
+println!("****************");
+//let xd = 10 + if x == 5 { 10 } else { 15 } + 1;
+//println!(xd);
+
 let y = if x == 5 { 10 } else { "hola 15" };
 println!(y );
 
-println!("fin de ifexpre");
-if x == 5 {
-    println!("*** if normal, es 5");
+let n = 19;
+let operacion =
+if n < 10 {
+10 * n // Esta expresión devuelve un 'i64'
+} else if n == 10 {
+2 * n // Esta expresión devuelve un 'i64'
+} else if n < 20 {
+n // Esta expresión devuelve un 'i64'
 } else {
-    println!("*** if normal, no es 5");
-}
-println!(x);
+n / 2 // Esta expresión debe devolver un 'i64' también
+}; // <- ¡No olvides poner un punto y coma aquí!
 
-//println!("****************");
-let xd = 10 + if x == 5 { 10 } else { 15 } + 1;
-println!(xd);
+println!(operacion);

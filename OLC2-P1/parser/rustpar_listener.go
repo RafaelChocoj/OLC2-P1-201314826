@@ -38,8 +38,14 @@ type RustParListener interface {
 	// EnterList_elseif is called when entering the list_elseif production.
 	EnterList_elseif(c *List_elseifContext)
 
+	// EnterList_elseif_exp is called when entering the list_elseif_exp production.
+	EnterList_elseif_exp(c *List_elseif_expContext)
+
 	// EnterElse_if is called when entering the else_if production.
 	EnterElse_if(c *Else_ifContext)
+
+	// EnterElse_if_exp is called when entering the else_if_exp production.
+	EnterElse_if_exp(c *Else_if_expContext)
 
 	// EnterBloque_inst is called when entering the bloque_inst production.
 	EnterBloque_inst(c *Bloque_instContext)
@@ -98,8 +104,14 @@ type RustParListener interface {
 	// ExitList_elseif is called when exiting the list_elseif production.
 	ExitList_elseif(c *List_elseifContext)
 
+	// ExitList_elseif_exp is called when exiting the list_elseif_exp production.
+	ExitList_elseif_exp(c *List_elseif_expContext)
+
 	// ExitElse_if is called when exiting the else_if production.
 	ExitElse_if(c *Else_ifContext)
+
+	// ExitElse_if_exp is called when exiting the else_if_exp production.
+	ExitElse_if_exp(c *Else_if_expContext)
 
 	// ExitBloque_inst is called when exiting the bloque_inst production.
 	ExitBloque_inst(c *Bloque_instContext)

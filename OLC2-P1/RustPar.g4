@@ -76,11 +76,10 @@ if_exp returns [interfaces.Expresion p]
     //: IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
     //| IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
     /*if as expression*/
-    : IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$p = instruction.NewIfExpre($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, $belse_e.p )}
-
-    /*| IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
-        $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
-    }*/
+    : IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$p = instruction.NewIfExpre($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, nil, $belse_e.p )}
+    | IF expression bprin_e = bloque_exp list_elseif_exp ELSE  belse_e = bloque_exp {
+        $p = instruction.NewIfExpre($expression.p,nil,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, $list_elseif_exp.lista,  $belse_e.p )
+    }
 ;
 
 list_elseif returns [*arrayList.List lista]
@@ -93,8 +92,22 @@ list_elseif returns [*arrayList.List lista]
                     }
 ;
 
+list_elseif_exp returns [*arrayList.List lista]
+@init{ $lista = arrayList.New()}
+: list += else_if_exp+ {
+                    listInt := localctx.(*List_elseif_expContext).GetList()
+                    for _, e := range listInt {
+                        $lista.Add(e.GetP())
+                    }
+                    }
+;
+
 else_if returns [interfaces.Instruction instr]
     : ELSE IF expression bloque_inst  {$instr = instruction.NewIf($expression.p,$bloque_inst.l,nil,nil, $ELSE.line, localctx.(*Else_ifContext).Get_ELSE().GetColumn() )}
+;
+
+else_if_exp returns [interfaces.Expresion p]
+    : ELSE IF expression bloque_exp  {$p = instruction.NewIfExpre($expression.p,nil,nil,nil, $ELSE.line, localctx.(*Else_if_expContext).Get_ELSE().GetColumn(), true, $bloque_exp.p, nil, nil )}
 ;
 
 bloque_inst returns [ *arrayList.List  l]

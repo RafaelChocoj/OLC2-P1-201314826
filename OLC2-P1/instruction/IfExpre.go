@@ -17,13 +17,14 @@ type IfExpre struct {
 	Line         int
 	Column       int
 
-	IsExpre   bool
-	B_PrinExp interfaces.Expresion
-	B_ElseExp interfaces.Expresion
+	IsExpre     bool
+	B_PrinExp   interfaces.Expresion
+	B_IfElseExp *arrayList.List
+	B_ElseExp   interfaces.Expresion
 }
 
 func NewIfExpre(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb_IfElse *arrayList.List, lb_Else *arrayList.List, line int, column int,
-	isExpre bool, b_PrinExp interfaces.Expresion, b_ElseExp interfaces.Expresion) IfExpre {
+	isExpre bool, b_PrinExp interfaces.Expresion, b_IfElseExp *arrayList.List, b_ElseExp interfaces.Expresion) IfExpre {
 
 	return IfExpre{
 		Condicion:    condicion,
@@ -33,9 +34,10 @@ func NewIfExpre(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb
 		Line:         line,
 		Column:       column,
 
-		IsExpre:   isExpre,
-		B_PrinExp: b_PrinExp,
-		B_ElseExp: b_ElseExp,
+		IsExpre:     isExpre,
+		B_PrinExp:   b_PrinExp,
+		B_IfElseExp: b_IfElseExp,
+		B_ElseExp:   b_ElseExp,
 	}
 }
 
@@ -48,7 +50,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 	//fmt.Println("----result.Valor: ", result.Valor)
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
-	fmt.Println("----------i.IsExpre: ", i.IsExpre)
+	////fmt.Println("----------i.IsExpre: ", i.IsExpre)
 
 	if result.Tipo != interfaces.BOOLEAN {
 
@@ -60,7 +62,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 
 	if result.Valor == true {
 
-		if i.IsExpre == false { //// si es if normal
+		/*if i.IsExpre == false { //// si es if normal
 			var tmpEnv environment.Environment
 			tmpEnv = environment.NewEnvironment("if", env.(environment.Environment))
 
@@ -68,25 +70,25 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 				s.(interfaces.Instruction).Ejecutar(tmpEnv)
 			}
 
-		} else if i.IsExpre == true { //// si es if como expresion
+		} else if i.IsExpre == true {*/ //// si es if como expresion
 
-			var res_exp interfaces.Symbol
-			res_exp = i.B_PrinExp.Ejecutar(env)
-			fmt.Println("0000000 res_exp.Valor: ", res_exp.Valor)
-			fmt.Println("0000000 res_exp.Tipo: ", res_exp.Tipo)
-			return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
+		var res_exp interfaces.Symbol
+		res_exp = i.B_PrinExp.Ejecutar(env)
+		fmt.Println("0000000 res_exp.Valor: ", res_exp.Valor)
+		fmt.Println("0000000 res_exp.Tipo: ", res_exp.Tipo)
+		return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
 
-		}
+		/*}*/
 
 	} else {
 		////////ELSE IF
-		if i.LB_IfElse != nil {
+		if i.B_IfElseExp != nil {
 
-			for _, s := range i.LB_IfElse.ToArray() {
+			for _, s := range i.B_IfElseExp.ToArray() {
 
 				var elseif interfaces.Symbol
 				//elseif = i.Condicion.Ejecutar(env)
-				elseif = s.(If).Condicion.Ejecutar(env)
+				elseif = s.(IfExpre).Condicion.Ejecutar(env)
 				//fmt.Println("-22222222222222---elseif.Valor: ", elseif.Valor)
 				//fmt.Println("-22222222222222---elseif.Tipo: ", elseif.Tipo)
 
@@ -100,24 +102,31 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 
 				if elseif.Valor == true {
 
-					var tmpEnv_elseif environment.Environment
+					/*var tmpEnv_elseif environment.Environment
 					tmpEnv_elseif = environment.NewEnvironment("else if", env.(environment.Environment))
 
-					for _, sif := range s.(If).LB_Principal.ToArray() {
+					for _, sif := range s.(IfExpre).LB_Principal.ToArray() {
 						sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
 					}
 
 					//return nil
-					return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+					return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}*/
+
+					var res_ifelexp interfaces.Symbol
+					res_ifelexp = s.(IfExpre).B_PrinExp.Ejecutar(env)
+					fmt.Println("0000000 res_exp.Valor: ", res_ifelexp.Valor)
+					fmt.Println("0000000 res_exp.Tipo: ", res_ifelexp.Tipo)
+					return interfaces.Symbol{Id: "", Tipo: res_ifelexp.Tipo, Valor: res_ifelexp.Valor}
 
 				}
 
 			}
 
 		}
+
 		//////ELSE
 
-		if i.IsExpre == false { //// si es if normal
+		/*if i.IsExpre == false { //// si es if normal
 
 			if i.LB_Else != nil {
 				var tmpEnv environment.Environment
@@ -128,17 +137,16 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 				}
 			}
 
-		} else if i.IsExpre == true { //// si es if como expresion
+		} else if i.IsExpre == true {*/ //// si es if como expresion
 
-			var res_exp interfaces.Symbol
-			res_exp = i.B_ElseExp.Ejecutar(env)
-			fmt.Println("1111111 res_exp.Valor: ", res_exp.Valor)
-			fmt.Println("1111111 res_exp.Tipo: ", res_exp.Tipo)
-			return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
+		var res_exp interfaces.Symbol
+		res_exp = i.B_ElseExp.Ejecutar(env)
+		fmt.Println("1111111 res_exp.Valor: ", res_exp.Valor)
+		fmt.Println("1111111 res_exp.Tipo: ", res_exp.Tipo)
+		return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
 
-		}
+		/*}*/
 	}
 
-	//return nil
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 }
