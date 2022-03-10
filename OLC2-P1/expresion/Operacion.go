@@ -196,7 +196,7 @@ func (p Aritmetica) Ejecutar(env interface{}) interfaces.Symbol {
 					return interfaces.Symbol{Id: "", Tipo: dominante, Valor: val1 - val2}
 
 				} else {
-					desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+					desc := fmt.Sprintf("'%v' con '%v'", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
 					err.NewError("Tipos incompatibles en resta "+desc, "resta", p.Line, p.Column)
 					//fmt.Print("ERROR: No es posible restar")
 				}

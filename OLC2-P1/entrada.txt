@@ -128,10 +128,10 @@ println!("****************");
 //let xd = 10 + if x == 5 { 10 } else { 15 } + 1;
 //println!(xd);
 
-let y = if x == 5 { 10 } else { "hola 15" };
-println!(y );
+//let y = if x == 5 { 10 } else { "hola 15 +1.5 hola" };
+//println!(y );
 
-let n = 19;
+let n = 20;
 let operacion =
 if n < 10 {
 10 * n // Esta expresión devuelve un 'i64'
@@ -140,7 +140,7 @@ if n < 10 {
 } else if n < 20 {
 n // Esta expresión devuelve un 'i64'
 } else {
-n / 2 // Esta expresión debe devolver un 'i64' también
+n+(1.51 as i64)//n / 2 // Esta expresión debe devolver un 'i64' también
 }; // <- ¡No olvides poner un punto y coma aquí!
 
 println!(operacion);

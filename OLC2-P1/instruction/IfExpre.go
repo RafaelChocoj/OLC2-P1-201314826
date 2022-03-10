@@ -10,7 +10,8 @@ import (
 )
 
 type IfExpre struct {
-	Condicion    interfaces.Expresion
+	Condicion interfaces.Expresion
+
 	LB_Principal *arrayList.List
 	LB_IfElse    *arrayList.List
 	LB_Else      *arrayList.List
@@ -27,7 +28,8 @@ func NewIfExpre(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb
 	isExpre bool, b_PrinExp interfaces.Expresion, b_IfElseExp *arrayList.List, b_ElseExp interfaces.Expresion) IfExpre {
 
 	return IfExpre{
-		Condicion:    condicion,
+		Condicion: condicion,
+
 		LB_Principal: lb_Principal,
 		LB_IfElse:    lb_IfElse,
 		LB_Else:      lb_Else,
@@ -51,6 +53,49 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
 	////fmt.Println("----------i.IsExpre: ", i.IsExpre)
+
+	/***************ini validando tipos**********************/
+	var valtypes = false
+	var exp_dom interfaces.Symbol
+	exp_dom = i.B_PrinExp.Ejecutar(env)
+	//fmt.Println("							 exp_dom.Valor: ", exp_dom.Valor)
+	//fmt.Println("							 exp_dom.Tipo: ", exp_dom.Tipo)
+
+	//ELSE IF
+	if i.B_IfElseExp != nil {
+
+		for _, s := range i.B_IfElseExp.ToArray() {
+
+			var exp_elif interfaces.Symbol
+			exp_elif = s.(IfExpre).B_PrinExp.Ejecutar(env)
+			//fmt.Println("							 		exp_elif.Valor: ", exp_elif.Valor)
+			//fmt.Println("							 		exp_elif.Tipo: ", exp_elif.Tipo)
+
+			if exp_dom.Tipo != exp_elif.Tipo {
+				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(exp_dom.Tipo), interfaces.GetType(exp_elif.Tipo))
+				err.NewError("Tipos no coinciden, "+desc, env.(environment.Environment).Nombre, s.(IfExpre).Line, s.(IfExpre).Column)
+				valtypes = true
+				//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+			}
+
+		}
+	}
+	var exp_else interfaces.Symbol
+	exp_else = i.B_ElseExp.Ejecutar(env)
+	//fmt.Println("							 exp_else.Valor: ", exp_else.Valor)
+	//fmt.Println("							 exp_else.Tipo: ", exp_else.Tipo)
+
+	if exp_dom.Tipo != exp_else.Tipo {
+		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(exp_dom.Tipo), interfaces.GetType(exp_else.Tipo))
+		err.NewError("Tipos no coinciden, (else) "+desc, env.(environment.Environment).Nombre, i.Line, i.Column)
+		valtypes = true
+		//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+	}
+
+	if valtypes == true {
+		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+	}
+	/***************fin validando tipos**********************/
 
 	if result.Tipo != interfaces.BOOLEAN {
 
@@ -148,5 +193,5 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 		/*}*/
 	}
 
-	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 }
