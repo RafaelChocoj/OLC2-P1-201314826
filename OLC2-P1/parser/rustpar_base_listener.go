@@ -39,6 +39,12 @@ func (s *BaseRustParListener) EnterInstruccion(ctx *InstruccionContext) {}
 // ExitInstruccion is called when production instruccion is exited.
 func (s *BaseRustParListener) ExitInstruccion(ctx *InstruccionContext) {}
 
+// EnterInstruccion_only is called when production instruccion_only is entered.
+func (s *BaseRustParListener) EnterInstruccion_only(ctx *Instruccion_onlyContext) {}
+
+// ExitInstruccion_only is called when production instruccion_only is exited.
+func (s *BaseRustParListener) ExitInstruccion_only(ctx *Instruccion_onlyContext) {}
+
 // EnterPrintconsola is called when production printconsola is entered.
 func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 
@@ -98,6 +104,30 @@ func (s *BaseRustParListener) EnterElse_if_exp(ctx *Else_if_expContext) {}
 
 // ExitElse_if_exp is called when production else_if_exp is exited.
 func (s *BaseRustParListener) ExitElse_if_exp(ctx *Else_if_expContext) {}
+
+// EnterMatch_sent is called when production match_sent is entered.
+func (s *BaseRustParListener) EnterMatch_sent(ctx *Match_sentContext) {}
+
+// ExitMatch_sent is called when production match_sent is exited.
+func (s *BaseRustParListener) ExitMatch_sent(ctx *Match_sentContext) {}
+
+// EnterMatch_brazos is called when production match_brazos is entered.
+func (s *BaseRustParListener) EnterMatch_brazos(ctx *Match_brazosContext) {}
+
+// ExitMatch_brazos is called when production match_brazos is exited.
+func (s *BaseRustParListener) ExitMatch_brazos(ctx *Match_brazosContext) {}
+
+// EnterMatchbrazo is called when production matchbrazo is entered.
+func (s *BaseRustParListener) EnterMatchbrazo(ctx *MatchbrazoContext) {}
+
+// ExitMatchbrazo is called when production matchbrazo is exited.
+func (s *BaseRustParListener) ExitMatchbrazo(ctx *MatchbrazoContext) {}
+
+// EnterListaOpciones is called when production listaOpciones is entered.
+func (s *BaseRustParListener) EnterListaOpciones(ctx *ListaOpcionesContext) {}
+
+// ExitListaOpciones is called when production listaOpciones is exited.
+func (s *BaseRustParListener) ExitListaOpciones(ctx *ListaOpcionesContext) {}
 
 // EnterBloque_inst is called when production bloque_inst is entered.
 func (s *BaseRustParListener) EnterBloque_inst(ctx *Bloque_instContext) {}

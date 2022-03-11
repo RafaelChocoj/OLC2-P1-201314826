@@ -10,6 +10,7 @@ options {
     import "OLC2/interfaces"
     import "OLC2/expresion"
     import "OLC2/instruction"
+    import "OLC2/instructionExpre"
     import arrayList "github.com/colegno/arraylist"
 }
 
@@ -35,6 +36,15 @@ instruccion returns [interfaces.Instruction instr]
   | declaracion ';' {$instr = $declaracion.instr}
   | asignacion ';' {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
+  | match_sent {$instr = $match_sent.instr}
+;
+
+instruccion_only returns [interfaces.Instruction instr]
+  : printconsola /*';'*/ {$instr = $printconsola.instr}
+  | declaracion /*';'*/ {$instr = $declaracion.instr}
+  | asignacion /*';'*/ {$instr = $asignacion.instr}
+  | if_sent  {$instr = $if_sent.instr}
+  | match_sent {$instr = $match_sent.instr}
 ;
 
 printconsola returns [interfaces.Instruction instr]
@@ -63,9 +73,6 @@ asignacion returns [interfaces.Instruction instr]
 if_sent  returns [interfaces.Instruction instr]
     : IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
     | IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
-    /*if as expression*/
-    //| IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$instr = instruction.NewIf($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn(), true, $bprin_e.p, $belse_e.p )}
-
     | IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
         $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
     }
@@ -73,9 +80,6 @@ if_sent  returns [interfaces.Instruction instr]
 
 //  IF as EXPRESION
 if_exp returns [interfaces.Expresion p]
-    //: IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
-    //| IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
-    /*if as expression*/
     : IF expression bprin_e = bloque_exp ELSE  belse_e = bloque_exp {$p = instruction.NewIfExpre($expression.p, nil ,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, nil, $belse_e.p )}
     | IF expression bprin_e = bloque_exp list_elseif_exp ELSE  belse_e = bloque_exp {
         $p = instruction.NewIfExpre($expression.p,nil,nil, nil, $IF.line, localctx.(*If_expContext).Get_IF().GetColumn(), true, $bprin_e.p, $list_elseif_exp.lista,  $belse_e.p )
@@ -108,6 +112,60 @@ else_if returns [interfaces.Instruction instr]
 
 else_if_exp returns [interfaces.Expresion p]
     : ELSE IF expression bloque_exp  {$p = instruction.NewIfExpre($expression.p,nil,nil,nil, $ELSE.line, localctx.(*Else_if_expContext).Get_ELSE().GetColumn(), true, $bloque_exp.p, nil, nil )}
+;
+
+/*if_sent  returns [interfaces.Instruction instr]
+    : IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    | IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    | IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
+        $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
+    }
+; */
+//  MATCH
+/*match_sent  returns [interfaces.Instruction instr]
+    : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
+                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+      }
+;*/
+match_sent  returns [interfaces.Instruction instr]
+    : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
+                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+      }
+    | MATCH expression LLAVEIZQ brazos = match_brazos th='=>' LLAVEDER {
+                      $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+    }
+;
+
+match_brazos returns [*arrayList.List l_brazos]
+@init{
+    $l_brazos = arrayList.New()
+}
+    : listb = match_brazos matchbrazo   {
+                                    $listb.l_brazos.Add($matchbrazo.brazo)
+                                    $l_brazos = $listb.l_brazos
+                                }
+    | matchbrazo {$l_brazos.Add($matchbrazo.brazo)}
+;
+
+matchbrazo returns [instructionExpre.BrazoMatch brazo]
+    : listaOpciones th='=>' bloque_inst ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, $bloque_inst.l, nil, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn() ) }
+    | listaOpciones th='=>' instruccion_only ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, nil,  $instruccion_only.instr, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn() ) }
+    
+    //: listaOpciones '=>' ((bloque_inst | instruccion) ',')? { $instr = expresion.NewArray($listaOpciones.lisop, $bloque_inst.l ) }
+    //| listaOpciones '=>' (expression ',')? { $instr = expresion.NewArray($listaOpciones.lisop, $expression.p) }
+;
+
+listaOpciones returns [*arrayList.List lisop]
+@init{
+    $lisop = arrayList.New()
+}
+    : list = listaOpciones '|' primitivo  {
+                                            $list.lisop.Add( $primitivo.p )
+                                            $lisop =  $list.lisop
+                                          }
+    | primitivo   {
+                    $lisop.Add( $primitivo.p )
+                  }
 ;
 
 bloque_inst returns [ *arrayList.List  l]

@@ -86,30 +86,30 @@ println!("/**********/");
 //x = 33;
 //println!(x);
 
-//let y = "Hola".to_string();
-//y = "Adiós";
-//println!(y + " Adiós");
-//////////////////////
-let x: i64 = 27;
-if x == 5 {
-    println!("x es cinco!");
-} else if x < 26 {
-    println!(x);
-    println!("x ES MENOR A 26");
+////let y = "Hola".to_string();
+////y = "Adiós";
+////println!(y + " Adiós");
+////////////////////////
+//let x: i64 = 27;
+//if x == 5 {
+//    println!("x es cinco!");
+//} else if x < 26 {
+//    println!(x);
+//    println!("x ES MENOR A 26");
 
-} else if x < 30 {
-    println!(x);
-    println!("x ES MENOR A 30");
+//} else if x < 30 {
+//    println!(x);
+//    println!("x ES MENOR A 30");
 
-} else {
-    println!(x);
-    //println!(y);
-    //z = 1;
-    println!("NO ES CINCO xd");
-}
+//} else {
+//    println!(x);
+//    //println!(y);
+//    //z = 1;
+//    println!("NO ES CINCO xd");
+//}
 
-println!("--***fin if");
-println!("");
+//println!("--***fin if");
+//println!("");
 
 
 //////////////////////////
@@ -131,16 +131,31 @@ println!("****************");
 //let y = if x == 5 { 10 } else { "hola 15 +1.5 hola" };
 //println!(y );
 
-let n = 20;
-let operacion =
-if n < 10 {
-10 * n // Esta expresión devuelve un 'i64'
-} else if n == 10 {
-2 * n // Esta expresión devuelve un 'i64'
-} else if n < 20 {
-n // Esta expresión devuelve un 'i64'
-} else {
-n+(1.51 as i64)//n / 2 // Esta expresión debe devolver un 'i64' también
-}; // <- ¡No olvides poner un punto y coma aquí!
+//let n = 19;
+//let operacion =
+//if n < 10 {
+//10 * n // Esta expresión devuelve un 'i64'
+//} else if n == 10 {
+//2 * n // Esta expresión devuelve un 'i64'
+//} else if n < 20 {
+//n // Esta expresión devuelve un 'i64'
+//} else {
+//n / 2 // Esta expresión debe devolver un 'i64' también
+//}; // <- ¡No olvides poner un punto y coma aquí!
 
-println!(operacion);
+//println!(operacion);
+////////////////
+let numero = 5;
+// Después del match sigue una expresión
+match numero { 
+//    // 1 | 2 | 3 estas son coincidencias
+   1 | 2 | 3 => {
+    let x = 100;
+    println!("Rango de 1 a 3");
+    println!(x);
+    }, //esto se conoce como brazo
+
+    6 | 7 | 8 => {println!("Rango de 6 a 8");},//esto se conoce como brazo
+    9 => println!("Rango de 9"), // esto es un error!
+    _ => println!("Resto de casos"), //brazo por defecto
+}

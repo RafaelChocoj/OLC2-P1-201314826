@@ -14,3 +14,8 @@ type Expresion interface {
 type Instruction interface {
 	Ejecutar(env interface{}) interface{}
 }
+
+////
+type InstructionExpresion interface {
+	Ejecutar(env interface{})
+}

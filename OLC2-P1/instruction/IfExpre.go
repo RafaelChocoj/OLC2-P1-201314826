@@ -73,7 +73,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 
 			if exp_dom.Tipo != exp_elif.Tipo {
 				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(exp_dom.Tipo), interfaces.GetType(exp_elif.Tipo))
-				err.NewError("Tipos no coinciden, "+desc, env.(environment.Environment).Nombre, s.(IfExpre).Line, s.(IfExpre).Column)
+				err.NewError("Expresion no coinciden, "+desc, env.(environment.Environment).Nombre, s.(IfExpre).Line, s.(IfExpre).Column)
 				valtypes = true
 				//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 			}
@@ -87,7 +87,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 
 	if exp_dom.Tipo != exp_else.Tipo {
 		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(exp_dom.Tipo), interfaces.GetType(exp_else.Tipo))
-		err.NewError("Tipos no coinciden, (else) "+desc, env.(environment.Environment).Nombre, i.Line, i.Column)
+		err.NewError("Expresion no coinciden, (else) "+desc, env.(environment.Environment).Nombre, i.Line, i.Column)
 		valtypes = true
 		//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 	}

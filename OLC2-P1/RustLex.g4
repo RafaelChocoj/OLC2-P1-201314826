@@ -17,6 +17,8 @@ IF:       'if';
 ELSE:       'else';
 //P_WHILE:       'while';
 
+MATCH:       'match';
+MTOR:       '|';
 
 TRUE: 'true';
 FALSE: 'false';
@@ -46,6 +48,7 @@ DOSPUNTO:         '::';
 DPUNTO2:         ':';
 
 ASIGNACION:         '=';
+MTHEN:         '=>';
 
 //RELACIONALES
 DISTINTO:      '!=';

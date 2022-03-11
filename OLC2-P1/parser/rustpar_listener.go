@@ -17,6 +17,9 @@ type RustParListener interface {
 	// EnterInstruccion is called when entering the instruccion production.
 	EnterInstruccion(c *InstruccionContext)
 
+	// EnterInstruccion_only is called when entering the instruccion_only production.
+	EnterInstruccion_only(c *Instruccion_onlyContext)
+
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
@@ -46,6 +49,18 @@ type RustParListener interface {
 
 	// EnterElse_if_exp is called when entering the else_if_exp production.
 	EnterElse_if_exp(c *Else_if_expContext)
+
+	// EnterMatch_sent is called when entering the match_sent production.
+	EnterMatch_sent(c *Match_sentContext)
+
+	// EnterMatch_brazos is called when entering the match_brazos production.
+	EnterMatch_brazos(c *Match_brazosContext)
+
+	// EnterMatchbrazo is called when entering the matchbrazo production.
+	EnterMatchbrazo(c *MatchbrazoContext)
+
+	// EnterListaOpciones is called when entering the listaOpciones production.
+	EnterListaOpciones(c *ListaOpcionesContext)
 
 	// EnterBloque_inst is called when entering the bloque_inst production.
 	EnterBloque_inst(c *Bloque_instContext)
@@ -83,6 +98,9 @@ type RustParListener interface {
 	// ExitInstruccion is called when exiting the instruccion production.
 	ExitInstruccion(c *InstruccionContext)
 
+	// ExitInstruccion_only is called when exiting the instruccion_only production.
+	ExitInstruccion_only(c *Instruccion_onlyContext)
+
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)
 
@@ -112,6 +130,18 @@ type RustParListener interface {
 
 	// ExitElse_if_exp is called when exiting the else_if_exp production.
 	ExitElse_if_exp(c *Else_if_expContext)
+
+	// ExitMatch_sent is called when exiting the match_sent production.
+	ExitMatch_sent(c *Match_sentContext)
+
+	// ExitMatch_brazos is called when exiting the match_brazos production.
+	ExitMatch_brazos(c *Match_brazosContext)
+
+	// ExitMatchbrazo is called when exiting the matchbrazo production.
+	ExitMatchbrazo(c *MatchbrazoContext)
+
+	// ExitListaOpciones is called when exiting the listaOpciones production.
+	ExitListaOpciones(c *ListaOpcionesContext)
 
 	// ExitBloque_inst is called when exiting the bloque_inst production.
 	ExitBloque_inst(c *Bloque_instContext)
