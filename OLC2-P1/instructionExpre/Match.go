@@ -36,20 +36,23 @@ func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Ins
 	}
 }
 
+/*func (m Match) Ejecutar(env interface{}) interfaces.Symbol {
+	
+	var resultado interface{}
+	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+}*/
+
 func (m Match) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
 	result = m.Expre.Ejecutar(env)
 	fmt.Println("----result.Valor: ", result.Valor)
-	//fmt.Println("----result.Tipo: ", result.Tipo)
+	fmt.Println("----result.Tipo: ", result.Tipo)
 
-	/*lista de brazos*/
-	/*for _, s := range m.List_Brazos.ToArray() {
+	var istrue = false
+	var isfalse = false
 
-	}*/
 
-	//var tmpEnv_brazo environment.Environment
-	//tmpEnv_brazo = environment.NewEnvironment("match brazo", env.(environment.Environment))
 
 	/*verificando el mismo tipo*/
 	var valtypes = false
@@ -77,6 +80,17 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 					//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 				}
 
+				//if expre.Valor == result.Valor {
+				if (result.Tipo == interfaces.BOOLEAN ) {
+					if expre.Valor == true {
+						istrue = true
+					}
+					if expre.Valor == false {
+						isfalse = true
+					}
+				}
+				//}
+
 			} else {
 				//desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.BOOLEAN), interfaces.GetType(result.Tipo))
 				err.NewError("Las coincidencias deben de ser primitivas " /*+desc*/, env.(environment.Environment).Nombre, bz.(BrazoMatch).Line, bz.(BrazoMatch).Column)
@@ -85,6 +99,22 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 			}
 
 		}
+	}
+
+	if ( istrue == true && isfalse == true) && result.Tipo == interfaces.BOOLEAN {
+
+		if m.DefLB_Instrucciones != nil || m.DefInstruc != nil {
+			err.NewError("Brazos cubiertos en booleano, sin necesidad de '_' ", env.(environment.Environment).Nombre, m.Line, m.Column)
+			valtypes = true
+		}
+	}
+
+	if (result.Tipo == interfaces.BOOLEAN) && m.DefLB_Instrucciones == nil && m.DefInstruc == nil {
+		if (istrue == false && isfalse == true) || (istrue == true && isfalse == false) {
+			err.NewError("Brazo booleano no cubierto ", env.(environment.Environment).Nombre, m.Line, m.Column)
+			valtypes = true
+		}
+
 	}
 
 	if valtypes == true {
@@ -128,7 +158,7 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 	}
 
 	if encontrado == false {
-		//fmt.Println("////////////////// no tiene coincidencias"
+		//sfmt.Println("////////////////// no tiene coincidencias")
 		var tmpEnv environment.Environment
 		tmpEnv = environment.NewEnvironment("Match brazo", env.(environment.Environment))
 

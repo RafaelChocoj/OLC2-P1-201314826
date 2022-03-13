@@ -23,6 +23,9 @@ type RustParListener interface {
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
+	// EnterListParams is called when entering the listParams production.
+	EnterListParams(c *ListParamsContext)
+
 	// EnterDeclaracion is called when entering the declaracion production.
 	EnterDeclaracion(c *DeclaracionContext)
 
@@ -103,6 +106,9 @@ type RustParListener interface {
 
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)
+
+	// ExitListParams is called when exiting the listParams production.
+	ExitListParams(c *ListParamsContext)
 
 	// ExitDeclaracion is called when exiting the declaracion production.
 	ExitDeclaracion(c *DeclaracionContext)

@@ -51,6 +51,12 @@ func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 // ExitPrintconsola is called when production printconsola is exited.
 func (s *BaseRustParListener) ExitPrintconsola(ctx *PrintconsolaContext) {}
 
+// EnterListParams is called when production listParams is entered.
+func (s *BaseRustParListener) EnterListParams(ctx *ListParamsContext) {}
+
+// ExitListParams is called when production listParams is exited.
+func (s *BaseRustParListener) ExitListParams(ctx *ListParamsContext) {}
+
 // EnterDeclaracion is called when production declaracion is entered.
 func (s *BaseRustParListener) EnterDeclaracion(ctx *DeclaracionContext) {}
 

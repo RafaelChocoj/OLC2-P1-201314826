@@ -48,7 +48,19 @@ instruccion_only returns [interfaces.Instruction instr]
 ;
 
 printconsola returns [interfaces.Instruction instr]
-    : PRINT_CON PARIZQ expression PARDER {$instr = instruction.NewImprimir($expression.p)}
+    : PRINT_CON PARIZQ listParams PARDER {$instr = instruction.NewImprimir($listParams.l_e, $PRINT_CON.line, localctx.(*PrintconsolaContext).Get_PRINT_CON().GetColumn() )}
+    //: PRINT_CON PARIZQ expression PARDER {$instr = instruction.NewImprimir($expression.p)}
+;
+
+listParams returns [*arrayList.List l_e]
+@init{
+    $l_e = arrayList.New()
+}
+    : list = listParams ',' expression   {
+                                    $list.l_e.Add($expression.p)
+                                    $l_e = $list.l_e
+                                }
+    | expression {$l_e.Add($expression.p)}
 ;
 
 declaracion returns [interfaces.Instruction instr]
@@ -122,11 +134,6 @@ else_if_exp returns [interfaces.Expresion p]
     }
 ; */
 //  MATCH
-/*match_sent  returns [interfaces.Instruction instr]
-    : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
-                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
-      }
-;*/
 match_sent  returns [interfaces.Instruction instr]
     : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
                         $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
@@ -226,6 +233,7 @@ expr_arit returns[interfaces.Expresion p]
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
     | if_exp {$p = $if_exp.p}
+    //| match_sent {$p = $match_sent.instr}
 ;
 
 /*casteo returns[interfaces.Expresion p]

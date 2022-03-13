@@ -143,19 +143,54 @@ println!("****************");
 //n / 2 // Esta expresión debe devolver un 'i64' también
 //}; // <- ¡No olvides poner un punto y coma aquí!
 
-//println!(operacion);
-////////////////
-let numero = 15;
-// Después del match sigue una expresión
-match numero { 
-//    // 1 | 2 | 3 estas son coincidencias
-   1 | 2 | 3 => {
-    let x = 100;
-    println!("Rango de 1 a 3");
-    println!(x);
-    }, //esto se conoce como brazo
+////println!(operacion);
+//////////////////
+//let numero = 15;
+//// Después del match sigue una expresión
+//match numero { 
+////    // 1 | 2 | 3 estas son coincidencias
+//   1 | 2 | 3 => {
+//    let x = 100;
+//    println!("Rango de 1 a 3");
+//    println!(x);
+//    }, //esto se conoce como brazo
 
-    6 | 7 | 8 => {println!("Rango de 6 a 8");},//esto se conoce como brazo
-    9 => println!("Rango de 9"), // esto es un error!
-    _ => println!("Resto de casos"), //brazo por defecto
-}
+//    6 | 7 | 8 => {println!("Rango de 6 a 8");},//esto se conoce como brazo
+//    9 => println!("Rango de 9"), // esto es un error!
+//    _ => println!("Resto de casos"), //brazo por defecto
+//}
+
+//let booleano = true;
+//match booleano {
+//false => println!("false 0"),
+//true => println!("true 1"),
+//// _ => println!("Resto de casos"),
+//}
+
+//let x = 5;
+//let numcadena = 
+//match x + 60 {
+//1 => "uno",
+//2 => "dos",
+//3 => "tres",
+//4 => "cuatro",
+//5 => "cinco",
+//_ => "otra cosa",
+//};
+
+let x = 5;
+//let numcadena = match x + 60 {
+//1 => println!("uno"),
+//2 => println!("dos"),
+//3 => println!("tres"),
+//4 => println!("cuatro"),
+//5 => println!("cinco"),
+//_ => println!("otra cosa"),
+//};
+
+println!("1 cosa");
+println!("la x es {} y un string {}, el resul es: {}", x, "xd", 1+2*3);
+
+println!("+ -"); // Imprime + -
+println!("{} {} {}", "a", "a", "a"); // Imprime a a a
+println!("El resultado de 2 + 2 es {}", (2+2));
