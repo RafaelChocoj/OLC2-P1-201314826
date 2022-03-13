@@ -145,7 +145,7 @@ println!("****************");
 
 //println!(operacion);
 ////////////////
-let numero = 5;
+let numero = 15;
 // Después del match sigue una expresión
 match numero { 
 //    // 1 | 2 | 3 estas son coincidencias

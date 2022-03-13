@@ -14,17 +14,25 @@ import (
 type Match struct {
 	Expre       interfaces.Expresion
 	List_Brazos *arrayList.List
-	Line        int
-	Column      int
+
+	DefLB_Instrucciones *arrayList.List
+	DefInstruc          interfaces.Instruction
+
+	Line   int
+	Column int
 }
 
-func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List /* lb_Else *arrayList.List,*/, line int, column int) Match {
+func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Instrucciones *arrayList.List, defInstruc interfaces.Instruction, line int, column int) Match {
 
 	return Match{
 		Expre:       expre,
 		List_Brazos: list_Brazos,
-		Line:        line,
-		Column:      column,
+
+		DefLB_Instrucciones: defLB_Instrucciones,
+		DefInstruc:          defInstruc,
+
+		Line:   line,
+		Column: column,
 	}
 }
 
@@ -117,20 +125,26 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 			}
 		}
 
-		/*if encontrado == true {
-
-			var tmpEnv environment.Environment
-			tmpEnv = environment.NewEnvironment("Match brazo", env.(environment.Environment))
-
-			for _, s := range bz.(BrazoMatch).LB_Instrucciones.ToArray() {
-				s.(interfaces.Instruction).Ejecutar(tmpEnv)
-			}
-
-		}*/
 	}
 
 	if encontrado == false {
-		fmt.Println("////////////////// no tiene coincidencias")
+		//fmt.Println("////////////////// no tiene coincidencias"
+		var tmpEnv environment.Environment
+		tmpEnv = environment.NewEnvironment("Match brazo", env.(environment.Environment))
+
+		/*es lista de instrucciones*/
+		if m.DefLB_Instrucciones != nil {
+
+			for _, sdef := range m.DefLB_Instrucciones.ToArray() {
+				sdef.(interfaces.Instruction).Ejecutar(tmpEnv)
+			}
+		}
+
+		/*si es solo una instruccion*/
+		if m.DefInstruc != nil {
+			m.DefInstruc.Ejecutar(tmpEnv)
+		}
+
 	}
 	/***********************/
 

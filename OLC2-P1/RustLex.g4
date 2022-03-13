@@ -39,7 +39,7 @@ TO_OWNED:   '.to_owned()';
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;
 STRING: '"'~["]*'"';
-ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
+
 
 PUNTO:          '.';
 COMA:          ',';
@@ -49,6 +49,9 @@ DPUNTO2:         ':';
 
 ASIGNACION:         '=';
 MTHEN:         '=>';
+GUIONB:         '_';
+
+ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
 
 //RELACIONALES
 DISTINTO:      '!=';

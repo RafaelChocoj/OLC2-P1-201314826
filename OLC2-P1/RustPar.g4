@@ -129,11 +129,15 @@ else_if_exp returns [interfaces.Expresion p]
 ;*/
 match_sent  returns [interfaces.Instruction instr]
     : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
-                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
       }
-    | MATCH expression LLAVEIZQ brazos = match_brazos th='=>' LLAVEDER {
-                      $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
-    }
+    | MATCH expression LLAVEIZQ brazos = match_brazos '_' th='=>' bloque_inst ',' LLAVEDER {
+                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $bloque_inst.l, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+      }
+    | MATCH expression LLAVEIZQ brazos = match_brazos '_' th='=>' instruccion_only ',' LLAVEDER {
+                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil,  $instruccion_only.instr,  $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+      }
+
 ;
 
 match_brazos returns [*arrayList.List l_brazos]
