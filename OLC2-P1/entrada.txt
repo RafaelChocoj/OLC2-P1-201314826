@@ -179,6 +179,7 @@ println!("****************");
 //};
 
 let x = 5;
+println!("{}", x);
 //let numcadena = match x + 60 {
 //1 => println!("uno"),
 //2 => println!("dos"),
@@ -188,9 +189,3 @@ let x = 5;
 //_ => println!("otra cosa"),
 //};
 
-println!("1 cosa");
-println!("la x es {} y un string {}, el resul es: {}", x, "xd", 1+2*3);
-
-println!("+ -"); // Imprime + -
-println!("{} {} {}", "a", "a", "a"); // Imprime a a a
-println!("El resultado de 2 + 2 es {}", (2+2));

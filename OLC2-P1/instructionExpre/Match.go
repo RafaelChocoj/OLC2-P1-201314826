@@ -42,12 +42,14 @@ func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Ins
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 }*/
 
-func (m Match) Ejecutar(env interface{}) interface{} {
+func (m Match) Ejecutar(env interface{}) interface{}  {
+
+	//var resultado interface{}
 
 	var result interfaces.Symbol
 	result = m.Expre.Ejecutar(env)
 	fmt.Println("----result.Valor: ", result.Valor)
-	fmt.Println("----result.Tipo: ", result.Tipo)
+	//fmt.Println("----result.Tipo: ", result.Tipo)
 
 	var istrue = false
 	var isfalse = false
@@ -178,6 +180,7 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 	}
 	/***********************/
 
+	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 	return nil
 
 }

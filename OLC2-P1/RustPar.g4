@@ -233,7 +233,7 @@ expr_arit returns[interfaces.Expresion p]
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
     | if_exp {$p = $if_exp.p}
-    //| match_sent {$p = $match_sent.instr}
+    //| match_sent {$p = $match_sent.instr.(interfaces.Expresion)}
 ;
 
 /*casteo returns[interfaces.Expresion p]
