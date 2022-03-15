@@ -189,6 +189,12 @@ func (s *BaseRustParListener) EnterPrimitivo(ctx *PrimitivoContext) {}
 // ExitPrimitivo is called when production primitivo is exited.
 func (s *BaseRustParListener) ExitPrimitivo(ctx *PrimitivoContext) {}
 
+// EnterListIDArray is called when production listIDArray is entered.
+func (s *BaseRustParListener) EnterListIDArray(ctx *ListIDArrayContext) {}
+
+// ExitListIDArray is called when production listIDArray is exited.
+func (s *BaseRustParListener) ExitListIDArray(ctx *ListIDArrayContext) {}
+
 // EnterStrings is called when production strings is entered.
 func (s *BaseRustParListener) EnterStrings(ctx *StringsContext) {}
 

@@ -92,6 +92,9 @@ type RustParListener interface {
 	// EnterPrimitivo is called when entering the primitivo production.
 	EnterPrimitivo(c *PrimitivoContext)
 
+	// EnterListIDArray is called when entering the listIDArray production.
+	EnterListIDArray(c *ListIDArrayContext)
+
 	// EnterStrings is called when entering the strings production.
 	EnterStrings(c *StringsContext)
 
@@ -178,6 +181,9 @@ type RustParListener interface {
 
 	// ExitPrimitivo is called when exiting the primitivo production.
 	ExitPrimitivo(c *PrimitivoContext)
+
+	// ExitListIDArray is called when exiting the listIDArray production.
+	ExitListIDArray(c *ListIDArrayContext)
 
 	// ExitStrings is called when exiting the strings production.
 	ExitStrings(c *StringsContext)

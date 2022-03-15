@@ -161,7 +161,7 @@ func (p Aritmetica) Ejecutar(env interface{}) interfaces.Symbol {
 
 				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: r1 + r2}
 			} else {
-				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
+				desc := fmt.Sprintf("'%v' con '%v'", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
 				err.NewError("Tipos incompatibles en suma "+desc, "suma", p.Line, p.Column)
 			}
 

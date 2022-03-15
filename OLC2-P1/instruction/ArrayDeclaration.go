@@ -69,7 +69,7 @@ func (p ArrayDeclaration) IsArray_Valido(env interface{}, arr1 interfaces.Symbol
 		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
 			a_valido = p.IsArray_Valido(env, arr.(interfaces.Symbol), l_tipo.Clone())
 			if !a_valido {
-				fmt.Println("**a_valido: ", a_valido )
+				//fmt.Println("**a_valido: ", a_valido )
 				return a_valido
 			}
 		}

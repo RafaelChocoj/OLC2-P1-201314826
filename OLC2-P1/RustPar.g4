@@ -296,13 +296,19 @@ primitivo returns[interfaces.Expresion p]
 
     | strings {$p = $strings.p} 
 
-    | ID { 
-      $p = expresion.NewIdentificador($ID.text, $ID.line, localctx.(*PrimitivoContext).Get_ID().GetColumn() )}
+    /*| ID { 
+      $p = expresion.NewIdentificador($ID.text, $ID.line, localctx.(*PrimitivoContext).Get_ID().GetColumn() )}*/
 
     | TRUE  { $p = expresion.NewPrimitivo(true,interfaces.BOOLEAN, $TRUE.line, localctx.(*PrimitivoContext).Get_TRUE().GetColumn())}
     | FALSE { $p = expresion.NewPrimitivo(false,interfaces.BOOLEAN, $FALSE.line, localctx.(*PrimitivoContext).Get_FALSE().GetColumn())}
+    | list=listIDArray { $p = $list.p}
 ;
 
+listIDArray returns[interfaces.Expresion p]
+    : list = listIDArray CORIZQ expression CORDER { $p = expresion.NewArrayAccess($list.p, $expression.p, $CORIZQ.line, $CORIZQ.pos ) }
+    | ID { 
+      $p = expresion.NewIdentificador($ID.text, $ID.line, localctx.(*ListIDArrayContext).Get_ID().GetColumn() )}
+    ;
 
 strings returns[interfaces.Expresion p]
     : AMP+ STRING (TO_STRING|TO_OWNED)? { 
