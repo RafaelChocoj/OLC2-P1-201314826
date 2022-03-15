@@ -80,6 +80,8 @@ PARIZQ:         '(';
 PARDER:         ')';
 LLAVEIZQ:       '{';
 LLAVEDER:       '}';
+CORIZQ:         '[';
+CORDER:         ']';
 
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 L_COMMENT : '//' ~[\r\n]* -> skip;

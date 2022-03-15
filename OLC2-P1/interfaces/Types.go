@@ -8,15 +8,17 @@ const (
 	STRING
 	STR
 	BOOLEAN
+	ARRAY
 	NULL
 )
 
-var nametype = [6]string{
+var nametype = [7]string{
 	"i64",
 	"f64",
 	"String",
 	"&str",
 	"bool",
+	"array",
 	"NULL",
 }
 

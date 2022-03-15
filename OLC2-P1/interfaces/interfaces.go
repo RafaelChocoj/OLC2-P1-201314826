@@ -5,6 +5,9 @@ type Symbol struct {
 	Tipo  TipoExpresion
 	Valor interface{}
 	IsMut bool
+	
+	Line   int
+	Column int
 }
 
 type Expresion interface {

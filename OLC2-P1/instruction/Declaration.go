@@ -45,7 +45,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre)
 	} else {
 		//fmt.Println("Los tipos no coinciden")
-		desc := fmt.Sprintf("se esperaba %v se tiene %v", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))
+		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))
 		err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 	}
 

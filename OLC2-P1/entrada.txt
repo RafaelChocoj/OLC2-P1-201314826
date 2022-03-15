@@ -189,3 +189,16 @@ println!("{}", x);
 //_ => println!("otra cosa"),
 //};
 
+let mun = 2;
+let arr1: [&str; mun] = ["Hola", "Mundo"];
+println!("arr1: {}", arr1[1]);
+
+//// arreglo de 3 dimensiones
+//let mut arr3: [[[i64; 4];2]; 2] = [
+//[ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
+//[ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
+//];
+//println!("{}", arr3);
+
+//let b = [1, 2, 3, 4];
+//println!("b: {}", b);

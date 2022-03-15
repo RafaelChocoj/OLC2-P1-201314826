@@ -26,7 +26,7 @@ func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo int
 		NewError("La variable "+variable.Id+" ya declarada en entorno "+nameentorno, nameentorno, Line, Column)
 		return
 	}
-	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut}
+	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column}
 }
 
 func (env Environment) GetVariable(id string, Line int, Column int, nameentorno string) interfaces.Symbol {

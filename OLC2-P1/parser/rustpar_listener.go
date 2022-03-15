@@ -32,6 +32,9 @@ type RustParListener interface {
 	// EnterIs_mut is called when entering the is_mut production.
 	EnterIs_mut(c *Is_mutContext)
 
+	// EnterArray_type is called when entering the array_type production.
+	EnterArray_type(c *Array_typeContext)
+
 	// EnterAsignacion is called when entering the asignacion production.
 	EnterAsignacion(c *AsignacionContext)
 
@@ -115,6 +118,9 @@ type RustParListener interface {
 
 	// ExitIs_mut is called when exiting the is_mut production.
 	ExitIs_mut(c *Is_mutContext)
+
+	// ExitArray_type is called when exiting the array_type production.
+	ExitArray_type(c *Array_typeContext)
 
 	// ExitAsignacion is called when exiting the asignacion production.
 	ExitAsignacion(c *AsignacionContext)

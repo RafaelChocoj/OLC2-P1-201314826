@@ -70,11 +70,30 @@ declaracion returns [interfaces.Instruction instr]
     | LET isMut=is_mut id=ID asig ='=' expression {
                       $instr = instruction.NewDeclaration($id.text, interfaces.NULL, $expression.p, $isMut.mut, $asig.line, localctx.(*DeclaracionContext).GetAsig().GetColumn())
                     }
+    /*arrays*/
+    | LET isMut=is_mut id=ID ':' array_type asig ='=' expression {
+                      $instr = instruction.NewArrayDeclaration($id.text, $array_type.ty, $expression.p, $isMut.mut, $asig.line, localctx.(*DeclaracionContext).GetAsig().GetColumn())
+                    }
 ;
 
 is_mut returns [bool mut]
    : MUT { $mut = true }
    |
+;
+
+array_type returns [*arrayList.List ty]
+@init{
+    $ty = arrayList.New()
+}
+: CORIZQ array_type ';' expression ']' {
+                                        nType := interfaces.NewArrayType(interfaces.ARRAY, $expression.p, $CORIZQ.line, $CORIZQ.pos )
+                                        $array_type.ty.Add(nType)
+                                        $ty = $array_type.ty
+                                    }
+| CORIZQ tipos_var ';' expression ']'  {
+                                      nType := interfaces.NewArrayType($tipos_var.tipo, $expression.p, $CORIZQ.line, $CORIZQ.pos )
+                                      $ty.Add(nType)
+                                    }
 ;
 
 asignacion returns [interfaces.Instruction instr]
@@ -228,7 +247,8 @@ expr_arit returns[interfaces.Expresion p]
     /* Relacional AND | OR*/
     | opIz = expr_arit op='&&' opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
     | opIz = expr_arit op='||' opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
-
+    /*array*/
+    | CORIZQ listParams CORDER { $p = expresion.NewArray($listParams.l_e, $CORIZQ.line, $CORIZQ.pos ) }
     | primitivo {$p = $primitivo.p}
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 

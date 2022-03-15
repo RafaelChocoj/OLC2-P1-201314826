@@ -69,6 +69,12 @@ func (s *BaseRustParListener) EnterIs_mut(ctx *Is_mutContext) {}
 // ExitIs_mut is called when production is_mut is exited.
 func (s *BaseRustParListener) ExitIs_mut(ctx *Is_mutContext) {}
 
+// EnterArray_type is called when production array_type is entered.
+func (s *BaseRustParListener) EnterArray_type(ctx *Array_typeContext) {}
+
+// ExitArray_type is called when production array_type is exited.
+func (s *BaseRustParListener) ExitArray_type(ctx *Array_typeContext) {}
+
 // EnterAsignacion is called when production asignacion is entered.
 func (s *BaseRustParListener) EnterAsignacion(ctx *AsignacionContext) {}
 
