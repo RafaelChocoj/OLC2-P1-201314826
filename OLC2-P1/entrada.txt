@@ -179,7 +179,6 @@ println!("****************");
 //};
 
 let x = 5;
-println!("{}", x);
 //let numcadena = match x + 60 {
 //1 => println!("uno"),
 //2 => println!("dos"),
@@ -189,27 +188,29 @@ println!("{}", x);
 //_ => println!("otra cosa"),
 //};
 
-let mun = 2;
+let mun = 3;
 let arr1: [[&str; mun];2] = 
 [
-    ["Hola", "Mundo"],
-    ["hello", "world"]
+    ["Hola", "Mundo", "0"],
+    ["hello", "world", "1"]
 ];
 
 //let arr1: [&str; mun] = ["Hola", "Mundo"];
+//let arr1: [i64; mun] = [55+1, 88-1];
 
-println!("arr1:?: {}", arr1);
-//println!("arr1:? : {:?}", arr1);
-println!("arr1: {}", arr1[1][1] );
+println!("arr1: {:?}", arr1);
+println!("arr1: {}- {}- {:?}", arr1[1][1], arr1, arr1[1][0]);
+
+////println!("arr1:? : {:?}", arr1);
+//println!("arr1: {}", arr1[1][1] );
 
 //println!("arr1: {}", arr1[1]);
 
 //// arreglo de 3 dimensiones
-//let mut arr3: [[[i64; 4];2]; 2] = [
-//[ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
-//[ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
-//];
-//println!("{}", arr3);
+let mut arr3: [[[i64; 4];2]; 2] = [
+[ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
+[ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
+];
+println!("xd3 {:?}", arr3);
 
-//let b = [1, 2, 3, 4];
-//println!("b: {}", b);
+println!("arr3[0][1] {:?}", arr3[0][1][1]);
