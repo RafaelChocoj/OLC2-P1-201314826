@@ -107,7 +107,7 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 
 			if expre_print.Tipo == interfaces.ARRAY {
 				str_arr := p.PrintArray(env, expre_print.Valor.(*arrayList.List))
-				str_arr = strings.ReplaceAll(str_arr, "][", "],[")
+				str_arr = strings.ReplaceAll(str_arr, "][", "], [")
 				//fmt.Println("str_arr: ", str_arr)
 
 				format_str = strings.Replace(format_str, "{:?}", str_arr,1)

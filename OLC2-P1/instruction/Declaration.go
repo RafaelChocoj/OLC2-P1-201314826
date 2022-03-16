@@ -19,6 +19,7 @@ type Declaration struct {
 }
 
 func NewDeclaration(id string, tipo interfaces.TipoExpresion, val interfaces.Expresion, IsMut bool /*, isArray bool, isStruct bool*/, line int, column int) Declaration {
+	fmt.Println("aaaaaarrrraayy				tipo: ", interfaces.GetType(tipo), " - ", id)
 	instr := Declaration{id, tipo, val, IsMut /*, isArray, isStruct*/, line, column}
 	return instr
 }

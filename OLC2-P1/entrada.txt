@@ -207,10 +207,31 @@ println!("arr1: {}- {}- {:?}", arr1[1][1], arr1, arr1[1][0]);
 //println!("arr1: {}", arr1[1]);
 
 //// arreglo de 3 dimensiones
+//let mut arr3:i64 = 3;
+//println!("arr3 {}", arr3);
+
 let mut arr3: [[[i64; 4];2]; 2] = [
 [ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
 [ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
 ];
 println!("xd3 {:?}", arr3);
 
-println!("arr3[0][1] {:?}", arr3[0][1][1]);
+//println!("arr3[0][1] {:?}", arr3[0][1][1]);
+
+println!("--");
+
+// arreglo de 1 dimensión
+//let arr_1: [&str; 4] = ["Hola"; 4];
+//println!("arr1 {:?}", arr_1);
+
+//let arr_2 = [arr3; 4];
+//println!("arr2 {:?}", arr_2);
+
+// arreglo de 3 dimensiones
+let mut arr_123 = [
+[ [ 1, 3, 5, 7], [ 5;4 ] ],
+[ [ 2, 4, 6, 8], [ 10;4 ] ],
+[ [ 2; 4 ], [ 0; 4 ] ]
+];
+
+println!("arr_123 {:?}", arr_123);
