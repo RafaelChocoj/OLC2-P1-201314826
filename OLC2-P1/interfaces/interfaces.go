@@ -1,13 +1,17 @@
 package interfaces
 
+import arrayList "github.com/colegno/arraylist"
+
 type Symbol struct {
 	Id    string
 	Tipo  TipoExpresion
 	Valor interface{}
 	IsMut bool
-	
+
 	Line   int
 	Column int
+
+	TiposArr *arrayList.List
 }
 
 type Expresion interface {
@@ -20,6 +24,5 @@ type Instruction interface {
 
 ////
 type InstructionExpresion interface {
-
-	Ejecutar(env interface{}) 
+	Ejecutar(env interface{})
 }

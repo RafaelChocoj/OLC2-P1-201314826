@@ -4,6 +4,8 @@ import (
 	//err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
+
+	arrayList "github.com/colegno/arraylist"
 )
 
 type Environment struct {
@@ -20,13 +22,13 @@ func NewEnvironment(nombre string, father interface{}) Environment {
 	return env
 }
 
-func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, isMut bool, Line int, Column int, nameentorno string) {
+func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, isMut bool, Line int, Column int, nameentorno string, tipos *arrayList.List) {
 	if variable, ok := env.Tabla[id]; ok {
 		//fmt.Println("La variable " + variable.Id + " ya existe")
 		NewError("La variable "+variable.Id+" ya declarada en entorno "+nameentorno, nameentorno, Line, Column)
 		return
 	}
-	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column}
+	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column, TiposArr: tipos}
 }
 
 func (env Environment) GetVariable(id string, Line int, Column int, nameentorno string) interfaces.Symbol {
@@ -80,7 +82,7 @@ func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfa
 
 	for {
 		if variable, ok := tmpEnv.Tabla[id]; ok {
-			tmpEnv.Tabla[id] = interfaces.Symbol{Id: id, Tipo: variable.Tipo, Valor: value, IsMut: variable.IsMut}
+			tmpEnv.Tabla[id] = interfaces.Symbol{Id: id, Tipo: variable.Tipo, Valor: value, IsMut: variable.IsMut, TiposArr: variable.TiposArr}
 			//fmt.Println("variable.IsMutvariable.IsMutvariable.IsMutvariable.IsMut: ", variable.IsMut)
 			//fmt.Println("00variable.Id: ", variable.Id)
 			return variable

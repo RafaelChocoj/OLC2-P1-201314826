@@ -188,7 +188,7 @@ let x = 5;
 //_ => println!("otra cosa"),
 //};
 
-let mun = 3;
+let mut mun = 3;
 let arr1: [[&str; mun];2] = 
 [
     ["Hola", "Mundo", "0"],
@@ -215,12 +215,7 @@ println!("arr1: {}- {}- {:?}", arr1[1][1], arr1, arr1[1][0]);
 
 println!("--");
 
-// arreglo de 1 dimensión
-//let arr_1: [&str; 4] = ["Hola"; 4];
-//println!("arr1 {:?}", arr_1);
 
-//let arr_2 = [arr3; 4];
-//println!("arr2 {:?}", arr_2);
 
 // // arreglo de 3 dimensiones
 // let mut arr_123 = [
@@ -236,6 +231,7 @@ let mut arr3: [[[i64; 4];2]; 2] = [
 [ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
 ];
 println!("xd3 {:?}", arr3);
+println!("arr3[0][1][3] {}", arr3[0][1][3]);
 //arr3[0][1][3] = 50;
 //println!("arr3 {:?}", arr3);
 
@@ -250,10 +246,47 @@ let mut arrhol: [[&str; mun];2] =
 println!("arrhol {:?}", arrhol);
 
 let mut inx = 1;
-arrhol[inx][0] = 987;
-//arrhol[inx][0] = "Andres";
-//arrhol[1][1] = "Ete Shech";
-//println!("arrhol {:?}", arrhol);
+//arrhol[inx][0] = arr3[0][1][3];
+//arrhol[inx][0] = 987;
+arrhol[inx][0] = "Andres";
+arrhol[1][1] = "Ete Shech";
+
 
 //arrhol[0]= ["ete", "es", "Shech"];
+arrhol[0]= ["ete", "2", "Shech"];
 println!("arrhol {:?}", arrhol);
+//arrhol[0] = "hola";
+
+let tempo = arrhol[0][0];
+arrhol[0][0] = arrhol[1][0];
+arrhol[1][0] = tempo;
+
+println!("arrhol {:?}", arrhol);
+
+//// arreglo de 1 dimensión
+//let mut arr_1: [&str; 4] = ["Hola"; 4];
+//println!("arr1 {:?}", arr_1);
+
+////let arr_2 = [arr3; 4];
+//let mut arr_2  = [arr_1; 4];
+//println!("arr2 {:?}", arr_2);
+
+//println!("---");
+//arr_1[2] = "xd";
+//arr_2[2][1] = "123";
+//println!("arr1 {:?}", arr_1);
+//println!("arr2 {:?}", arr_2);
+
+arr3[0][1][3] = 50;
+let mut arr_2 = [arr3; 4];
+
+//println!("{:?}", arr3[0][1]); // imprime [9, 11, 13, 50]
+//println!("-- {:?}", arr_2[1][1][0]);
+//arr_2[1][1][0] = [0, 0, 0, 0];
+//println!("**{:?}", arr_2[1][1][0]);
+//println!("arr_2 {:?}", arr_2);
+
+let mut xx:i64 = 0;
+let mut array = [1, 2, 3, 4, 5];
+xx = 2;
+array[0] = 3;

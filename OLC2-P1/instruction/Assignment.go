@@ -23,7 +23,52 @@ func NewAssignment(id string, val interfaces.Expresion, dimensiones *arrayList.L
 	return instr
 }
 
-func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol, indexs *arrayList.List, resul interfaces.Symbol) *arrayList.List {
+func (p Assignment) IsArray_Valido(env interface{}, arr1 interfaces.Symbol, l_tipo *arrayList.List) bool {
+	a_valido := true
+	ar_noelementos := 0
+	arrType := l_tipo.GetValue(l_tipo.Len() - 1)
+	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
+	var arrSize int
+
+	if res_exp.Tipo == interfaces.INTEGER {
+		arrSize = res_exp.Valor.(int)
+	} else {
+		desc := fmt.Sprintf("Se esperaba un '%v' se tiene '%v'", "i64", interfaces.GetType(res_exp.Tipo))
+		err.NewError("Error en Size "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+		return false
+	}
+	l_tipo.RemoveAtIndex(l_tipo.Len() - 1)
+
+	for _, arr := range arr1.Valor.(*arrayList.List).ToArray() {
+		if arrType.(interfaces.ArrayType).Tipo != arr.(interfaces.Symbol).Tipo {
+			/// si los tipos son diferentes
+
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(arrType.(interfaces.ArrayType).Tipo), interfaces.GetType(arr.(interfaces.Symbol).Tipo))
+			//fmt.Println("***array*tipo es diferente de array t symbol: ",  desc)
+			err.NewError("Array invalida "+desc, env.(environment.Environment).Nombre, arrType.(interfaces.ArrayType).Line, arrType.(interfaces.ArrayType).Column)
+
+			return false
+		}
+		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
+			a_valido = p.IsArray_Valido(env, arr.(interfaces.Symbol), l_tipo.Clone())
+			if !a_valido {
+				//fmt.Println("**a_valido: ", a_valido )
+				return a_valido
+			}
+		}
+		ar_noelementos++
+	}
+
+	if ar_noelementos == arrSize && a_valido {
+		return true
+	}
+	//fmt.Println("**tamaños incorrectos ", "arrSize: ",arrSize, "ar_noelementos: ", ar_noelementos )
+	desc := fmt.Sprintf("Size del Array '%v' Cantidad de elementos '%v'", arrSize, ar_noelementos)
+	err.NewError("Tamaños incorrectos "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+	return false
+}
+
+func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol, indexs *arrayList.List, resul interfaces.Symbol) (*arrayList.List, bool) {
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
 
@@ -41,27 +86,45 @@ func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol,
 
 			////si es el ultimo index
 			if indexs.Len() == 0 {
-				fmt.Println("-		esto es el final xd: ", i)
+				fmt.Println("--------------------------------esto es el final xd: ", i)
 
-				//fmt.Println("-		arr.(interfaces.Symbol): ", arr.(interfaces.Symbol))
-				//sym := interfaces.Symbol{Id: arr.(interfaces.Symbol).Id, Tipo: arr.(interfaces.Symbol).Tipo,
-				//	Valor: resul, IsMut: arr.(interfaces.Symbol).IsMut}
-				fmt.Println("-		resul: ", resul)
-				//fmt.Println("-		sym: ", sym)
+				//fmt.Println("-		arr.(interfaces.Symbol).Tipo: ", arr.(interfaces.Symbol).Tipo)
+				fmt.Println("-		resul.Tipo: ", resul.Tipo)
+				if arr.(interfaces.Symbol).Tipo == resul.Tipo {
+					//sym := interfaces.Symbol{Id: arr.(interfaces.Symbol).Id, Tipo: arr.(interfaces.Symbol).Tipo,
+					//	Valor: resul, IsMut: arr.(interfaces.Symbol).IsMut}
 
-				tempExp.Add(resul)
+					if resul.Tipo == interfaces.ARRAY {
+						fmt.Println("						reflect.TypeOf(resul.Valor)", reflect.TypeOf(resul.Valor))
+						if resul.Valor.(*arrayList.List).Len() != arr.(interfaces.Symbol).Valor.(*arrayList.List).Len() {
+							//fmt.Println(" error en dimensiones")
+							desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", arr.(interfaces.Symbol).Valor.(*arrayList.List).Len(), resul.Valor.(*arrayList.List).Len())
+							err.NewError("Error en Dimensiones de Array "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+							return nil, false
+						}
+					}
+
+					fmt.Println("-		resul: ", resul)
+					tempExp.Add(resul)
+
+				} else {
+					desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(arr.(interfaces.Symbol).Tipo), interfaces.GetType(resul.Tipo))
+					err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+					return nil, false
+				}
 
 			} else {
 				fmt.Println("-		----arr: ", arr)
-				fmt.Println("							reflect.TypeOf(arr)", reflect.TypeOf(arr))
-				fmt.Println("							reflect.TypeOf(arr.(interfaces.Symbol).Valor)", reflect.TypeOf(arr.(interfaces.Symbol).Valor))
-				//var tempExp2 *arrayList.List
-				//tempExp2 = arrayList.New()
-				tempExp2 := p.Assignment_Array(env, arr.(interfaces.Symbol), indexs.Clone(), resul)
+				//fmt.Println("							reflect.TypeOf(arr)", reflect.TypeOf(arr))
+				//fmt.Println("							reflect.TypeOf(arr.(interfaces.Symbol).Valor)", reflect.TypeOf(arr.(interfaces.Symbol).Valor))
+				tempExp2, is_Correct := p.Assignment_Array(env, arr.(interfaces.Symbol), indexs.Clone(), resul)
+				if is_Correct == false {
+					return nil, false
+				}
 				sym := interfaces.Symbol{Id: arr.(interfaces.Symbol).Id, Tipo: arr.(interfaces.Symbol).Tipo,
 					Valor: tempExp2, IsMut: arr.(interfaces.Symbol).IsMut}
-				fmt.Println("							reflect.TypeOf(sym)", reflect.TypeOf(sym))
-				fmt.Println("							reflect.TypeOf(sym.Valor)", reflect.TypeOf(sym.Valor))
+				//fmt.Println("							reflect.TypeOf(sym)", reflect.TypeOf(sym))
+				//fmt.Println("							reflect.TypeOf(sym.Valor)", reflect.TypeOf(sym.Valor))
 				tempExp.Add(sym)
 			}
 
@@ -71,7 +134,7 @@ func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol,
 		}
 	}
 
-	return tempExp
+	return tempExp, true
 
 }
 func (p Assignment) Ejecutar(env interface{}) interface{} {
@@ -91,65 +154,69 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 	}
 
 	if result_mut.Tipo == interfaces.ARRAY {
-		fmt.Println("---             -is array ", result_mut.Tipo)
-		fmt.Println("---         	  reflect.TypeOf(result_mut)", reflect.TypeOf(result_mut))
-		fmt.Println("---         	  reflect.TypeOf(result_mut.Valor)", reflect.TypeOf(result_mut.Valor))
-		fmt.Println("---         	  result_mut.Valor", result_mut.Valor)
+		fmt.Println("++++++++++++++++++++++-is array ", result_mut.Tipo)
+		//fmt.Println("---         	  reflect.TypeOf(result_mut)", reflect.TypeOf(result_mut))
+		//fmt.Println("---         	  reflect.TypeOf(result_mut.Valor)", reflect.TypeOf(result_mut.Valor))
+
+		if p.Dimensiones == nil {
+			/*var tamar *arrayList.List
+			tamar = arrayList.New()
+			p.Dimensiones = tamar
+
+			prim := expresion.NewPrimitivo(0, interfaces.INTEGER, 0, 0)
+			p.Dimensiones.Add(prim)*/
+			fmt.Println("---         	  result_mut.TiposArr", result_mut.TiposArr)
+
+			var result interfaces.Symbol
+			result = p.Expresion.Ejecutar(env)
+
+			if result_mut.Tipo == result.Tipo {
+			} else {
+				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
+				err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+				return nil
+			}
+
+			/*validano array*/
+			if result_mut.TiposArr != nil {
+				if p.IsArray_Valido(env, result, result_mut.TiposArr) {
+				} else {
+					return nil
+				}
+			}
+
+			env.(environment.Environment).AlterVariable(p.Id, result)
+			return nil
+		}
+		fmt.Println("---         	  result_mut.Valor", p.Dimensiones.Len())
 
 		var result interfaces.Symbol
 		result = p.Expresion.Ejecutar(env)
 
-		tempExp := p.Assignment_Array(env, result_mut.Valor.(interfaces.Symbol), p.Dimensiones, result)
+		tempExp, is_Correct := p.Assignment_Array(env, result_mut.Valor.(interfaces.Symbol), p.Dimensiones, result)
 
 		fmt.Println("LLLLLLLLLLLLUEGA a FINNNNN")
-		fmt.Println("---         	  reflect.TypeOf(tempExp)", reflect.TypeOf(tempExp))
-		fmt.Println("---         	  reflect.TypeOf(result_mut.Valor.(interfaces.Symbol).Valor)", reflect.TypeOf(result_mut.Valor.(interfaces.Symbol).Valor))
-		//result_mut.Valor.(interfaces.Symbol).Valor.(*arrayList.List) = tempExp
-		sym := interfaces.Symbol{Id: result_mut.Valor.(interfaces.Symbol).Id, Tipo: result_mut.Valor.(interfaces.Symbol).Tipo,
-			Valor: tempExp, IsMut: result_mut.Valor.(interfaces.Symbol).IsMut}
+		if is_Correct == false {
+			return nil
+		}
 
+		//fmt.Println("---         	  reflect.TypeOf(tempExp)", reflect.TypeOf(tempExp))
+		//fmt.Println("---         	  reflect.TypeOf(result_mut.Valor.(interfaces.Symbol).Valor)", reflect.TypeOf(result_mut.Valor.(interfaces.Symbol).Valor))
+		sym := interfaces.Symbol{Id: result_mut.Valor.(interfaces.Symbol).Id, Tipo: result_mut.Valor.(interfaces.Symbol).Tipo,
+			Valor: tempExp, IsMut: result_mut.Valor.(interfaces.Symbol).IsMut /*tamarr*/}
+
+		/*validano array*/
+		if result_mut.TiposArr != nil {
+			if p.IsArray_Valido(env, sym, result_mut.TiposArr.Clone()) {
+			} else {
+				fmt.Println("hay err y va en nil")
+				return nil
+			}
+		}
 		env.(environment.Environment).AlterVariable(p.Id, sym)
 
 		fmt.Println("LLLLLLLLLLLLUEGA a FINNNNN 222")
 
-		/*for _, inx := range p.Dimensiones.ToArray() {
-		//fmt.Println("00000 inx 			: ", inx)
-
-		res_ind := inx.(interfaces.Expresion).Ejecutar(env)
-		index := res_ind.Valor.(int)
-		fmt.Println("	index	: ", index)
-		*/
-		/*array_list := result_mut.Valor.(interfaces.Symbol).Valor.(*arrayList.List)
-		//fmt.Println("	reflect.TypeOf(array_list)	: ", reflect.TypeOf(array_list))
-		fmt.Println("	array_list	: ", array_list)
-
-		fmt.Println("	reflect array_list.GetValue(index)	: ", reflect.TypeOf(array_list.GetValue(index)))
-
-		var val_arr interfaces.Symbol
-		val_arr = array_list.GetValue(index).(interfaces.Symbol)
-
-		//val_arr = array_list.GetValue(index).(interfaces.Symbol)
-
-		fmt.Println("	val_arr	: ", val_arr)
-		fmt.Println("	val_arr.Tipo	: ", interfaces.GetType(val_arr.Tipo))
-		fmt.Println("	val_arr.Valor	: ", val_arr.Valor)
-		val_arr.Valor = "nosevs"
-		fmt.Println("	val_arr.Valor 2222	: ", val_arr.Valor)
-		fmt.Println("	array_list.GetValue(index).(interfaces.Symbol) 3333	: ", array_list.GetValue(index).(interfaces.Symbol).Valor)
-
-		//env.(environment.Environment).AlterVariable(p.Id, result_mut)
-
-		return val_arr.Valor*/
-
-		///////////////
-
-		//var res_arr interfaces.Symbol
-		//res_arr := result_mut.Valor.(interfaces.Expresion).Ejecutar(env)
-		//fmt.Println("res_arr	: ", res_arr)
-
-		//arrval := result_mut.Valor.(*arrayList.List).GetValue(index).(interfaces.Symbol)
-		//fmt.Println("	arrvalarrvalarrval	: ", arrval)
-		/*}*/
 		return nil //
 	}
 
@@ -168,7 +235,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 
 		return result.Valor
 	} else {
-		desc := fmt.Sprintf("se esperaba %v se tiene %v", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
+		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
 		err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		return nil
 	}

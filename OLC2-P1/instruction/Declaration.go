@@ -5,6 +5,7 @@ import (
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
+
 	//"reflect"
 
 	arrayList "github.com/colegno/arraylist"
@@ -40,7 +41,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 	//fmt.Println("p.Tipo: ", interfaces.GetType(p.Tipo))
 
 	if result.Tipo == p.Tipo {
-		env.(environment.Environment).SaveVariable(p.Id, result, p.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre)
+		env.(environment.Environment).SaveVariable(p.Id, result, p.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil)
 		/*} else if p.IsArray {
 			env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY)
 		} else if p.IsStruct {
@@ -52,14 +53,14 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 			//fmt.Println("ES  ARRAY: ", interfaces.GetType(result.Tipo))
 			//fmt.Println("-----reflect.TypeOf(result.Valor: ", reflect.TypeOf(result.Valor) )
 
-			if p.IsArray_Valido(env, result.Valor.(*arrayList.List)) {
+			/*if p.IsArray_Valido(env, result.Valor.(*arrayList.List)) {
 				//fmt.Println("TODO OK")
 			} else {
 				//fmt.Println("ERRR Los tipos no coinciden")
-			}
+			}*/
 		}
 		/*no tiene tipo en asignacion, se le asigna el tipo de la expresion*/
-		env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre)
+		env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil)
 	} else {
 		//fmt.Println("Los tipos no coinciden")
 		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))
@@ -68,7 +69,6 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 
 	return result.Valor
 }
-
 
 func (p Declaration) IsArray_Valido(env interface{}, arrlist *arrayList.List) bool {
 
@@ -83,15 +83,15 @@ func (p Declaration) IsArray_Valido(env interface{}, arrlist *arrayList.List) bo
 		//fmt.Println("33333	len array			: ", expre_arr.Valor )
 		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
 
-			p.IsArray_Valido(env, arr.(interfaces.Symbol).Valor.(*arrayList.List) )
+			p.IsArray_Valido(env, arr.(interfaces.Symbol).Valor.(*arrayList.List))
 		} else {
-			fmt.Println("							Valor else: 				", expre_arr.Valor )
+			fmt.Println("							Valor else: 				", expre_arr.Valor)
 			/*validando valores del array si todos los elementos son iguales*/
 			//fmt.Println("							tipo_primer: 				", tipo_primer)
-			if (tipo_primer != expre_arr.Tipo) {
+			if tipo_primer != expre_arr.Tipo {
 
-				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(tipo_primer), interfaces.GetType(expre_arr.Tipo) )
-				err.NewError("Array invalida "+desc, env.(environment.Environment).Nombre, p.Line, p.Column )
+				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(tipo_primer), interfaces.GetType(expre_arr.Tipo))
+				err.NewError("Array invalida "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 				return false
 			}
 		}

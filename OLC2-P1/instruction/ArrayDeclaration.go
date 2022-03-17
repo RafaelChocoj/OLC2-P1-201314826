@@ -3,6 +3,7 @@ package instruction
 import (
 	"OLC2/environment"
 	err "OLC2/environment"
+	"OLC2/expresion"
 	"OLC2/interfaces"
 	"fmt"
 
@@ -11,11 +12,11 @@ import (
 
 type ArrayDeclaration struct {
 	Id        string
-	Tipos      *arrayList.List
+	Tipos     *arrayList.List
 	Expresion interfaces.Expresion
-	IsMut  bool
-	Line   int
-	Column int
+	IsMut     bool
+	Line      int
+	Column    int
 }
 
 func NewArrayDeclaration(id string, tipo *arrayList.List, val interfaces.Expresion, IsMut bool /*, isArray bool, isStruct bool*/, line int, column int) ArrayDeclaration {
@@ -28,10 +29,22 @@ func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 	var result interfaces.Symbol
 	result = p.Expresion.Ejecutar(env)
 	//fmt.Println("resultresultresultresultresult", result)
+	var temTipos *arrayList.List
+	temTipos = arrayList.New()
+	//fmt.Println("---         	  p.Tiposp.Tiposp.Tipos", p.Tipos)
+	for _, indexs := range p.Tipos.ToArray() {
+		res_exp := indexs.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
+		valprim := expresion.NewPrimitivo(res_exp.Valor, res_exp.Tipo, res_exp.Line, res_exp.Column)
+
+		varTip := interfaces.NewArrayType(indexs.(interfaces.ArrayType).Tipo, valprim,
+			indexs.(interfaces.ArrayType).Line, indexs.(interfaces.ArrayType).Column)
+		temTipos.Add(varTip)
+	}
+	p.Tipos = temTipos
 
 	//validar array
-	if p.IsArray_Valido(env, result, p.Tipos) {
-		env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre)
+	if p.IsArray_Valido(env, result, p.Tipos.Clone()) {
+		env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, p.Tipos)
 		//fmt.Println("TODO OK")
 	} else {
 		//fmt.Println("Los tipos no coinciden")
@@ -48,23 +61,23 @@ func (p ArrayDeclaration) IsArray_Valido(env interface{}, arr1 interfaces.Symbol
 	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
 	var arrSize int
 
-	if (res_exp.Tipo == interfaces.INTEGER) {
+	if res_exp.Tipo == interfaces.INTEGER {
 		arrSize = res_exp.Valor.(int)
 	} else {
-		desc := fmt.Sprintf("Se esperaba un '%v' se tiene '%v'", "i64", interfaces.GetType(res_exp.Tipo) )
+		desc := fmt.Sprintf("Se esperaba un '%v' se tiene '%v'", "i64", interfaces.GetType(res_exp.Tipo))
 		err.NewError("Error en Size "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		return false
 	}
 	l_tipo.RemoveAtIndex(l_tipo.Len() - 1)
 
 	for _, arr := range arr1.Valor.(*arrayList.List).ToArray() {
-		if arrType.(interfaces.ArrayType).Tipo  != arr.(interfaces.Symbol).Tipo {
+		if arrType.(interfaces.ArrayType).Tipo != arr.(interfaces.Symbol).Tipo {
 			/// si los tipos son diferentes
-			
-			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(arrType.(interfaces.ArrayType).Tipo), interfaces.GetType(arr.(interfaces.Symbol).Tipo) )
+
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(arrType.(interfaces.ArrayType).Tipo), interfaces.GetType(arr.(interfaces.Symbol).Tipo))
 			//fmt.Println("***array*tipo es diferente de array t symbol: ",  desc)
-			err.NewError("Array invalida "+desc, env.(environment.Environment).Nombre, arrType.(interfaces.ArrayType).Line, arrType.(interfaces.ArrayType).Column )
-					
+			err.NewError("Array invalida "+desc, env.(environment.Environment).Nombre, arrType.(interfaces.ArrayType).Line, arrType.(interfaces.ArrayType).Column)
+
 			return false
 		}
 		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
