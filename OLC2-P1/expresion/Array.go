@@ -12,14 +12,13 @@ import (
 /*
 tipo = 1 //let arr1: [&str; 2] = ["Hola", "Mundo"];
 tipo = 2 //let arr1: [&str; 4] = ["Hola"; 4];
-tipo = 3
 */
 
 type Array struct {
 	ListExp *arrayList.List
 
 	Expresion interfaces.Expresion
-	Tam interfaces.Expresion
+	Tam       interfaces.Expresion
 
 	TipoDec int
 
@@ -45,27 +44,26 @@ func (p Array) Ejecutar(env interface{}) interfaces.Symbol {
 			tempExp.Add(s.(interfaces.Expresion).Ejecutar(env))
 		}
 
-	/*array formato tipo;tam*/
+		/*array formato tipo;tam*/
 	} else if p.TipoDec == 2 {
 		res_tam := p.Tam.(interfaces.Expresion).Ejecutar(env)
-		
+
 		var arrSize int
-		if (res_tam.Tipo == interfaces.INTEGER) {
+		if res_tam.Tipo == interfaces.INTEGER {
 			arrSize = res_tam.Valor.(int)
 		} else {
-			desc := fmt.Sprintf("Se esperaba un '%v' se tiene '%v'", "i64", interfaces.GetType(res_tam.Tipo) )
+			desc := fmt.Sprintf("Se esperaba un '%v' se tiene '%v'", "i64", interfaces.GetType(res_tam.Tipo))
 			err.NewError("Error en Size "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			//return false
 		}
 		fmt.Println("		arrSize: ", arrSize)
 
 		//for _, s := range arrSize {
-			for i := 0; i < arrSize; i++ {
+		for i := 0; i < arrSize; i++ {
 			//tempExp.Add(s.(interfaces.Expresion).Ejecutar(env))
 			tempExp.Add(p.Expresion.(interfaces.Expresion).Ejecutar(env))
 		}
 	}
-	
 
 	return interfaces.Symbol{
 		Id:    "",

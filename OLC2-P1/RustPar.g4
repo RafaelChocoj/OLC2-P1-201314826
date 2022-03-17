@@ -97,7 +97,24 @@ array_type returns [*arrayList.List ty]
 ;
 
 asignacion returns [interfaces.Instruction instr]
-    : id=ID '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
+    : id=ID '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, nil, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
+    /*array asignacion*/
+    | id=ID list_index '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $list_index.lista, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
+;
+
+list_index returns[*arrayList.List lista]
+@init{
+    $lista = arrayList.New()
+}
+    :  listi = list_index index_array {
+                                      $listi.lista.Add($index_array.index)
+                                      $lista = $listi.lista
+                                  }
+    |  index_array  {$lista.Add($index_array.index)}
+;
+
+index_array   returns [interfaces.Expresion index]
+    :   '[' expression ']'  {$index = $expression.p}
 ;
 
 //  IF

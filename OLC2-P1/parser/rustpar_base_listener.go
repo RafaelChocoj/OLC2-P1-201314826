@@ -81,6 +81,18 @@ func (s *BaseRustParListener) EnterAsignacion(ctx *AsignacionContext) {}
 // ExitAsignacion is called when production asignacion is exited.
 func (s *BaseRustParListener) ExitAsignacion(ctx *AsignacionContext) {}
 
+// EnterList_index is called when production list_index is entered.
+func (s *BaseRustParListener) EnterList_index(ctx *List_indexContext) {}
+
+// ExitList_index is called when production list_index is exited.
+func (s *BaseRustParListener) ExitList_index(ctx *List_indexContext) {}
+
+// EnterIndex_array is called when production index_array is entered.
+func (s *BaseRustParListener) EnterIndex_array(ctx *Index_arrayContext) {}
+
+// ExitIndex_array is called when production index_array is exited.
+func (s *BaseRustParListener) ExitIndex_array(ctx *Index_arrayContext) {}
+
 // EnterIf_sent is called when production if_sent is entered.
 func (s *BaseRustParListener) EnterIf_sent(ctx *If_sentContext) {}
 

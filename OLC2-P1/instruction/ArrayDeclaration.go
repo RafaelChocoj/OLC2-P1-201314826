@@ -27,7 +27,7 @@ func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
 	result = p.Expresion.Ejecutar(env)
-	fmt.Println("resultresultresultresultresult", result)
+	//fmt.Println("resultresultresultresultresult", result)
 
 	//validar array
 	if p.IsArray_Valido(env, result, p.Tipos) {

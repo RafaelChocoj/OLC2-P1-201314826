@@ -38,6 +38,12 @@ type RustParListener interface {
 	// EnterAsignacion is called when entering the asignacion production.
 	EnterAsignacion(c *AsignacionContext)
 
+	// EnterList_index is called when entering the list_index production.
+	EnterList_index(c *List_indexContext)
+
+	// EnterIndex_array is called when entering the index_array production.
+	EnterIndex_array(c *Index_arrayContext)
+
 	// EnterIf_sent is called when entering the if_sent production.
 	EnterIf_sent(c *If_sentContext)
 
@@ -127,6 +133,12 @@ type RustParListener interface {
 
 	// ExitAsignacion is called when exiting the asignacion production.
 	ExitAsignacion(c *AsignacionContext)
+
+	// ExitList_index is called when exiting the list_index production.
+	ExitList_index(c *List_indexContext)
+
+	// ExitIndex_array is called when exiting the index_array production.
+	ExitIndex_array(c *Index_arrayContext)
 
 	// ExitIf_sent is called when exiting the if_sent production.
 	ExitIf_sent(c *If_sentContext)

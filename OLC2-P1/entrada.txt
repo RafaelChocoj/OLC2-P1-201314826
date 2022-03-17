@@ -210,11 +210,6 @@ println!("arr1: {}- {}- {:?}", arr1[1][1], arr1, arr1[1][0]);
 //let mut arr3:i64 = 3;
 //println!("arr3 {}", arr3);
 
-let mut arr3: [[[i64; 4];2]; 2] = [
-[ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
-[ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
-];
-println!("xd3 {:?}", arr3);
 
 //println!("arr3[0][1] {:?}", arr3[0][1][1]);
 
@@ -227,11 +222,38 @@ println!("--");
 //let arr_2 = [arr3; 4];
 //println!("arr2 {:?}", arr_2);
 
-// arreglo de 3 dimensiones
-let mut arr_123 = [
-[ [ 1, 3, 5, 7], [ 5;4 ] ],
-[ [ 2, 4, 6, 8], [ 10;4 ] ],
-[ [ 2; 4 ], [ 0; 4 ] ]
-];
+// // arreglo de 3 dimensiones
+// let mut arr_123 = [
+// [ [ 1, 3, 5, 7], [ 5;4 ] ],
+// [ [ "2", "4", "6", "8"], [ 10;4 ] ],
+// [ [ 2; 4 ], [ 0; 4 ] ]
+// ];
 
-println!("arr_123 {:?}", arr_123);
+// println!("arr_123 {:?}", arr_123);
+
+let mut arr3: [[[i64; 4];2]; 2] = [
+[ [ 1, 3, 5, 7], [ 9, 11, 13, 15] ],
+[ [ 2, 4, 6, 8], [10, 12, 14, 16] ] 
+];
+println!("xd3 {:?}", arr3);
+//arr3[0][1][3] = 50;
+//println!("arr3 {:?}", arr3);
+
+//let mut arrhol: [&str; 2] = ["Hola", "Mundo"];
+
+println!("***********************************");
+let mut arrhol: [[&str; mun];2] = 
+[
+    ["Hola", "Mundo", "0"],
+    ["hello", "world", "1"]
+];
+println!("arrhol {:?}", arrhol);
+
+let mut inx = 1;
+arrhol[inx][0] = 987;
+//arrhol[inx][0] = "Andres";
+//arrhol[1][1] = "Ete Shech";
+//println!("arrhol {:?}", arrhol);
+
+//arrhol[0]= ["ete", "es", "Shech"];
+println!("arrhol {:?}", arrhol);
