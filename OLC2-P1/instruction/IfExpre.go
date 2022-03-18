@@ -43,12 +43,12 @@ func NewIfExpre(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb
 	}
 }
 
-func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
+func (i IfExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	var resultado interface{}
 
 	var result interfaces.Symbol
-	result = i.Condicion.Ejecutar(env)
+	result = i.Condicion.EjecutarValor(env)
 	//fmt.Println("----result.Valor: ", result.Valor)
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
@@ -57,7 +57,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 	/***************ini validando tipos**********************/
 	var valtypes = false
 	var exp_dom interfaces.Symbol
-	exp_dom = i.B_PrinExp.Ejecutar(env)
+	exp_dom = i.B_PrinExp.EjecutarValor(env)
 	//fmt.Println("							 exp_dom.Valor: ", exp_dom.Valor)
 	//fmt.Println("							 exp_dom.Tipo: ", exp_dom.Tipo)
 
@@ -67,7 +67,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 		for _, s := range i.B_IfElseExp.ToArray() {
 
 			var exp_elif interfaces.Symbol
-			exp_elif = s.(IfExpre).B_PrinExp.Ejecutar(env)
+			exp_elif = s.(IfExpre).B_PrinExp.EjecutarValor(env)
 			//fmt.Println("							 		exp_elif.Valor: ", exp_elif.Valor)
 			//fmt.Println("							 		exp_elif.Tipo: ", exp_elif.Tipo)
 
@@ -81,7 +81,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 		}
 	}
 	var exp_else interfaces.Symbol
-	exp_else = i.B_ElseExp.Ejecutar(env)
+	exp_else = i.B_ElseExp.EjecutarValor(env)
 	//fmt.Println("							 exp_else.Valor: ", exp_else.Valor)
 	//fmt.Println("							 exp_else.Tipo: ", exp_else.Tipo)
 
@@ -118,7 +118,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 		} else if i.IsExpre == true {*/ //// si es if como expresion
 
 		var res_exp interfaces.Symbol
-		res_exp = i.B_PrinExp.Ejecutar(env)
+		res_exp = i.B_PrinExp.EjecutarValor(env)
 		fmt.Println("0000000 res_exp.Valor: ", res_exp.Valor)
 		fmt.Println("0000000 res_exp.Tipo: ", res_exp.Tipo)
 		return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
@@ -133,7 +133,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 
 				var elseif interfaces.Symbol
 				//elseif = i.Condicion.Ejecutar(env)
-				elseif = s.(IfExpre).Condicion.Ejecutar(env)
+				elseif = s.(IfExpre).Condicion.EjecutarValor(env)
 				//fmt.Println("-22222222222222---elseif.Valor: ", elseif.Valor)
 				//fmt.Println("-22222222222222---elseif.Tipo: ", elseif.Tipo)
 
@@ -158,7 +158,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 					return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}*/
 
 					var res_ifelexp interfaces.Symbol
-					res_ifelexp = s.(IfExpre).B_PrinExp.Ejecutar(env)
+					res_ifelexp = s.(IfExpre).B_PrinExp.EjecutarValor(env)
 					fmt.Println("0000000 res_exp.Valor: ", res_ifelexp.Valor)
 					fmt.Println("0000000 res_exp.Tipo: ", res_ifelexp.Tipo)
 					return interfaces.Symbol{Id: "", Tipo: res_ifelexp.Tipo, Valor: res_ifelexp.Valor}
@@ -185,7 +185,7 @@ func (i IfExpre) Ejecutar(env interface{}) interfaces.Symbol {
 		} else if i.IsExpre == true {*/ //// si es if como expresion
 
 		var res_exp interfaces.Symbol
-		res_exp = i.B_ElseExp.Ejecutar(env)
+		res_exp = i.B_ElseExp.EjecutarValor(env)
 		fmt.Println("1111111 res_exp.Valor: ", res_exp.Valor)
 		fmt.Println("1111111 res_exp.Tipo: ", res_exp.Tipo)
 		return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}

@@ -33,7 +33,7 @@ func NewIf(condicion interfaces.Expresion, lb_Principal *arrayList.List, lb_IfEl
 func (i If) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
-	result = i.Condicion.Ejecutar(env)
+	result = i.Condicion.EjecutarValor(env)
 	//fmt.Println("----result.Valor: ", result.Valor)
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
@@ -62,7 +62,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 
 				var elseif interfaces.Symbol
 				//elseif = i.Condicion.Ejecutar(env)
-				elseif = s.(If).Condicion.Ejecutar(env)
+				elseif = s.(If).Condicion.EjecutarValor(env)
 				//fmt.Println("-22222222222222---elseif.Valor: ", elseif.Valor)
 				//fmt.Println("-22222222222222---elseif.Tipo: ", elseif.Tipo)
 

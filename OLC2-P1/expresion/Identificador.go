@@ -16,7 +16,7 @@ func NewIdentificador(id string, line int, column int) Identificador {
 	return exp
 }
 
-func (p Identificador) Ejecutar(env interface{}) interfaces.Symbol {
+func (p Identificador) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	result := env.(environment.Environment).GetVariable(p.Id, p.Line, p.Column, env.(environment.Environment).Nombre)
 

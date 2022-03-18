@@ -34,7 +34,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
 
-	result = p.Expresion.Ejecutar(env)
+	result = p.Expresion.EjecutarValor(env)
 
 	fmt.Println("----p.IsMut: ", p.IsMut)
 	//fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))

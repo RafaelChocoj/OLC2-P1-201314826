@@ -1,12 +1,13 @@
 package instruction
 
 import (
+	"OLC2/environment"
 	console "OLC2/environment"
 	err "OLC2/environment"
-	"OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
 	"strings"
+
 	//"reflect"
 
 	arrayList "github.com/colegno/arraylist"
@@ -15,8 +16,8 @@ import (
 type Imprimir struct {
 	//Expresion interfaces.Expresion
 	L_Expresion *arrayList.List
-	Line   int
-	Column int
+	Line        int
+	Column      int
 }
 
 //func NewImprimir(val interfaces.Expresion) Imprimir {
@@ -37,13 +38,11 @@ func (p Imprimir) PrintArray(env interface{}, arrlist *arrayList.List) string {
 		arr := arrlist.GetValue(i)
 		//fmt.Println("00000 arr 			: ", arr)
 		//fmt.Println("00000	type				: ", interfaces.GetType(arr.(interfaces.Symbol).Tipo))
-		
-		
+
 		expre_print := arr.(interfaces.Symbol)
-		
+
 		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
 			//fmt.Println("	1111111expre_print.Tipo: 				", interfaces.GetType(expre_print.Tipo) )
-		
 
 			/*var coma = "";
 			if arr.(interfaces.Symbol).Valor.(*arrayList.List).Len() > 0 {
@@ -51,20 +50,20 @@ func (p Imprimir) PrintArray(env interface{}, arrlist *arrayList.List) string {
 			}*/
 			getres := p.PrintArray(env, arr.(interfaces.Symbol).Valor.(*arrayList.List))
 			//fmt.Println("	1getresgetresgetres: 				", getres )
-			array_format = array_format + getres 
+			array_format = array_format + getres
 		} else {
 			//fmt.Println("	1111111expre_print.Valor else: 				", expre_print.Valor )
-			
-			var coma = "";
-			if i < (arrlist.Len()-1) {
+
+			var coma = ""
+			if i < (arrlist.Len() - 1) {
 				coma = ", "
 			}
 			if arr.(interfaces.Symbol).Tipo == interfaces.STRING || arr.(interfaces.Symbol).Tipo == interfaces.STR {
-				array_format = array_format + fmt.Sprintf("\"%v\"", expre_print.Valor)+ coma
+				array_format = array_format + fmt.Sprintf("\"%v\"", expre_print.Valor) + coma
 			} else {
-				array_format = array_format + fmt.Sprintf("%v", expre_print.Valor)+ coma
+				array_format = array_format + fmt.Sprintf("%v", expre_print.Valor) + coma
 			}
-			
+
 		}
 	}
 	array_format = array_format + "]" //+ ", "
@@ -74,16 +73,16 @@ func (p Imprimir) PrintArray(env interface{}, arrlist *arrayList.List) string {
 
 func (p Imprimir) Ejecutar(env interface{}) interface{} {
 
-	//format := fmt.Sprintf("%v", p.Values.GetValue(0).(interfaces.Expression).Ejecutar(ast, env).Valor)
+	//format := fmt.Sprintf("%v", p.Values.GetValue(0).(interfaces.Expression).EjecutarValor(ast, env).Valor)
 
 	if p.L_Expresion.Len() > 1 {
 
-		//format := fmt.Sprintf("%v", p.Values.GetValue(0).(interfaces.Expression).Ejecutar(ast, env).Valor)
-		
+		//format := fmt.Sprintf("%v", p.Values.GetValue(0).(interfaces.Expression).EjecutarValor(ast, env).Valor)
+
 		var result interfaces.Symbol
-		result = p.L_Expresion.GetValue(0).(interfaces.Expresion).Ejecutar(env)
-		format_str := fmt.Sprintf("%v", result.Valor) 
-		
+		result = p.L_Expresion.GetValue(0).(interfaces.Expresion).EjecutarValor(env)
+		format_str := fmt.Sprintf("%v", result.Valor)
+
 		p.L_Expresion.RemoveAtIndex(0)
 
 		//fmt.Println("format_str: ", format_str)
@@ -98,10 +97,9 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 			desc := fmt.Sprintf("format: '%v' parametros: '%v'", noformat, p.L_Expresion.Len())
 			err.NewError("Formato y número de expresiones incorrecto, "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		}
-		
 
 		for _, exp := range p.L_Expresion.ToArray() {
-			expre_print := exp.(interfaces.Expresion).Ejecutar(env)
+			expre_print := exp.(interfaces.Expresion).EjecutarValor(env)
 			//fmt.Println("-----expre_print.Tipo: ", interfaces.GetType(expre_print.Tipo) )
 			//fmt.Println("-----reflect.TypeOf(expre_print.Valor: ", reflect.TypeOf(expre_print.Valor) )
 
@@ -110,10 +108,10 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 				str_arr = strings.ReplaceAll(str_arr, "][", "], [")
 				//fmt.Println("str_arr: ", str_arr)
 
-				format_str = strings.Replace(format_str, "{:?}", str_arr,1)
+				format_str = strings.Replace(format_str, "{:?}", str_arr, 1)
 
 			} else {
-				format_str = strings.Replace(format_str, "{}", fmt.Sprintf("%v", expre_print.Valor),1)
+				format_str = strings.Replace(format_str, "{}", fmt.Sprintf("%v", expre_print.Valor), 1)
 			}
 		}
 
@@ -125,7 +123,7 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 	}
 
 	var result interfaces.Symbol
-	result = p.L_Expresion.GetValue(0).(interfaces.Expresion).Ejecutar(env)
+	result = p.L_Expresion.GetValue(0).(interfaces.Expresion).EjecutarValor(env)
 
 	fmt.Println("-result.Tipo: ", interfaces.GetType(result.Tipo))
 	//fmt.Println(result.Valor)
@@ -135,7 +133,6 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 	return nil
 	//return result.Valor
 }
-
 
 /*func (p Imprimir) Ejecutar(env interface{}) interface{} {
 

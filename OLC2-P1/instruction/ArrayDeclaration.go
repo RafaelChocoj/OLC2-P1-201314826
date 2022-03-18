@@ -27,13 +27,13 @@ func NewArrayDeclaration(id string, tipo *arrayList.List, val interfaces.Expresi
 func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 
 	var result interfaces.Symbol
-	result = p.Expresion.Ejecutar(env)
+	result = p.Expresion.EjecutarValor(env)
 	//fmt.Println("resultresultresultresultresult", result)
 	var temTipos *arrayList.List
 	temTipos = arrayList.New()
 	//fmt.Println("---         	  p.Tiposp.Tiposp.Tipos", p.Tipos)
 	for _, indexs := range p.Tipos.ToArray() {
-		res_exp := indexs.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
+		res_exp := indexs.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
 		valprim := expresion.NewPrimitivo(res_exp.Valor, res_exp.Tipo, res_exp.Line, res_exp.Column)
 
 		varTip := interfaces.NewArrayType(indexs.(interfaces.ArrayType).Tipo, valprim,
@@ -58,7 +58,7 @@ func (p ArrayDeclaration) IsArray_Valido(env interface{}, arr1 interfaces.Symbol
 	a_valido := true
 	ar_noelementos := 0
 	arrType := l_tipo.GetValue(l_tipo.Len() - 1)
-	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
+	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
 	var arrSize int
 
 	if res_exp.Tipo == interfaces.INTEGER {

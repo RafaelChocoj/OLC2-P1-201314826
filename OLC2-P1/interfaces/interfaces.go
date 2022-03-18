@@ -17,7 +17,7 @@ type Symbol struct {
 }
 
 type Expresion interface {
-	Ejecutar(env interface{}) Symbol
+	EjecutarValor(env interface{}) Symbol
 }
 
 type Instruction interface {

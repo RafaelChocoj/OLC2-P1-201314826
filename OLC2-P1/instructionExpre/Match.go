@@ -37,24 +37,22 @@ func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Ins
 }
 
 /*func (m Match) Ejecutar(env interface{}) interfaces.Symbol {
-	
+
 	var resultado interface{}
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 }*/
 
-func (m Match) Ejecutar(env interface{}) interface{}  {
+func (m Match) Ejecutar(env interface{}) interface{} {
 
 	//var resultado interface{}
 
 	var result interfaces.Symbol
-	result = m.Expre.Ejecutar(env)
+	result = m.Expre.EjecutarValor(env)
 	fmt.Println("----result.Valor: ", result.Valor)
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
 	var istrue = false
 	var isfalse = false
-
-
 
 	/*verificando el mismo tipo*/
 	var valtypes = false
@@ -83,7 +81,7 @@ func (m Match) Ejecutar(env interface{}) interface{}  {
 				}
 
 				//if expre.Valor == result.Valor {
-				if (result.Tipo == interfaces.BOOLEAN ) {
+				if result.Tipo == interfaces.BOOLEAN {
 					if expre.Valor == true {
 						istrue = true
 					}
@@ -103,7 +101,7 @@ func (m Match) Ejecutar(env interface{}) interface{}  {
 		}
 	}
 
-	if ( istrue == true && isfalse == true) && result.Tipo == interfaces.BOOLEAN {
+	if (istrue == true && isfalse == true) && result.Tipo == interfaces.BOOLEAN {
 
 		if m.DefLB_Instrucciones != nil || m.DefInstruc != nil {
 			err.NewError("Brazos cubiertos en booleano, sin necesidad de '_' ", env.(environment.Environment).Nombre, m.Line, m.Column)

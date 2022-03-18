@@ -31,7 +31,7 @@ func NewArray(list *arrayList.List, expresion interfaces.Expresion, tam interfac
 	return exp
 }
 
-func (p Array) Ejecutar(env interface{}) interfaces.Symbol {
+func (p Array) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
@@ -41,12 +41,12 @@ func (p Array) Ejecutar(env interface{}) interfaces.Symbol {
 	/*array declarada con tipo y array asignado*/
 	if p.TipoDec == 1 {
 		for _, s := range p.ListExp.ToArray() {
-			tempExp.Add(s.(interfaces.Expresion).Ejecutar(env))
+			tempExp.Add(s.(interfaces.Expresion).EjecutarValor(env))
 		}
 
 		/*array formato tipo;tam*/
 	} else if p.TipoDec == 2 {
-		res_tam := p.Tam.(interfaces.Expresion).Ejecutar(env)
+		res_tam := p.Tam.(interfaces.Expresion).EjecutarValor(env)
 
 		var arrSize int
 		if res_tam.Tipo == interfaces.INTEGER {
@@ -60,8 +60,8 @@ func (p Array) Ejecutar(env interface{}) interfaces.Symbol {
 
 		//for _, s := range arrSize {
 		for i := 0; i < arrSize; i++ {
-			//tempExp.Add(s.(interfaces.Expresion).Ejecutar(env))
-			tempExp.Add(p.Expresion.(interfaces.Expresion).Ejecutar(env))
+			//tempExp.Add(s.(interfaces.Expresion).EjecutarValor(env))
+			tempExp.Add(p.Expresion.(interfaces.Expresion).EjecutarValor(env))
 		}
 	}
 

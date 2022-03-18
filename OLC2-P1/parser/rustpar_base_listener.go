@@ -75,6 +75,12 @@ func (s *BaseRustParListener) EnterInstruccion_only(ctx *Instruccion_onlyContext
 // ExitInstruccion_only is called when production instruccion_only is exited.
 func (s *BaseRustParListener) ExitInstruccion_only(ctx *Instruccion_onlyContext) {}
 
+// EnterCallFunction is called when production callFunction is entered.
+func (s *BaseRustParListener) EnterCallFunction(ctx *CallFunctionContext) {}
+
+// ExitCallFunction is called when production callFunction is exited.
+func (s *BaseRustParListener) ExitCallFunction(ctx *CallFunctionContext) {}
+
 // EnterPrintconsola is called when production printconsola is entered.
 func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 

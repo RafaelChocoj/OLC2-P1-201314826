@@ -27,7 +27,7 @@ func (p Assignment) IsArray_Valido(env interface{}, arr1 interfaces.Symbol, l_ti
 	a_valido := true
 	ar_noelementos := 0
 	arrType := l_tipo.GetValue(l_tipo.Len() - 1)
-	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).Ejecutar(env)
+	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
 	var arrSize int
 
 	if res_exp.Tipo == interfaces.INTEGER {
@@ -73,7 +73,7 @@ func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol,
 	tempExp = arrayList.New()
 
 	inx := indexs.GetValue(0)
-	res_ind := inx.(interfaces.Expresion).Ejecutar(env)
+	res_ind := inx.(interfaces.Expresion).EjecutarValor(env)
 	index := res_ind.Valor.(int)
 	fmt.Println("-	index	: ", index)
 	indexs.RemoveAtIndex(0)
@@ -168,7 +168,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 			fmt.Println("---         	  result_mut.TiposArr", result_mut.TiposArr)
 
 			var result interfaces.Symbol
-			result = p.Expresion.Ejecutar(env)
+			result = p.Expresion.EjecutarValor(env)
 
 			if result_mut.Tipo == result.Tipo {
 			} else {
@@ -191,7 +191,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		fmt.Println("---         	  result_mut.Valor", p.Dimensiones.Len())
 
 		var result interfaces.Symbol
-		result = p.Expresion.Ejecutar(env)
+		result = p.Expresion.EjecutarValor(env)
 
 		tempExp, is_Correct := p.Assignment_Array(env, result_mut.Valor.(interfaces.Symbol), p.Dimensiones, result)
 
@@ -221,7 +221,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 	}
 
 	var result interfaces.Symbol
-	result = p.Expresion.Ejecutar(env)
+	result = p.Expresion.EjecutarValor(env)
 
 	//fmt.Println("----reflect.TypeOf(result_mut.Tipo) ", reflect.TypeOf(result_mut.Tipo))
 	//fmt.Println("----result_mut.Tipo ", result_mut.Tipo)

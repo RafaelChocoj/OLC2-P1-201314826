@@ -123,16 +123,16 @@ func NewOperacion(Op1 interfaces.Expresion, Operador string, Op2 interfaces.Expr
 	return exp
 }
 
-func (p Aritmetica) Ejecutar(env interface{}) interfaces.Symbol {
+func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	var retornoIzq interfaces.Symbol
 	var retornoDer interfaces.Symbol
 
 	if p.Unario == true {
-		retornoIzq = p.Op1.Ejecutar(env)
+		retornoIzq = p.Op1.EjecutarValor(env)
 	} else {
-		retornoIzq = p.Op1.Ejecutar(env)
-		retornoDer = p.Op2.Ejecutar(env)
+		retornoIzq = p.Op1.EjecutarValor(env)
+		retornoDer = p.Op2.EjecutarValor(env)
 	}
 
 	var resultado interface{}

@@ -1,6 +1,8 @@
 package instructionExpre
 
 import (
+	"OLC2/interfaces"
+
 	arrayList "github.com/colegno/arraylist"
 )
 
@@ -13,10 +15,10 @@ func NewCallFunction(idfuncion string, listExpresiones *arrayList.List) CallFunc
 	return CallFunction{IdFun: idfuncion, ListaExpresiones: listExpresiones}
 }
 
-/*func (p CallFunction) _Ejecutar(env interface{}) interfaces.Symbol {
+func (p CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 }
 func (m CallFunction) Ejecutar(env interface{}) interface{} {
 	return nil
-}*/
+}

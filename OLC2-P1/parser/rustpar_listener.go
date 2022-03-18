@@ -35,6 +35,9 @@ type RustParListener interface {
 	// EnterInstruccion_only is called when entering the instruccion_only production.
 	EnterInstruccion_only(c *Instruccion_onlyContext)
 
+	// EnterCallFunction is called when entering the callFunction production.
+	EnterCallFunction(c *CallFunctionContext)
+
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
@@ -145,6 +148,9 @@ type RustParListener interface {
 
 	// ExitInstruccion_only is called when exiting the instruccion_only production.
 	ExitInstruccion_only(c *Instruccion_onlyContext)
+
+	// ExitCallFunction is called when exiting the callFunction production.
+	ExitCallFunction(c *CallFunctionContext)
 
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)

@@ -92,7 +92,7 @@ instruccion returns [interfaces.Instruction instr]
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
 
-  //| callFunction {$instr = $callFunction.instr} 
+  | callFunction {$instr = $callFunction.instr} 
 ;
 
 instruccion_only returns [interfaces.Instruction instr]
@@ -103,17 +103,17 @@ instruccion_only returns [interfaces.Instruction instr]
   | match_sent {$instr = $match_sent.instr}
 
 
-  //| callFunction {$instr = $callFunction.instr} 
+  | callFunction {$instr = $callFunction.instr} 
 ;
 
 //llamada a funcion
-/*callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
+callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
     : ID '(' ')'  {
                     $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New())
                     $p = instructionExpre.NewCallFunction($ID.text, arrayList.New())
                   }
     //| ID '(' listParams ')'  
-;*/
+;
 
 printconsola returns [interfaces.Instruction instr]
     : PRINT_CON PARIZQ listParams PARDER {$instr = instruction.NewImprimir($listParams.l_e, $PRINT_CON.line, localctx.(*PrintconsolaContext).Get_PRINT_CON().GetColumn() )}
