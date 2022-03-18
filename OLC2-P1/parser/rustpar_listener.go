@@ -14,6 +14,21 @@ type RustParListener interface {
 	// EnterInstrucciones is called when entering the instrucciones production.
 	EnterInstrucciones(c *InstruccionesContext)
 
+	// EnterList_Funciones is called when entering the list_Funciones production.
+	EnterList_Funciones(c *List_FuncionesContext)
+
+	// EnterFuncion is called when entering the funcion production.
+	EnterFuncion(c *FuncionContext)
+
+	// EnterT_access is called when entering the t_access production.
+	EnterT_access(c *T_accessContext)
+
+	// EnterParams_declar is called when entering the params_declar production.
+	EnterParams_declar(c *Params_declarContext)
+
+	// EnterFn_main is called when entering the fn_main production.
+	EnterFn_main(c *Fn_mainContext)
+
 	// EnterInstruccion is called when entering the instruccion production.
 	EnterInstruccion(c *InstruccionContext)
 
@@ -109,6 +124,21 @@ type RustParListener interface {
 
 	// ExitInstrucciones is called when exiting the instrucciones production.
 	ExitInstrucciones(c *InstruccionesContext)
+
+	// ExitList_Funciones is called when exiting the list_Funciones production.
+	ExitList_Funciones(c *List_FuncionesContext)
+
+	// ExitFuncion is called when exiting the funcion production.
+	ExitFuncion(c *FuncionContext)
+
+	// ExitT_access is called when exiting the t_access production.
+	ExitT_access(c *T_accessContext)
+
+	// ExitParams_declar is called when exiting the params_declar production.
+	ExitParams_declar(c *Params_declarContext)
+
+	// ExitFn_main is called when exiting the fn_main production.
+	ExitFn_main(c *Fn_mainContext)
 
 	// ExitInstruccion is called when exiting the instruccion production.
 	ExitInstruccion(c *InstruccionContext)

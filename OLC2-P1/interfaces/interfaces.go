@@ -12,6 +12,8 @@ type Symbol struct {
 	Column int
 
 	TiposArr *arrayList.List
+
+	ListParams *arrayList.List
 }
 
 type Expresion interface {

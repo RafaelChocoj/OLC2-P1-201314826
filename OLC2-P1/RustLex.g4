@@ -35,6 +35,12 @@ MUT:   'mut';
 TO_STRING:   '.to_string()';
 TO_OWNED:   '.to_owned()';
 
+//funciones
+PUBLIC:     'pub';
+TYPETHEN:      '->';
+
+FN:     'fn';
+MAIN:   'main';
 
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;

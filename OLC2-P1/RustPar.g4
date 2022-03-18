@@ -14,8 +14,13 @@ options {
     import arrayList "github.com/colegno/arraylist"
 }
 
-start returns [*arrayList.List lista]
+/*original*/
+/*start returns [*arrayList.List lista]
   : instrucciones {$lista = $instrucciones.l}
+;*/
+
+start returns [*arrayList.List lista]
+  : list_Funciones {$lista = $list_Funciones.lista}
 ;
 
 instrucciones returns [*arrayList.List l]
@@ -31,12 +36,63 @@ instrucciones returns [*arrayList.List l]
     }
 ;
 
+list_Funciones returns [*arrayList.List lista]
+@init{
+    $lista = arrayList.New()
+}
+    : lisfun =  list_Funciones funcion  {
+                                          $lisfun.lista.Add( $funcion.instr)
+                                          $lista =  $lisfun.lista
+                                        }
+    | funcion     { $lista.Add( $funcion.instr ) }
+;
+
+
+funcion   returns [ interfaces.Instruction  instr]
+@init{ listParams :=  arrayList.New() }
+    : fn_main             {$instr =  $fn_main.instr}
+    | t_access FN  ID '(' ')' '->' tipos_var bloque_inst      { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo )}
+    | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = interfaces.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo)}
+;
+
+t_access returns [interfaces.TipoAccess  modAccess]
+    : PUBLIC  { $modAccess = interfaces.PUBLIC}
+    |         { $modAccess = interfaces.PRIVATE}
+;
+params_declar returns [*arrayList.List lista]
+@init{
+$lista =  arrayList.New()
+}
+    : sublista = params_declar ','  ID ':' tipos_var                 /*  {
+                                                                    listaIdes := arrayList.New()
+                                                                    listaIdes.Add(expresion.NewIdentificador($ID.text))
+                                                                    decl := definicion.NewDeclaracion(listaIdes, $tiposvars.tipo)
+                                                                    $sublista.lista.Add( decl )
+                                                                    $lista =  $sublista.lista
+                                                                 }*/
+    | ID ':' tipos_var  //{
+                          //listaIdes := arrayList.New()
+                          //listaIdes.Add(expresion.NewIdentificador($ID.text))
+                          //decl := definicion.NewDeclaracion(listaIdes, $tiposvars.tipo)
+                          //$lista.Add( decl)
+                        //}
+;
+
+//funciones
+fn_main returns[interfaces.Instruction instr]
+@init{ listParams:= arrayList.New() }
+    : FN MAIN '(' ')' bloque_inst
+    { $instr = interfaces.NewFunction("main",listParams,$bloque_inst.l, interfaces.VOID)}
+;
+
 instruccion returns [interfaces.Instruction instr]
   : printconsola ';' {$instr = $printconsola.instr}
   | declaracion ';' {$instr = $declaracion.instr}
   | asignacion ';' {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
+
+  //| callFunction {$instr = $callFunction.instr} 
 ;
 
 instruccion_only returns [interfaces.Instruction instr]
@@ -45,7 +101,19 @@ instruccion_only returns [interfaces.Instruction instr]
   | asignacion /*';'*/ {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
+
+
+  //| callFunction {$instr = $callFunction.instr} 
 ;
+
+//llamada a funcion
+/*callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
+    : ID '(' ')'  {
+                    $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New())
+                    $p = instructionExpre.NewCallFunction($ID.text, arrayList.New())
+                  }
+    //| ID '(' listParams ')'  
+;*/
 
 printconsola returns [interfaces.Instruction instr]
     : PRINT_CON PARIZQ listParams PARDER {$instr = instruction.NewImprimir($listParams.l_e, $PRINT_CON.line, localctx.(*PrintconsolaContext).Get_PRINT_CON().GetColumn() )}

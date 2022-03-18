@@ -33,6 +33,36 @@ func (s *BaseRustParListener) EnterInstrucciones(ctx *InstruccionesContext) {}
 // ExitInstrucciones is called when production instrucciones is exited.
 func (s *BaseRustParListener) ExitInstrucciones(ctx *InstruccionesContext) {}
 
+// EnterList_Funciones is called when production list_Funciones is entered.
+func (s *BaseRustParListener) EnterList_Funciones(ctx *List_FuncionesContext) {}
+
+// ExitList_Funciones is called when production list_Funciones is exited.
+func (s *BaseRustParListener) ExitList_Funciones(ctx *List_FuncionesContext) {}
+
+// EnterFuncion is called when production funcion is entered.
+func (s *BaseRustParListener) EnterFuncion(ctx *FuncionContext) {}
+
+// ExitFuncion is called when production funcion is exited.
+func (s *BaseRustParListener) ExitFuncion(ctx *FuncionContext) {}
+
+// EnterT_access is called when production t_access is entered.
+func (s *BaseRustParListener) EnterT_access(ctx *T_accessContext) {}
+
+// ExitT_access is called when production t_access is exited.
+func (s *BaseRustParListener) ExitT_access(ctx *T_accessContext) {}
+
+// EnterParams_declar is called when production params_declar is entered.
+func (s *BaseRustParListener) EnterParams_declar(ctx *Params_declarContext) {}
+
+// ExitParams_declar is called when production params_declar is exited.
+func (s *BaseRustParListener) ExitParams_declar(ctx *Params_declarContext) {}
+
+// EnterFn_main is called when production fn_main is entered.
+func (s *BaseRustParListener) EnterFn_main(ctx *Fn_mainContext) {}
+
+// ExitFn_main is called when production fn_main is exited.
+func (s *BaseRustParListener) ExitFn_main(ctx *Fn_mainContext) {}
+
 // EnterInstruccion is called when production instruccion is entered.
 func (s *BaseRustParListener) EnterInstruccion(ctx *InstruccionContext) {}
 
