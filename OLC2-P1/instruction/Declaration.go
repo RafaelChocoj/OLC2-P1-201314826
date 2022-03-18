@@ -67,7 +67,8 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 	}
 
-	return result.Valor
+	//return result.Valor
+	return nil
 }
 
 func (p Declaration) IsArray_Valido(env interface{}, arrlist *arrayList.List) bool {

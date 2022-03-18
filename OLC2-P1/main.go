@@ -45,6 +45,7 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		if reflect.TypeOf(s) == reflect.TypeOf(interfaces.Function{}) {
 			List_Funcs.Add(s.(interfaces.Function))
 			//s.(interfaces.Instruction).Ejecutar(globalEnv)
+			globalEnv.SaveFuncion(s.(interfaces.Function).Id, s, s.(interfaces.Function).Line, s.(interfaces.Function).Column)
 		}
 	}
 

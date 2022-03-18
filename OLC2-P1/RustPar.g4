@@ -51,8 +51,10 @@ list_Funciones returns [*arrayList.List lista]
 funcion   returns [ interfaces.Instruction  instr]
 @init{ listParams :=  arrayList.New() }
     : fn_main             {$instr =  $fn_main.instr}
-    | t_access FN  ID '(' ')' '->' tipos_var bloque_inst      { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo )}
-    | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = interfaces.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo)}
+    | t_access FN  ID '(' ')' '->' tipos_var bloque_inst    { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo, $ID.line, $ID.pos )}
+    | t_access FN  ID '(' ')' bloque_inst                   { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, interfaces.VOID, $ID.line, $ID.pos )}
+
+    | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = interfaces.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo, $ID.line, $ID.pos )}
 ;
 
 t_access returns [interfaces.TipoAccess  modAccess]
@@ -82,7 +84,7 @@ $lista =  arrayList.New()
 fn_main returns[interfaces.Instruction instr]
 @init{ listParams:= arrayList.New() }
     : FN MAIN '(' ')' bloque_inst
-    { $instr = interfaces.NewFunction("main",listParams,$bloque_inst.l, interfaces.VOID)}
+    { $instr = interfaces.NewFunction("main",listParams,$bloque_inst.l, interfaces.VOID, $MAIN.line, $MAIN.pos )}
 ;
 
 instruccion returns [interfaces.Instruction instr]
@@ -92,7 +94,7 @@ instruccion returns [interfaces.Instruction instr]
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
 
-  | callFunction {$instr = $callFunction.instr} 
+  | callFunction ';' {$instr = $callFunction.instr} 
 ;
 
 instruccion_only returns [interfaces.Instruction instr]
@@ -109,8 +111,8 @@ instruccion_only returns [interfaces.Instruction instr]
 //llamada a funcion
 callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
     : ID '(' ')'  {
-                    $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New())
-                    $p = instructionExpre.NewCallFunction($ID.text, arrayList.New())
+                    $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
+                    $p = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
                   }
     //| ID '(' listParams ')'  
 ;
