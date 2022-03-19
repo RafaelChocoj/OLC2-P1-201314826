@@ -53,6 +53,7 @@ funcion   returns [ interfaces.Instruction  instr]
     : fn_main             {$instr =  $fn_main.instr}
     | t_access FN  ID '(' ')' '->' tipos_var bloque_inst    { $instr = instructionExpre.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo, $ID.line, $ID.pos )}
     | t_access FN  ID '(' ')' bloque_inst                   { $instr = instructionExpre.NewFunction($ID.text,listParams,$bloque_inst.l, interfaces.VOID, $ID.line, $ID.pos )}
+    | t_access FN  ID '(' params_declar ')' bloque_inst     { $instr = instructionExpre.NewFunction($ID.text,$params_declar.lista,$bloque_inst.l, interfaces.VOID, $ID.line, $ID.pos )}
 
     | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = instructionExpre.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo, $ID.line, $ID.pos )}
 ;
@@ -67,19 +68,20 @@ params_declar returns [*arrayList.List lista]
 @init{
 $lista =  arrayList.New()
 }
-    : listdec = params_declar ','  ID ':' tipos_var    {
+    : listdec = params_declar ','  isMut=is_mut ID ':' tipos_var    {
                                                             listaIdes := arrayList.New()
                                                             listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
-                                                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, false, $ID.line, $ID.pos )
+                                                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, $isMut.mut, $ID.line, $ID.pos )
                                                             $listdec.lista.Add( decl )
                                                             $lista =  $listdec.lista
                                                         }
-    | ID ':' tipos_var  {
+    | isMut=is_mut ID ':' tipos_var  {
                             listaIdes := arrayList.New()
                             listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
-                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, false, $ID.line, $ID.pos )
+                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, $isMut.mut, $ID.line, $ID.pos )
                             $lista.Add( decl)
                         }
+    
 ;
 
 //funciones

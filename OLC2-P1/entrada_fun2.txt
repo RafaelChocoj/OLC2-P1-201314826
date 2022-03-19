@@ -1,0 +1,51 @@
+//fn pruba (a:i64) -> i64 //{
+fn main () {
+    println!("***********************************");
+    println!("estoy en main");
+
+//    let mut arrhol: [[&str; 3];2] = 
+//    [
+//        ["Hola", "Mundo", "0"],
+//        ["hello", "world", "1"]
+//    ];
+//    println!("arrhol {:?}", arrhol);
+
+    //let tempo = arrhol[0][0];
+    //arrhol[0][0] = arrhol[1][0];
+    //arrhol[1][0] = tempo;
+
+    //println!("arrhol {:?}", arrhol);
+
+    //println!("{}", varnoexiste);
+    prueba();
+
+    let ar1:[i64;2] = [2,3];
+    let ar2:[i64;3] = [10,11,12];
+    let mut varx:i64 = 0;
+    varx =  ar1[1] + ar2[2];
+    println!("varx {}", varx);
+
+    println!("xxxx");
+
+    prueba_2(3,2);
+    println!("----");
+    println!("+ {}", prueba_2(3,2));
+
+    //return a+1
+}
+
+fn prueba () {
+    println!("--------estoy en funcion prueba");
+    let a = 25;
+    println!("          a {}",a);
+    
+    //return a+1
+}
+
+
+fn prueba_2 (a:i64,b:i64) -> i64 {
+
+    println!("--------prueba_2");
+    println!("sum: {}", a+b);
+    return a+b;
+}
