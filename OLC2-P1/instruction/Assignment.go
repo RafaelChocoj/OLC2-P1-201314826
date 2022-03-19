@@ -233,7 +233,8 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		//fmt.Println("-123123---p.Id ", p.Id)
 		//fmt.Println("-123123---result.Valor ", result.Valor)
 
-		return result.Valor
+		return nil
+		//return result.Valor
 	} else {
 		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
 		err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)

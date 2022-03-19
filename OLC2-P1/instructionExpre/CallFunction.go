@@ -35,16 +35,16 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 	var tmpEnv environment.Environment
 	tmpEnv = environment.NewEnvironment("function", env.(environment.Environment))
 
-	funcion := env.(environment.Environment).GetFunction(f.IdFun).(interfaces.Function)
+	funcion := env.(environment.Environment).GetFunction(f.IdFun).(Function)
 
-	plantFunc := interfaces.NewFunction(funcion.Id, funcion.ListaParamsDecl.Clone(), funcion.ListaInstrucciones.Clone(),
+	plantFunc := NewFunction(funcion.Id, funcion.ListaParamsDecl.Clone(), funcion.ListaInstrucciones.Clone(),
 		funcion.Tipo, funcion.Line, funcion.Column)
 
-	//parafun := plantFunc.EjecutarParametros(tmpEnv, f.ListaExpresiones)
+	parafun := plantFunc.EjecutarParamets(tmpEnv, f.ListaExpresiones)
 
-	/*if !completo {
-		return entorno.ValorType{Valor: -1, Tipo: entorno.NULL}
-	}*/
+	if !parafun {
+		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+	}
 	valfun := plantFunc.Ejecutar(tmpEnv)
 	//fmt.Println("		valfun: ", valfun)
 	//fmt.Println("		reflect.TypeOf(valfun): ", reflect.TypeOf(valfun))

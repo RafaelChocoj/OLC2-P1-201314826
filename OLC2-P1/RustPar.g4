@@ -51,40 +51,42 @@ list_Funciones returns [*arrayList.List lista]
 funcion   returns [ interfaces.Instruction  instr]
 @init{ listParams :=  arrayList.New() }
     : fn_main             {$instr =  $fn_main.instr}
-    | t_access FN  ID '(' ')' '->' tipos_var bloque_inst    { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo, $ID.line, $ID.pos )}
-    | t_access FN  ID '(' ')' bloque_inst                   { $instr = interfaces.NewFunction($ID.text,listParams,$bloque_inst.l, interfaces.VOID, $ID.line, $ID.pos )}
+    | t_access FN  ID '(' ')' '->' tipos_var bloque_inst    { $instr = instructionExpre.NewFunction($ID.text,listParams,$bloque_inst.l, $tipos_var.tipo, $ID.line, $ID.pos )}
+    | t_access FN  ID '(' ')' bloque_inst                   { $instr = instructionExpre.NewFunction($ID.text,listParams,$bloque_inst.l, interfaces.VOID, $ID.line, $ID.pos )}
 
-    | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = interfaces.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo, $ID.line, $ID.pos )}
+    | t_access FN  ID '('  params_declar ')' '->' tipos_var bloque_inst   { $instr = instructionExpre.NewFunction($ID.text,$params_declar.lista, $bloque_inst.l,$tipos_var.tipo, $ID.line, $ID.pos )}
 ;
 
 t_access returns [interfaces.TipoAccess  modAccess]
     : PUBLIC  { $modAccess = interfaces.PUBLIC}
     |         { $modAccess = interfaces.PRIVATE}
 ;
+
+/*decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, $isMut.mut, $ID.line, $ID.pos )*/
 params_declar returns [*arrayList.List lista]
 @init{
 $lista =  arrayList.New()
 }
-    : sublista = params_declar ','  ID ':' tipos_var                 /*  {
-                                                                    listaIdes := arrayList.New()
-                                                                    listaIdes.Add(expresion.NewIdentificador($ID.text))
-                                                                    decl := definicion.NewDeclaracion(listaIdes, $tiposvars.tipo)
-                                                                    $sublista.lista.Add( decl )
-                                                                    $lista =  $sublista.lista
-                                                                 }*/
-    | ID ':' tipos_var  //{
-                          //listaIdes := arrayList.New()
-                          //listaIdes.Add(expresion.NewIdentificador($ID.text))
-                          //decl := definicion.NewDeclaracion(listaIdes, $tiposvars.tipo)
-                          //$lista.Add( decl)
-                        //}
+    : listdec = params_declar ','  ID ':' tipos_var    {
+                                                            listaIdes := arrayList.New()
+                                                            listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
+                                                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, false, $ID.line, $ID.pos )
+                                                            $listdec.lista.Add( decl )
+                                                            $lista =  $listdec.lista
+                                                        }
+    | ID ':' tipos_var  {
+                            listaIdes := arrayList.New()
+                            listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
+                            decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, false, $ID.line, $ID.pos )
+                            $lista.Add( decl)
+                        }
 ;
 
 //funciones
 fn_main returns[interfaces.Instruction instr]
 @init{ listParams:= arrayList.New() }
     : FN MAIN '(' ')' bloque_inst
-    { $instr = interfaces.NewFunction("main",listParams,$bloque_inst.l, interfaces.VOID, $MAIN.line, $MAIN.pos )}
+    { $instr = instructionExpre.NewFunction("main",listParams,$bloque_inst.l, interfaces.VOID, $MAIN.line, $MAIN.pos )}
 ;
 
 instruccion returns [interfaces.Instruction instr]
@@ -95,6 +97,7 @@ instruccion returns [interfaces.Instruction instr]
   | match_sent {$instr = $match_sent.instr}
 
   | callFunction ';' {$instr = $callFunction.instr} 
+  | returnFun ';' {$instr = $returnFun.instr} 
 ;
 
 instruccion_only returns [interfaces.Instruction instr]
@@ -106,15 +109,24 @@ instruccion_only returns [interfaces.Instruction instr]
 
 
   | callFunction {$instr = $callFunction.instr} 
+  | returnFun  {$instr = $returnFun.instr} 
 ;
 
 //llamada a funcion
 callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
-    : ID '(' ')'  {
-                    $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
-                    $p = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
-                  }
-    //| ID '(' listParams ')'  
+    : ID '(' ')'    {
+                        $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
+                        $p = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
+                    }
+    | ID '(' listParams ')' {
+                        $instr = instructionExpre.NewCallFunction($ID.text, $listParams.l_e, $ID.line, $ID.pos )
+                        $p = instructionExpre.NewCallFunction($ID.text, $listParams.l_e, $ID.line, $ID.pos )
+                    }
+;
+
+returnFun returns [interfaces.Instruction instr]
+    : RETURN                { $instr = instructionExpre.NewReturn(interfaces.VOID,nil)}
+    | RETURN  expression    { $instr = instructionExpre.NewReturn(interfaces.NULL,$expression.p)}
 ;
 
 printconsola returns [interfaces.Instruction instr]
@@ -343,6 +355,8 @@ expr_arit returns[interfaces.Expresion p]
     | casteo {$p = $casteo.p} 
     | if_exp {$p = $if_exp.p}
     //| match_sent {$p = $match_sent.instr.(interfaces.Expresion)}
+
+    | callFunction {$p = $callFunction.p} 
 ;
 
 /*casteo returns[interfaces.Expresion p]

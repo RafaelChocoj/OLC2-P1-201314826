@@ -26,40 +26,48 @@ import (
 /*
 horizontal segundo
 vertical primero*/
-var res_dominante = [6][6]interfaces.TipoExpresion{
-	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //NULL
+var res_dominante = [8][8]interfaces.TipoExpresion{
+	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //ARRAY		   		//VOID		   	//NULL
 	//INTEGER
-	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//FLOAT
-	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//STRING
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//STR
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//ARRAY
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//VOID
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.VOID, interfaces.NULL},
 	//NULL
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }
 
 /****RELACIONALES***/
 /*
 horizontal segundo
 vertical primero*/
-var rel_dominante = [6][6]interfaces.TipoExpresion{
-	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //NULL
+var rel_dominante = [8][8]interfaces.TipoExpresion{
+	//INTEGER			//FLOAT			   //STRING			//STR		  //BOOLEAN		   //ARRAY		   		//VOID		   	//NULL
 	//INTEGER
-	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.INTEGER, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//FLOAT
-	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.FLOAT, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//STRING
-	{interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.STRING, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//STR
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STR, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.STR, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//BOOLEAN
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//ARRAY
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	//VOID
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.BOOLEAN, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 	//NULL
-	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
+	{interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL, interfaces.NULL},
 }
 
 var suma_dominante = [5][5]interfaces.TipoExpresion{
@@ -142,6 +150,8 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 	switch p.Operador {
 	case "+":
 		{
+			//fmt.Println("retornoIzq.Tipo: ", interfaces.GetType(retornoIzq.Tipo))
+			//fmt.Println("retornoDer.Tipo: ", interfaces.GetType(retornoDer.Tipo))
 
 			dominante = res_dominante[retornoIzq.Tipo][retornoDer.Tipo]
 

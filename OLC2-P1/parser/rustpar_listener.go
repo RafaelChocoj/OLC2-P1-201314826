@@ -38,6 +38,9 @@ type RustParListener interface {
 	// EnterCallFunction is called when entering the callFunction production.
 	EnterCallFunction(c *CallFunctionContext)
 
+	// EnterReturnFun is called when entering the returnFun production.
+	EnterReturnFun(c *ReturnFunContext)
+
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
@@ -151,6 +154,9 @@ type RustParListener interface {
 
 	// ExitCallFunction is called when exiting the callFunction production.
 	ExitCallFunction(c *CallFunctionContext)
+
+	// ExitReturnFun is called when exiting the returnFun production.
+	ExitReturnFun(c *ReturnFunContext)
 
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)

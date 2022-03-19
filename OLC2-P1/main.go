@@ -5,6 +5,7 @@ import (
 
 	"OLC2/environment"
 	console "OLC2/environment"
+	"OLC2/instructionExpre"
 	"OLC2/interfaces"
 	"OLC2/parser"
 	"fmt"
@@ -42,17 +43,17 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	for _, s := range result.ToArray() {
 		//fmt.Println("******reflect.TypeOf(s)", reflect.TypeOf(s))
 
-		if reflect.TypeOf(s) == reflect.TypeOf(interfaces.Function{}) {
-			List_Funcs.Add(s.(interfaces.Function))
+		if reflect.TypeOf(s) == reflect.TypeOf(instructionExpre.Function{}) {
+			List_Funcs.Add(s.(instructionExpre.Function))
 			//s.(interfaces.Instruction).Ejecutar(globalEnv)
-			globalEnv.SaveFuncion(s.(interfaces.Function).Id, s, s.(interfaces.Function).Line, s.(interfaces.Function).Column)
+			globalEnv.SaveFuncion(s.(instructionExpre.Function).Id, s, s.(instructionExpre.Function).Line, s.(instructionExpre.Function).Column)
 		}
 	}
 
 	/*corriendo main*/
 	for _, s := range List_Funcs.ToArray() {
 
-		if s.(interfaces.Function).Id == "main" {
+		if s.(instructionExpre.Function).Id == "main" {
 			s.(interfaces.Instruction).Ejecutar(globalEnv)
 		}
 	}

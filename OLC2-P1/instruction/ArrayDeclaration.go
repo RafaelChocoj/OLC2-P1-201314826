@@ -51,7 +51,8 @@ func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 		err.NewError("Error al crear Array", env.(environment.Environment).Nombre, p.Line, p.Column)
 	}
 
-	return result.Valor
+	return nil
+	//return result.Valor
 }
 
 func (p ArrayDeclaration) IsArray_Valido(env interface{}, arr1 interfaces.Symbol, l_tipo *arrayList.List) bool {

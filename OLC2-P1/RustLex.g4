@@ -41,6 +41,7 @@ TYPETHEN:      '->';
 
 FN:     'fn';
 MAIN:   'main';
+RETURN: 'return';
 
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;

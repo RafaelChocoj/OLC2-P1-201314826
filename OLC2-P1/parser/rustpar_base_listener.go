@@ -81,6 +81,12 @@ func (s *BaseRustParListener) EnterCallFunction(ctx *CallFunctionContext) {}
 // ExitCallFunction is called when production callFunction is exited.
 func (s *BaseRustParListener) ExitCallFunction(ctx *CallFunctionContext) {}
 
+// EnterReturnFun is called when production returnFun is entered.
+func (s *BaseRustParListener) EnterReturnFun(ctx *ReturnFunContext) {}
+
+// ExitReturnFun is called when production returnFun is exited.
+func (s *BaseRustParListener) ExitReturnFun(ctx *ReturnFunContext) {}
+
 // EnterPrintconsola is called when production printconsola is entered.
 func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 
