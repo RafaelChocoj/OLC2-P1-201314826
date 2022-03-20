@@ -13,14 +13,19 @@ type Environment struct {
 	father         interface{}
 	Tabla          map[string]interfaces.Symbol
 	TablaFunciones map[string]interface{}
+	TablaStructs   map[string]interfaces.Symbol
 	//TablaFunciones map[string]interface{}
 }
 
+func (env Environment) GetFather() interface{} {
+	return env.father
+}
 func NewEnvironment(nombre string, father interface{}) Environment {
 	//Tabla := make(map[string]interface{})
 	Tabla := make(map[string]interfaces.Symbol)
 	TablaFunciones := make(map[string]interface{})
-	env := Environment{nombre, father, Tabla, TablaFunciones}
+	TablaStructs := make(map[string]interfaces.Symbol)
+	env := Environment{nombre, father, Tabla, TablaFunciones, TablaStructs}
 	return env
 }
 
@@ -33,6 +38,16 @@ func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo int
 	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column, TiposArr: tipos}
 }
 
+///save struct
+func (env Environment) SaveStruct(id string, value *arrayList.List, isMut bool) {
+	if structs, ok := env.TablaStructs[id]; ok {
+		//fmt.Println("La variable " + variable.Id + " ya existe")
+		NewError("El struct"+structs.Id+" ya declarada en entorno "+env.Nombre, env.Nombre, 0, 0)
+		return
+	}
+	env.TablaStructs[id] = interfaces.Symbol{Id: id, Tipo: interfaces.STRUCT, Valor: value, IsMut: isMut, Line: 0, Column: 0}
+}
+
 func (env Environment) GetVariable(id string, Line int, Column int, nameentorno string) interfaces.Symbol {
 
 	var tmpEnv Environment
@@ -40,6 +55,7 @@ func (env Environment) GetVariable(id string, Line int, Column int, nameentorno 
 
 	for {
 		if variable, ok := tmpEnv.Tabla[id]; ok {
+			//fmt.Println("variable.Id ", variable.Id, "entorno: ", nameentorno)
 			return variable
 		}
 
@@ -74,6 +90,29 @@ func (env Environment) GetVariableMut(id string) interfaces.Symbol {
 	}
 
 	//NewError("La variable no existe en entorno "+nameentorno, nameentorno, Line, Column)
+	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
+}
+
+/////get struck
+func (env Environment) GetStruct(id string, Line int, Column int) interfaces.Symbol {
+
+	var tmpEnv Environment
+	tmpEnv = env
+
+	for {
+		if structv, ok := tmpEnv.TablaStructs[id]; ok {
+			//fmt.Println("structv.Id ", structv.Id, "entorno: ", nameentorno)
+			return structv
+		}
+		if tmpEnv.father == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.father.(Environment)
+		}
+	}
+
+	//fmt.Println("La struct no existe")
+	NewError("El struct '"+id+"' no existe en entorno "+env.Nombre, env.Nombre, Line, Column)
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
 }
 

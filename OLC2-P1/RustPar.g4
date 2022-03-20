@@ -63,8 +63,7 @@ t_access returns [interfaces.TipoAccess  modAccess]
     |         { $modAccess = interfaces.PRIVATE}
 ;
 
-/*decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, $isMut.mut, $ID.line, $ID.pos )*/
-params_declar returns [*arrayList.List lista]
+/*params_declar returns [*arrayList.List lista]
 @init{
 $lista =  arrayList.New()
 }
@@ -82,6 +81,31 @@ $lista =  arrayList.New()
                             $lista.Add( decl)
                         }
     
+;*/
+params_declar returns [*arrayList.List lista]
+@init{
+$lista =  arrayList.New()
+}
+    : listdec = params_declar ','  declar_parametros    {
+                                                            $listdec.lista.Add($declar_parametros.in_dec)
+                                                            $lista =  $listdec.lista }
+    | declar_parametros {   $lista.Add($declar_parametros.in_dec) }
+;
+
+declar_parametros returns [interfaces.Instruction in_dec]
+    : isMut=is_mut ID ':' tipos_var {
+                        listaIdes := arrayList.New()
+                        listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
+                        decl := instruction.NewDeclaration($ID.text, $tipos_var.tipo, nil, $isMut.mut, $ID.line, $ID.pos )
+                        $in_dec = decl
+                    }
+    /*arrays*/
+    | isMut=is_mut ID ':' '&mut' array_type {
+                        listaIdes := arrayList.New()
+                        listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
+                        decl := instruction.NewArrayDeclaration($ID.text, $array_type.ty, nil, $isMut.mut, $ID.line, $ID.pos )
+                        $in_dec = decl
+                    }
 ;
 
 //funciones
@@ -97,7 +121,9 @@ instruccion returns [interfaces.Instruction instr]
   | asignacion ';' {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
-
+  
+  | newStruct  {$instr = $newStruct.str} 
+  
   | callFunction ';' {$instr = $callFunction.instr} 
   | returnFun ';' {$instr = $returnFun.instr} 
 ;
@@ -108,10 +134,28 @@ instruccion_only returns [interfaces.Instruction instr]
   | asignacion /*';'*/ {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
-
+  
+  //| newStruct  {$instr = $newStruct.str} 
 
   | callFunction {$instr = $callFunction.instr} 
   | returnFun  {$instr = $returnFun.instr} 
+;
+
+newStruct returns[interfaces.Instruction str]
+: STRUCT ID LLAVEIZQ listdecStruct LLAVEDER { $str = instructionExpre.NewStruct($ID.text, $listdecStruct.l, $STRUCT.line, $STRUCT.pos) }
+;
+
+listdecStruct returns[*arrayList.List l]
+: list=listdecStruct COMA ID ':' tipos_var {
+                                        Str_atrib := interfaces.NewStructType($ID.text, $tipos_var.tipo)
+                                        $list.l.Add(Str_atrib);
+                                        $l = $list.l;
+                                    }
+| ID ':' tipos_var {
+                    Str_atrib := interfaces.NewStructType($ID.text, $tipos_var.tipo)
+                    $l = arrayList.New();
+                    $l.Add(Str_atrib);
+                }
 ;
 
 //llamada a funcion
@@ -184,7 +228,21 @@ asignacion returns [interfaces.Instruction instr]
     : id=ID '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, nil, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
     /*array asignacion*/
     | id=ID list_index '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $list_index.lista, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
+
+    /*struct asignacion*/
+    //| l_AccessStruct IGUAL expression { $ass = instructions.NewStructAssign($listAccessStruct.start.GetLine(),$listAccessStruct.start.GetColumn(), $listAccessStruct.l, $expression.p) }
 ;
+
+/*l_AccessStruct returns[*arrayList.List l]
+: list=l_AccessStruct PUNTO ID {
+                                   $list.l.Add($ID.text)
+                                   $l = $list.l
+                                  }
+| ID {
+            $l = arrayList.New()
+            $l.Add($ID.text)
+}
+;*/
 
 list_index returns[*arrayList.List lista]
 @init{
@@ -316,6 +374,7 @@ tipos_var returns[interfaces.TipoExpresion tipo]
     | T_FLOAT {$tipo = interfaces.FLOAT}
     | T_BOOL  {$tipo = interfaces.BOOLEAN}
     | T_STR {$tipo = interfaces.STR}
+    | STRUCT {$tipo = interfaces.STRUCT}
     //| VOIDTYPE  {$tipo = interfaces.VOID}
 ;
 
@@ -352,6 +411,9 @@ expr_arit returns[interfaces.Expresion p]
     | CORIZQ exp = expression ';' tam = expression CORDER { $p = expresion.NewArray(nil, $exp.p, $tam.p, 2, $CORIZQ.line, $CORIZQ.pos ) }
     | CORIZQ listParams CORDER { $p = expresion.NewArray($listParams.l_e, nil, nil, 1, $CORIZQ.line, $CORIZQ.pos ) }
 
+    /*struct*/
+    | ID LLAVEIZQ l_StructExp LLAVEDER { $p = instructionExpre.NewStructExpre($ID.text, $l_StructExp.l, $ID.line, $ID.pos ) }
+
     | primitivo {$p = $primitivo.p}
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
@@ -374,7 +436,18 @@ tipo_cast returns[interfaces.TipoExpresion tc]
   | T_NUMBER {$tc = interfaces.INTEGER} 
 ;
 
-
+l_StructExp returns[*arrayList.List l]
+: list=l_StructExp COMA ID ':' expression {
+                                        Str_ep := instructionExpre.NewStructContenido($ID.text, $expression.p)
+                                        $list.l.Add(Str_ep);
+                                        $l = $list.l;
+                                    }
+| ID ':' expression{
+                    Str_ep := instructionExpre.NewStructContenido($ID.text, $expression.p)
+                    $l = arrayList.New();
+                    $l.Add(Str_ep);
+                }
+;
 
 /*expr_arit returns[interfaces.Expresion p]
     : opIz = expr_arit op=('*'|'/') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false)}

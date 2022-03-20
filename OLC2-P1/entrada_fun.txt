@@ -1,13 +1,72 @@
-//// En este caso el vector [10,12, 45] se transformará en [3,12, 45]
-//fn valores(x: &mut [i64]) {
-//    x[0] = 3;
-//}
+fn recur(mut a:i64) -> i64 {
+   if a < 5 
+   {
+        a = a + 1;
+        println!("a {}", a);
+        a = recur(a);
+        return a;
+   } else {
+       return a;
+   }
+   
+}
 
-fn valores(x: [i64;3]) {
-    x[0] = 3;
-}
 fn main () {
-    let mut x: [i64; 3] = [10, 12, 45];
-    //valores(&mut x);
-    println!("{:?}", x);
+    //let a = recur(2);
+    //let a:i64 = suma(2,3);
+    //println!(":{}", a);
+
+    struct Personaje {
+        nombre: String,
+        edad: i64,
+        descripcion: String
+    }
+
+    struct Carro {
+        placa: String,
+        color: String,
+        tipo: String
+    }
+
+    // Construcción Struct
+    let mut p1 = Personaje { nombre:"Fer".to_string(), edad:18,
+    descripcion:"No hace nada".to_string() };
+
+    let mut p2 = Personaje { nombre:"Fer".to_string(), edad:18,
+    descripcion:"Maneja un carro".to_string()};
+
+    let mut c1 = Carro { placa:"090PLO".to_string(),
+    color:"gris".to_string(), tipo:"mecanico".to_string() };
+
+    let mut c2 = Carro { placa:"P0S921".to_string(),
+    color:"verde".to_string(), tipo:"automatico".to_string() };
+
+    // Acceso Atributo
+    println!("p1.edad: {}", p1.edad); // Imprime 18
+    println!("c1.color: {}", c1.color); // Imprime "cafe"
+
 }
+
+fn suma(mut a:i64, mut b:i64) -> i64 {
+    let res = a+b;
+
+    println!("antes");
+    return res;
+
+    println!("ejecuta aqui");
+}
+
+//fn ack(mut m: i64, mut n: i64) -> i64 {
+//    if m == 0 {
+//        return n + 1;
+//    } else if n == 0 {
+//        return ack(m - 1, 1);
+//    } else {
+//        return ack(m - 1, ack(m, n - 1));
+//    }
+//}
+ 
+//fn main() {
+//    let a = ack(3, 5);
+//    println!("{}", a); // 253
+//}

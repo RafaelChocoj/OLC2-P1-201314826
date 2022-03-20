@@ -26,31 +26,40 @@ func NewArrayDeclaration(id string, tipo *arrayList.List, val interfaces.Expresi
 
 func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 
-	var result interfaces.Symbol
-	result = p.Expresion.EjecutarValor(env)
-	//fmt.Println("resultresultresultresultresult", result)
-	var temTipos *arrayList.List
-	temTipos = arrayList.New()
-	//fmt.Println("---         	  p.Tiposp.Tiposp.Tipos", p.Tipos)
-	for _, indexs := range p.Tipos.ToArray() {
-		res_exp := indexs.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
-		valprim := expresion.NewPrimitivo(res_exp.Valor, res_exp.Tipo, res_exp.Line, res_exp.Column)
+	if p.Expresion != nil {
 
-		varTip := interfaces.NewArrayType(indexs.(interfaces.ArrayType).Tipo, valprim,
-			indexs.(interfaces.ArrayType).Line, indexs.(interfaces.ArrayType).Column)
-		temTipos.Add(varTip)
+		var result interfaces.Symbol
+		result = p.Expresion.EjecutarValor(env)
+		//fmt.Println("resultresultresultresultresult", result)
+		var temTipos *arrayList.List
+		temTipos = arrayList.New()
+		//fmt.Println("---         	  p.Tiposp.Tiposp.Tipos", p.Tipos)
+		//fmt.Println("+++         	  result.Tiporesult.Tipo", result.Tipo)
+		if result.Tipo != interfaces.ARRAY {
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.ARRAY), interfaces.GetType(result.Tipo))
+			err.NewError("Tipos no coinciden en Parametros "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+			return nil
+		}
+		for _, indexs := range p.Tipos.ToArray() {
+			res_exp := indexs.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
+			valprim := expresion.NewPrimitivo(res_exp.Valor, res_exp.Tipo, res_exp.Line, res_exp.Column)
+
+			varTip := interfaces.NewArrayType(indexs.(interfaces.ArrayType).Tipo, valprim,
+				indexs.(interfaces.ArrayType).Line, indexs.(interfaces.ArrayType).Column)
+			temTipos.Add(varTip)
+		}
+		p.Tipos = temTipos
+
+		//validar array
+		if p.IsArray_Valido(env, result, p.Tipos.Clone()) {
+			env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, p.Tipos)
+			//fmt.Println("TODO OK")
+		} else {
+			//fmt.Println("Los tipos no coinciden")
+			err.NewError("Error al crear Array", env.(environment.Environment).Nombre, p.Line, p.Column)
+		}
+
 	}
-	p.Tipos = temTipos
-
-	//validar array
-	if p.IsArray_Valido(env, result, p.Tipos.Clone()) {
-		env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, p.Tipos)
-		//fmt.Println("TODO OK")
-	} else {
-		//fmt.Println("Los tipos no coinciden")
-		err.NewError("Error al crear Array", env.(environment.Environment).Nombre, p.Line, p.Column)
-	}
-
 	return nil
 	//return result.Valor
 }

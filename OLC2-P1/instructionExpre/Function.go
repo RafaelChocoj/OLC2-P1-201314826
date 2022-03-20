@@ -18,6 +18,8 @@ type Function struct {
 
 	Line   int
 	Column int
+
+	EntornoFun interface{}
 }
 
 func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arrayList.List, tipo interfaces.TipoExpresion, line int, column int) Function {
@@ -30,9 +32,14 @@ func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arr
 		Symbol:             funcSymbol,
 		Line:               line,
 		Column:             column,
+		EntornoFun:         nil,
 	}
 }
 
+func (f Function) SaveEntorno(env interface{}) {
+	f.EntornoFun = env
+
+}
 func (f Function) EjecutarParamets(env interface{}, expre_list *arrayList.List) bool {
 
 	l_declaraciones := f.ListaParamsDecl.Clone()
@@ -48,10 +55,26 @@ func (f Function) EjecutarParamets(env interface{}, expre_list *arrayList.List) 
 	}
 
 	for i := 0; i < l_declaraciones.Len(); i++ {
-		par_i := l_declaraciones.GetValue(i).(instruction.Declaration)
-		par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
 
-		par_i.Ejecutar(env)
+		//fmt.Println("++++++++++++++++reflect.TypeOf(l_declaraciones.GetValue(i)): ", reflect.TypeOf(l_declaraciones.GetValue(i)))
+
+		//par_i := l_declaraciones.GetValue(i).(instruction.Declaration)
+		if reflect.TypeOf(l_declaraciones.GetValue(i)) == reflect.TypeOf(instruction.Declaration{}) {
+			par_i := l_declaraciones.GetValue(i).(instruction.Declaration)
+			//par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
+			par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
+			par_i.Ejecutar(env)
+
+		} else if reflect.TypeOf(l_declaraciones.GetValue(i)) == reflect.TypeOf(instruction.ArrayDeclaration{}) {
+			par_i := l_declaraciones.GetValue(i).(instruction.ArrayDeclaration)
+			//par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
+			par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
+			par_i.Ejecutar(env)
+
+		} else {
+			return false
+		}
+
 	}
 
 	return true
@@ -59,6 +82,7 @@ func (f Function) EjecutarParamets(env interface{}, expre_list *arrayList.List) 
 func (f Function) Ejecutar(env interface{}) interface{} {
 
 	for _, s := range f.ListaInstrucciones.ToArray() {
+		//fmt.Println("EEEEJJJJEECCUTA")
 		valorInst := s.(interfaces.Instruction).Ejecutar(env)
 
 		//fmt.Println("valorInst: ", valorInst)
@@ -81,7 +105,7 @@ func (f Function) Ejecutar(env interface{}) interface{} {
 
 			if typeFun != valRetorno.Tipo {
 				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(typeFun), interfaces.GetType(valRetorno.Tipo))
-				err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, f.Line, f.Column)
+				err.NewError("Tipos no coinciden en Retorno "+desc, env.(environment.Environment).Nombre, f.Line, f.Column)
 				return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 			}
 

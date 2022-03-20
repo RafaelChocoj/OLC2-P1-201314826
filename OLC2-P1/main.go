@@ -44,17 +44,30 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		//fmt.Println("******reflect.TypeOf(s)", reflect.TypeOf(s))
 
 		if reflect.TypeOf(s) == reflect.TypeOf(instructionExpre.Function{}) {
+
+			//fmt.Println("**	globalEnv- ", globalEnv)
+			//var funEnv environment.Environment
+			//funEnv = environment.NewEnvironment("function", globalEnv)
+			//fmt.Println("**				funEnv- ", funEnv)
+
+			//s.(instructionExpre.Function).SaveEntorno(funEnv)
+			//fmt.Println("**	s.(instructionExpre.Function).EntornoFun- ", s.(instructionExpre.Function).EntornoFun)
+
 			List_Funcs.Add(s.(instructionExpre.Function))
 			//s.(interfaces.Instruction).Ejecutar(globalEnv)
+			//globalEnv.SaveFuncion(s.(instructionExpre.Function).Id, "s", 1, 2)
 			globalEnv.SaveFuncion(s.(instructionExpre.Function).Id, s, s.(instructionExpre.Function).Line, s.(instructionExpre.Function).Column)
+
 		}
 	}
 
 	/*corriendo main*/
+	var mainEnv environment.Environment
+	mainEnv = environment.NewEnvironment("main", globalEnv)
 	for _, s := range List_Funcs.ToArray() {
 
 		if s.(instructionExpre.Function).Id == "main" {
-			s.(interfaces.Instruction).Ejecutar(globalEnv)
+			s.(interfaces.Instruction).Ejecutar(mainEnv)
 		}
 	}
 

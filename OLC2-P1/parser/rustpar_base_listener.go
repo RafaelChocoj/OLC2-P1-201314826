@@ -57,6 +57,12 @@ func (s *BaseRustParListener) EnterParams_declar(ctx *Params_declarContext) {}
 // ExitParams_declar is called when production params_declar is exited.
 func (s *BaseRustParListener) ExitParams_declar(ctx *Params_declarContext) {}
 
+// EnterDeclar_parametros is called when production declar_parametros is entered.
+func (s *BaseRustParListener) EnterDeclar_parametros(ctx *Declar_parametrosContext) {}
+
+// ExitDeclar_parametros is called when production declar_parametros is exited.
+func (s *BaseRustParListener) ExitDeclar_parametros(ctx *Declar_parametrosContext) {}
+
 // EnterFn_main is called when production fn_main is entered.
 func (s *BaseRustParListener) EnterFn_main(ctx *Fn_mainContext) {}
 
@@ -74,6 +80,18 @@ func (s *BaseRustParListener) EnterInstruccion_only(ctx *Instruccion_onlyContext
 
 // ExitInstruccion_only is called when production instruccion_only is exited.
 func (s *BaseRustParListener) ExitInstruccion_only(ctx *Instruccion_onlyContext) {}
+
+// EnterNewStruct is called when production newStruct is entered.
+func (s *BaseRustParListener) EnterNewStruct(ctx *NewStructContext) {}
+
+// ExitNewStruct is called when production newStruct is exited.
+func (s *BaseRustParListener) ExitNewStruct(ctx *NewStructContext) {}
+
+// EnterListdecStruct is called when production listdecStruct is entered.
+func (s *BaseRustParListener) EnterListdecStruct(ctx *ListdecStructContext) {}
+
+// ExitListdecStruct is called when production listdecStruct is exited.
+func (s *BaseRustParListener) ExitListdecStruct(ctx *ListdecStructContext) {}
 
 // EnterCallFunction is called when production callFunction is entered.
 func (s *BaseRustParListener) EnterCallFunction(ctx *CallFunctionContext) {}
@@ -236,6 +254,12 @@ func (s *BaseRustParListener) EnterTipo_cast(ctx *Tipo_castContext) {}
 
 // ExitTipo_cast is called when production tipo_cast is exited.
 func (s *BaseRustParListener) ExitTipo_cast(ctx *Tipo_castContext) {}
+
+// EnterL_StructExp is called when production l_StructExp is entered.
+func (s *BaseRustParListener) EnterL_StructExp(ctx *L_StructExpContext) {}
+
+// ExitL_StructExp is called when production l_StructExp is exited.
+func (s *BaseRustParListener) ExitL_StructExp(ctx *L_StructExpContext) {}
 
 // EnterPrimitivo is called when production primitivo is entered.
 func (s *BaseRustParListener) EnterPrimitivo(ctx *PrimitivoContext) {}

@@ -26,6 +26,9 @@ type RustParListener interface {
 	// EnterParams_declar is called when entering the params_declar production.
 	EnterParams_declar(c *Params_declarContext)
 
+	// EnterDeclar_parametros is called when entering the declar_parametros production.
+	EnterDeclar_parametros(c *Declar_parametrosContext)
+
 	// EnterFn_main is called when entering the fn_main production.
 	EnterFn_main(c *Fn_mainContext)
 
@@ -34,6 +37,12 @@ type RustParListener interface {
 
 	// EnterInstruccion_only is called when entering the instruccion_only production.
 	EnterInstruccion_only(c *Instruccion_onlyContext)
+
+	// EnterNewStruct is called when entering the newStruct production.
+	EnterNewStruct(c *NewStructContext)
+
+	// EnterListdecStruct is called when entering the listdecStruct production.
+	EnterListdecStruct(c *ListdecStructContext)
 
 	// EnterCallFunction is called when entering the callFunction production.
 	EnterCallFunction(c *CallFunctionContext)
@@ -116,6 +125,9 @@ type RustParListener interface {
 	// EnterTipo_cast is called when entering the tipo_cast production.
 	EnterTipo_cast(c *Tipo_castContext)
 
+	// EnterL_StructExp is called when entering the l_StructExp production.
+	EnterL_StructExp(c *L_StructExpContext)
+
 	// EnterPrimitivo is called when entering the primitivo production.
 	EnterPrimitivo(c *PrimitivoContext)
 
@@ -143,6 +155,9 @@ type RustParListener interface {
 	// ExitParams_declar is called when exiting the params_declar production.
 	ExitParams_declar(c *Params_declarContext)
 
+	// ExitDeclar_parametros is called when exiting the declar_parametros production.
+	ExitDeclar_parametros(c *Declar_parametrosContext)
+
 	// ExitFn_main is called when exiting the fn_main production.
 	ExitFn_main(c *Fn_mainContext)
 
@@ -151,6 +166,12 @@ type RustParListener interface {
 
 	// ExitInstruccion_only is called when exiting the instruccion_only production.
 	ExitInstruccion_only(c *Instruccion_onlyContext)
+
+	// ExitNewStruct is called when exiting the newStruct production.
+	ExitNewStruct(c *NewStructContext)
+
+	// ExitListdecStruct is called when exiting the listdecStruct production.
+	ExitListdecStruct(c *ListdecStructContext)
 
 	// ExitCallFunction is called when exiting the callFunction production.
 	ExitCallFunction(c *CallFunctionContext)
@@ -232,6 +253,9 @@ type RustParListener interface {
 
 	// ExitTipo_cast is called when exiting the tipo_cast production.
 	ExitTipo_cast(c *Tipo_castContext)
+
+	// ExitL_StructExp is called when exiting the l_StructExp production.
+	ExitL_StructExp(c *L_StructExpContext)
 
 	// ExitPrimitivo is called when exiting the primitivo production.
 	ExitPrimitivo(c *PrimitivoContext)

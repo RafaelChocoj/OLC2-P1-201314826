@@ -31,6 +31,8 @@ POWF:   'powf';
 LET:   'let';
 MUT:   'mut';
 
+STRUCT:  'struct';
+
 //functions
 TO_STRING:   '.to_string()';
 TO_OWNED:   '.to_owned()';
@@ -42,6 +44,9 @@ TYPETHEN:      '->';
 FN:     'fn';
 MAIN:   'main';
 RETURN: 'return';
+
+REF: '&mut';
+
 
 NUMBER: [0-9]+;
 FLOAT: [0-9]+[.][0-9]+;

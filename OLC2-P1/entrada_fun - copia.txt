@@ -1,0 +1,51 @@
+//fn ack(m: i64, n: i64) -> i64 {
+//    if m == 0 {
+//        return n + 1;
+//    } else if n == 0 {
+//        return ack(m - 1, 1);
+//    } else {
+//        return ack(m - 1, ack(m, n - 1));
+//    }
+//}
+ 
+fn main() {
+    let a = ack(3, 5);
+    println!("{}", a); // 253
+}
+
+fn valores(mut x1: &mut [i64;3], mut b:i64) {
+    x1[0] = 3;
+    x1[2] = x1[2]+1;
+    
+    b = 0;
+    println!("---{:?}", x1);
+    println!("---{}", b);
+    //println!("---{}", a);
+
+    //otro(b);
+}
+fn main () {
+    let mut x: [i64; 3] = [10, 12, 45];
+    let mut a:i64 = 321;
+
+    let mut aa2:i64 = 8;
+
+    println!(" {:?}", x);
+    println!(" a {}", a);
+    //valores(&mut x);
+    a = aa2;
+ valores(x, a);
+    println!("{:?}", x);
+    println!("{}", a);
+    
+}
+
+fn otro(mut a:i64) {
+    println!("3 {}", a);
+    otro4();
+}
+
+fn otro4(){
+    let a:i64 =  4;
+    println!("4 {}", a);
+}

@@ -37,6 +37,9 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		var result interfaces.Symbol
 		result = p.Expresion.EjecutarValor(env)
 
+		if result.Tipo == interfaces.NULL {
+			return nil
+		}
 		//fmt.Println("----p.IsMut: ", p.IsMut)
 		//fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
 		//fmt.Println("p.Tipo: ", interfaces.GetType(p.Tipo))
@@ -65,7 +68,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		} else {
 			//fmt.Println("Los tipos no coinciden")
 			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))
-			err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+			err.NewError("Tipos no coinciden en Declaración "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		}
 
 		//return result.Valor

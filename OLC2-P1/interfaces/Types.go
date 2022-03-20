@@ -12,9 +12,10 @@ const (
 	ARRAY
 	VOID
 	NULL
+	STRUCT
 )
 
-var nametype = [8]string{
+var nametype = [9]string{
 	"i64",
 	"f64",
 	"String",
@@ -23,6 +24,7 @@ var nametype = [8]string{
 	"array",
 	"void",
 	"NULL",
+	"struct",
 }
 
 const (
