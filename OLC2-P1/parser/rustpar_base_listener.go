@@ -111,6 +111,24 @@ func (s *BaseRustParListener) EnterPrintconsola(ctx *PrintconsolaContext) {}
 // ExitPrintconsola is called when production printconsola is exited.
 func (s *BaseRustParListener) ExitPrintconsola(ctx *PrintconsolaContext) {}
 
+// EnterLoopB is called when production loopB is entered.
+func (s *BaseRustParListener) EnterLoopB(ctx *LoopBContext) {}
+
+// ExitLoopB is called when production loopB is exited.
+func (s *BaseRustParListener) ExitLoopB(ctx *LoopBContext) {}
+
+// EnterLBreak is called when production lBreak is entered.
+func (s *BaseRustParListener) EnterLBreak(ctx *LBreakContext) {}
+
+// ExitLBreak is called when production lBreak is exited.
+func (s *BaseRustParListener) ExitLBreak(ctx *LBreakContext) {}
+
+// EnterLContinue is called when production lContinue is entered.
+func (s *BaseRustParListener) EnterLContinue(ctx *LContinueContext) {}
+
+// ExitLContinue is called when production lContinue is exited.
+func (s *BaseRustParListener) ExitLContinue(ctx *LContinueContext) {}
+
 // EnterListParams is called when production listParams is entered.
 func (s *BaseRustParListener) EnterListParams(ctx *ListParamsContext) {}
 
@@ -140,6 +158,12 @@ func (s *BaseRustParListener) EnterAsignacion(ctx *AsignacionContext) {}
 
 // ExitAsignacion is called when production asignacion is exited.
 func (s *BaseRustParListener) ExitAsignacion(ctx *AsignacionContext) {}
+
+// EnterL_AccessStruct is called when production l_AccessStruct is entered.
+func (s *BaseRustParListener) EnterL_AccessStruct(ctx *L_AccessStructContext) {}
+
+// ExitL_AccessStruct is called when production l_AccessStruct is exited.
+func (s *BaseRustParListener) ExitL_AccessStruct(ctx *L_AccessStructContext) {}
 
 // EnterList_index is called when production list_index is entered.
 func (s *BaseRustParListener) EnterList_index(ctx *List_indexContext) {}

@@ -16,34 +16,18 @@ fn main () {
     //let a:i64 = suma(2,3);
     //println!(":{}", a);
 
-    struct Personaje {
-        nombre: String,
-        edad: i64,
-        descripcion: String
-    }
 
-    struct Carro {
-        placa: String,
-        color: String,
-        tipo: String
-    }
+    //// Expresion loop
+    let mut cont = 0;
+    let result = loop {
+        cont = cont + 1;
+        if cont == 10 {
+            break cont * 2;
+        }
+    };
+    // ¡No olvidar el punto y coma!
+    println!("El resultado es {}", result);
 
-    // Construcción Struct
-    let mut p1 = Personaje { nombre:"Fer".to_string(), edad:18,
-    descripcion:"No hace nada".to_string() };
-
-    let mut p2 = Personaje { nombre:"Fer".to_string(), edad:18,
-    descripcion:"Maneja un carro".to_string()};
-
-    let mut c1 = Carro { placa:"090PLO".to_string(),
-    color:"gris".to_string(), tipo:"mecanico".to_string() };
-
-    let mut c2 = Carro { placa:"P0S921".to_string(),
-    color:"verde".to_string(), tipo:"automatico".to_string() };
-
-    // Acceso Atributo
-    println!("p1.edad: {}", p1.edad); // Imprime 18
-    println!("c1.color: {}", c1.color); // Imprime "cafe"
 
 }
 

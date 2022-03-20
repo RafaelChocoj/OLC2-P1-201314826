@@ -121,11 +121,17 @@ instruccion returns [interfaces.Instruction instr]
   | asignacion ';' {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
+
+  | loopB { $instr = $loopB.lop }
+
+  | lBreak ';' { $instr = $lBreak.br }
+  | lContinue ';' { $instr = $lContinue.cn }
   
   | newStruct  {$instr = $newStruct.str} 
   
   | callFunction ';' {$instr = $callFunction.instr} 
   | returnFun ';' {$instr = $returnFun.instr} 
+
 ;
 
 instruccion_only returns [interfaces.Instruction instr]
@@ -134,6 +140,11 @@ instruccion_only returns [interfaces.Instruction instr]
   | asignacion /*';'*/ {$instr = $asignacion.instr}
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
+
+  | loopB { $instr = $loopB.lop }
+
+  | lBreak ';' { $instr = $lBreak.br }
+  | lContinue ';' { $instr = $lContinue.cn }
   
   //| newStruct  {$instr = $newStruct.str} 
 
@@ -178,6 +189,22 @@ returnFun returns [interfaces.Instruction instr]
 printconsola returns [interfaces.Instruction instr]
     : PRINT_CON PARIZQ listParams PARDER {$instr = instruction.NewImprimir($listParams.l_e, $PRINT_CON.line, localctx.(*PrintconsolaContext).Get_PRINT_CON().GetColumn() )}
     //: PRINT_CON PARIZQ expression PARDER {$instr = instruction.NewImprimir($expression.p)}
+;
+
+loopB returns [interfaces.Instruction lop, interfaces.Expresion p]
+: LOOP bloque_inst  { 
+                        $lop = instructionExpre.NewLoop($bloque_inst.l, $LOOP.line, $LOOP.pos )
+                        $p = instructionExpre.NewLoop($bloque_inst.l, $LOOP.line, $LOOP.pos ) 
+                    }
+;
+
+lBreak returns[interfaces.Instruction br]
+: BREAK { $br = instructionExpre.NewBreak(nil, $BREAK.line, $BREAK.pos) }
+| BREAK expression { $br = instructionExpre.NewBreak($expression.p, $BREAK.line, $BREAK.pos ) }
+;
+
+lContinue returns[interfaces.Instruction cn]
+: CONTINUE { $cn = instructionExpre.NewContinue($CONTINUE.line, $CONTINUE.pos) }
 ;
 
 listParams returns [*arrayList.List l_e]
@@ -230,11 +257,11 @@ asignacion returns [interfaces.Instruction instr]
     | id=ID list_index '=' expression {$instr = instruction.NewAssignment($id.text,$expression.p, $list_index.lista, $id.line, localctx.(*AsignacionContext).GetId().GetColumn() )}
 
     /*struct asignacion*/
-    //| l_AccessStruct IGUAL expression { $ass = instructions.NewStructAssign($listAccessStruct.start.GetLine(),$listAccessStruct.start.GetColumn(), $listAccessStruct.l, $expression.p) }
+    | l_AccessStruct '=' expression { $instr = instruction.NewAssignmentStruct($l_AccessStruct.l, $expression.p, $l_AccessStruct.start.GetLine(),$l_AccessStruct.start.GetColumn()) }
 ;
 
-/*l_AccessStruct returns[*arrayList.List l]
-: list=l_AccessStruct PUNTO ID {
+l_AccessStruct returns[*arrayList.List l]
+: list=l_AccessStruct '.' ID {
                                    $list.l.Add($ID.text)
                                    $l = $list.l
                                   }
@@ -242,7 +269,7 @@ asignacion returns [interfaces.Instruction instr]
             $l = arrayList.New()
             $l.Add($ID.text)
 }
-;*/
+;
 
 list_index returns[*arrayList.List lista]
 @init{
@@ -420,6 +447,8 @@ expr_arit returns[interfaces.Expresion p]
     | if_exp {$p = $if_exp.p}
     //| match_sent {$p = $match_sent.instr.(interfaces.Expresion)}
 
+    | loopB { $p = $loopB.p }
+
     | callFunction {$p = $callFunction.p} 
 ;
 
@@ -449,13 +478,6 @@ l_StructExp returns[*arrayList.List l]
                 }
 ;
 
-/*expr_arit returns[interfaces.Expresion p]
-    : opIz = expr_arit op=('*'|'/') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false)}
-    | opIz = expr_arit op=('+'|'-') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false)}     
-    | opIz = expr_arit op=('<'|'<='|'>='|'>') opDe = expr_arit {$p = expresion.NewOperacion($opIz.p,$op.text,$opDe.p,false)}     
-    | primitivo {$p = $primitivo.p} 
-    | PARIZQ expression PARDER {$p = $expression.p}
-;*/
 primitivo returns[interfaces.Expresion p]
     :NUMBER {
             	num,err := strconv.Atoi($NUMBER.text)
@@ -484,6 +506,7 @@ primitivo returns[interfaces.Expresion p]
 
 listIDArray returns[interfaces.Expresion p]
     : list = listIDArray CORIZQ expression CORDER { $p = expresion.NewArrayAccess($list.p, $expression.p, $CORIZQ.line, $CORIZQ.pos ) }
+    | list = listIDArray '.' ID { $p = expresion.NewStructAccess($list.p, $ID.text, $list.start.GetLine(), $list.start.GetColumn() )  }
     | ID { 
       $p = expresion.NewIdentificador($ID.text, $ID.line, localctx.(*ListIDArrayContext).Get_ID().GetColumn() )}
     ;

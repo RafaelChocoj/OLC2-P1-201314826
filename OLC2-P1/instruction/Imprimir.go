@@ -125,7 +125,7 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 	var result interfaces.Symbol
 	result = p.L_Expresion.GetValue(0).(interfaces.Expresion).EjecutarValor(env)
 
-	fmt.Println("-result.Tipo: ", interfaces.GetType(result.Tipo))
+	////fmt.Println("-result.Tipo: ", interfaces.GetType(result.Tipo))
 	//fmt.Println(result.Valor)
 	printcon := fmt.Sprintf("%v", result.Valor) + "\n"
 	console.Console += printcon

@@ -17,6 +17,11 @@ IF:       'if';
 ELSE:       'else';
 //P_WHILE:       'while';
 
+LOOP: 'loop';
+
+BREAK: 'break';
+CONTINUE: 'continue';
+
 MATCH:       'match';
 MTOR:       '|';
 

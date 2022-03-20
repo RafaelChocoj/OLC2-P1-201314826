@@ -53,6 +53,15 @@ type RustParListener interface {
 	// EnterPrintconsola is called when entering the printconsola production.
 	EnterPrintconsola(c *PrintconsolaContext)
 
+	// EnterLoopB is called when entering the loopB production.
+	EnterLoopB(c *LoopBContext)
+
+	// EnterLBreak is called when entering the lBreak production.
+	EnterLBreak(c *LBreakContext)
+
+	// EnterLContinue is called when entering the lContinue production.
+	EnterLContinue(c *LContinueContext)
+
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
 
@@ -67,6 +76,9 @@ type RustParListener interface {
 
 	// EnterAsignacion is called when entering the asignacion production.
 	EnterAsignacion(c *AsignacionContext)
+
+	// EnterL_AccessStruct is called when entering the l_AccessStruct production.
+	EnterL_AccessStruct(c *L_AccessStructContext)
 
 	// EnterList_index is called when entering the list_index production.
 	EnterList_index(c *List_indexContext)
@@ -182,6 +194,15 @@ type RustParListener interface {
 	// ExitPrintconsola is called when exiting the printconsola production.
 	ExitPrintconsola(c *PrintconsolaContext)
 
+	// ExitLoopB is called when exiting the loopB production.
+	ExitLoopB(c *LoopBContext)
+
+	// ExitLBreak is called when exiting the lBreak production.
+	ExitLBreak(c *LBreakContext)
+
+	// ExitLContinue is called when exiting the lContinue production.
+	ExitLContinue(c *LContinueContext)
+
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)
 
@@ -196,6 +217,9 @@ type RustParListener interface {
 
 	// ExitAsignacion is called when exiting the asignacion production.
 	ExitAsignacion(c *AsignacionContext)
+
+	// ExitL_AccessStruct is called when exiting the l_AccessStruct production.
+	ExitL_AccessStruct(c *L_AccessStructContext)
 
 	// ExitList_index is called when exiting the list_index production.
 	ExitList_index(c *List_indexContext)

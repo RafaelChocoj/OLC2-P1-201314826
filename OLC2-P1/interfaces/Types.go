@@ -13,9 +13,11 @@ const (
 	VOID
 	NULL
 	STRUCT
+	BREAK
+	CONTINUE
 )
 
-var nametype = [9]string{
+var nametype = [11]string{
 	"i64",
 	"f64",
 	"String",
@@ -25,6 +27,8 @@ var nametype = [9]string{
 	"void",
 	"NULL",
 	"struct",
+	"break",
+	"continue",
 }
 
 const (

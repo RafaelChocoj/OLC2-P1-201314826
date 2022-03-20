@@ -116,6 +116,77 @@ func (env Environment) GetStruct(id string, Line int, Column int) interfaces.Sym
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
 }
 
+///save val struck
+func (env Environment) UpdateStruct(lis_id *arrayList.List, value interfaces.Symbol, line int, column int) interfaces.Symbol {
+	var tmpEnv Environment
+	tmpEnv = env
+
+	for {
+		//creacion de diccionario temporal
+		tmpDic := make(map[string]interfaces.Symbol)
+		//asignacion de diccionario
+
+		//fmt.Println("-----reflect.TypeOf(tmpDic): ", reflect.TypeOf(tmpDic))
+		//fmt.Println("-----reflect.TypeOf(env.Tabla): ", reflect.TypeOf(tmpEnv.Tabla))
+		tmpDic = tmpEnv.Tabla
+
+		//recorro la lista de lis_id
+		//for _, s := range lis_id.ToArray() { //recorremos lista
+		for i := 0; i < lis_id.Len(); i++ {
+			s := lis_id.GetValue(i)
+			//validando variable
+			//fmt.Println("s ", s)
+			if variable, ok := tmpDic[s.(string)]; ok {
+
+				//fmt.Println("---1-variable.IsMut", variable.IsMut, "-", variable.Id)
+				if variable.Tipo == interfaces.STRUCT {
+
+					if variable.IsMut == true {
+
+						//fmt.Println("-----reflect.TypeOf(tmpDic): ", reflect.TypeOf(tmpDic))
+						//fmt.Println("-----reflect.TypeOf(variable.Valor): ", reflect.TypeOf(variable.Valor))
+						if i == 0 {
+							tmpDic = variable.Valor.(interfaces.Symbol).Valor.(map[string]interfaces.Symbol)
+						} else {
+							tmpDic = variable.Valor.(map[string]interfaces.Symbol)
+						}
+
+					} else {
+						//fmt.Println("1111 La variable no es mutable")
+						NewError("No se puede modificar la propiedad de un struct '"+variable.Id+"' no mutable", env.Nombre, variable.Line, variable.Column)
+						//return variable
+						return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+					}
+				} else if tmpDic[s.(string)].IsMut {
+					//fmt.Println("---2-variable.IsMut", tmpDic[s.(string)].IsMut, "-", tmpDic[s.(string)])
+					//fmt.Println("Tipo", tmpDic[s.(string)].Tipo)
+					if variable.Tipo != value.Tipo {
+
+						desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(variable.Tipo), interfaces.GetType(value.Tipo))
+						NewError("Tipos no coninciden en struct "+desc, env.Nombre, variable.Line, variable.Column)
+						return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+					}
+
+					tmpDic[s.(string)] = value
+					return variable
+				} else {
+					//fmt.Println("---3-variable.IsMut", variable.IsMut, "-", variable.Id)
+					NewError("La variable no es mutable", env.Nombre, variable.Line, variable.Column)
+					return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+				}
+			}
+
+		}
+		if tmpEnv.father == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.father.(Environment)
+		}
+	}
+	NewError("El atributo dentro del struct no existe", env.Nombre, line, column)
+	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+}
+
 func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfaces.Symbol {
 
 	var tmpEnv Environment
@@ -138,6 +209,23 @@ func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfa
 
 	fmt.Println("La variable no existe")
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
+}
+
+func (env Environment) IsLoopEnt() bool {
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if tmpEnv.Nombre == "While" || tmpEnv.Nombre == "Forin" || tmpEnv.Nombre == "Loop" {
+			return true
+		}
+		if tmpEnv.father == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.father.(Environment)
+		}
+	}
+	//fmt.Println("la sentencia tiene que estar dentro de un ciclo")
+	return false
 }
 
 /********gunciones*************/

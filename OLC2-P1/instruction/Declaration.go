@@ -37,12 +37,13 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		var result interfaces.Symbol
 		result = p.Expresion.EjecutarValor(env)
 
-		if result.Tipo == interfaces.NULL {
-			return nil
-		}
 		//fmt.Println("----p.IsMut: ", p.IsMut)
 		//fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
 		//fmt.Println("p.Tipo: ", interfaces.GetType(p.Tipo))
+
+		if result.Tipo == interfaces.NULL {
+			return nil
+		}
 
 		if result.Tipo == p.Tipo {
 			env.(environment.Environment).SaveVariable(p.Id, result, p.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil)

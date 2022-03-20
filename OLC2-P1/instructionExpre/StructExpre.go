@@ -55,6 +55,7 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 						tempVal := strEnt.(StructContenido).Exp.(interfaces.Expresion).EjecutarValor(env)
 						if strAlm.(interfaces.StructType).Tipo == tempVal.Tipo {
 							contAtrib++
+							tempVal.IsMut = true
 							valor[strAlm.(interfaces.StructType).Id] = tempVal
 							break
 						} else {
@@ -67,10 +68,10 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 					}
 				}
 			}
-			//si es valido, guardarlo
+			//struc valido
 			if p.List_Exp.Len() == contAtrib {
 
-				result = interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+				result = interfaces.Symbol{Id: p.Id, Tipo: interfaces.STRUCT, Valor: valor, Line: p.Line, Column: p.Column, IsMut: true}
 			} else {
 				err.NewError("Faltan atributos que asignar dentro del struct '"+p.Id+"'", env.(environment.Environment).Nombre, p.Line, p.Column)
 				return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
