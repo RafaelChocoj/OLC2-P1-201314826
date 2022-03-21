@@ -159,8 +159,8 @@ func (i IfExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 
 					var res_ifelexp interfaces.Symbol
 					res_ifelexp = s.(IfExpre).B_PrinExp.EjecutarValor(env)
-					fmt.Println("0000000 res_exp.Valor: ", res_ifelexp.Valor)
-					fmt.Println("0000000 res_exp.Tipo: ", res_ifelexp.Tipo)
+					//fmt.Println("0000000 res_exp.Valor: ", res_ifelexp.Valor)
+					//fmt.Println("0000000 res_exp.Tipo: ", res_ifelexp.Tipo)
 					return interfaces.Symbol{Id: "", Tipo: res_ifelexp.Tipo, Valor: res_ifelexp.Valor}
 
 				}
@@ -186,8 +186,8 @@ func (i IfExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 
 		var res_exp interfaces.Symbol
 		res_exp = i.B_ElseExp.EjecutarValor(env)
-		fmt.Println("1111111 res_exp.Valor: ", res_exp.Valor)
-		fmt.Println("1111111 res_exp.Tipo: ", res_exp.Tipo)
+		//fmt.Println("1111111 res_exp.Valor: ", res_exp.Valor)
+		//fmt.Println("1111111 res_exp.Tipo: ", res_exp.Tipo)
 		return interfaces.Symbol{Id: "", Tipo: res_exp.Tipo, Valor: res_exp.Valor}
 
 		/*}*/

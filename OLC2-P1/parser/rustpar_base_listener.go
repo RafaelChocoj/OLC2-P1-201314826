@@ -117,6 +117,12 @@ func (s *BaseRustParListener) EnterLoopB(ctx *LoopBContext) {}
 // ExitLoopB is called when production loopB is exited.
 func (s *BaseRustParListener) ExitLoopB(ctx *LoopBContext) {}
 
+// EnterLWhile is called when production lWhile is entered.
+func (s *BaseRustParListener) EnterLWhile(ctx *LWhileContext) {}
+
+// ExitLWhile is called when production lWhile is exited.
+func (s *BaseRustParListener) ExitLWhile(ctx *LWhileContext) {}
+
 // EnterLBreak is called when production lBreak is entered.
 func (s *BaseRustParListener) EnterLBreak(ctx *LBreakContext) {}
 
@@ -225,11 +231,23 @@ func (s *BaseRustParListener) EnterMatch_brazos(ctx *Match_brazosContext) {}
 // ExitMatch_brazos is called when production match_brazos is exited.
 func (s *BaseRustParListener) ExitMatch_brazos(ctx *Match_brazosContext) {}
 
+// EnterMatch_brazos_exp is called when production match_brazos_exp is entered.
+func (s *BaseRustParListener) EnterMatch_brazos_exp(ctx *Match_brazos_expContext) {}
+
+// ExitMatch_brazos_exp is called when production match_brazos_exp is exited.
+func (s *BaseRustParListener) ExitMatch_brazos_exp(ctx *Match_brazos_expContext) {}
+
 // EnterMatchbrazo is called when production matchbrazo is entered.
 func (s *BaseRustParListener) EnterMatchbrazo(ctx *MatchbrazoContext) {}
 
 // ExitMatchbrazo is called when production matchbrazo is exited.
 func (s *BaseRustParListener) ExitMatchbrazo(ctx *MatchbrazoContext) {}
+
+// EnterMatchbrazo_exp is called when production matchbrazo_exp is entered.
+func (s *BaseRustParListener) EnterMatchbrazo_exp(ctx *Matchbrazo_expContext) {}
+
+// ExitMatchbrazo_exp is called when production matchbrazo_exp is exited.
+func (s *BaseRustParListener) ExitMatchbrazo_exp(ctx *Matchbrazo_expContext) {}
 
 // EnterListaOpciones is called when production listaOpciones is entered.
 func (s *BaseRustParListener) EnterListaOpciones(ctx *ListaOpcionesContext) {}

@@ -5,6 +5,7 @@ import (
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
+	"reflect"
 
 	arrayList "github.com/colegno/arraylist"
 )
@@ -51,7 +52,16 @@ func (i If) Ejecutar(env interface{}) interface{} {
 		tmpEnv = environment.NewEnvironment("if", env.(environment.Environment))
 
 		for _, s := range i.LB_Principal.ToArray() {
-			s.(interfaces.Instruction).Ejecutar(tmpEnv)
+			rest := s.(interfaces.Instruction).Ejecutar(tmpEnv)
+			if rest != nil {
+
+				if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+					//fmt.Println("123123 rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+					if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+						return rest
+					}
+				}
+			}
 		}
 
 	} else {
@@ -80,7 +90,16 @@ func (i If) Ejecutar(env interface{}) interface{} {
 					tmpEnv_elseif = environment.NewEnvironment("else if", env.(environment.Environment))
 
 					for _, sif := range s.(If).LB_Principal.ToArray() {
-						sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
+						rest := sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
+
+						if rest != nil {
+							if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+								if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+									return rest
+								}
+							}
+						}
+
 					}
 
 					return nil
@@ -98,7 +117,15 @@ func (i If) Ejecutar(env interface{}) interface{} {
 			tmpEnv = environment.NewEnvironment("else", env.(environment.Environment))
 
 			for _, s := range i.LB_Else.ToArray() {
-				s.(interfaces.Instruction).Ejecutar(tmpEnv)
+				rest := s.(interfaces.Instruction).Ejecutar(tmpEnv)
+
+				if rest != nil {
+					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+							return rest
+						}
+					}
+				}
 			}
 		}
 	}

@@ -123,6 +123,8 @@ instruccion returns [interfaces.Instruction instr]
   | match_sent {$instr = $match_sent.instr}
 
   | loopB { $instr = $loopB.lop }
+  | lWhile { $instr = $lWhile.lwh }
+  
 
   | lBreak ';' { $instr = $lBreak.br }
   | lContinue ';' { $instr = $lContinue.cn }
@@ -142,9 +144,10 @@ instruccion_only returns [interfaces.Instruction instr]
   | match_sent {$instr = $match_sent.instr}
 
   | loopB { $instr = $loopB.lop }
+  | lWhile { $instr = $lWhile.lwh }
 
-  | lBreak ';' { $instr = $lBreak.br }
-  | lContinue ';' { $instr = $lContinue.cn }
+  | lBreak  { $instr = $lBreak.br }
+  | lContinue  { $instr = $lContinue.cn }
   
   //| newStruct  {$instr = $newStruct.str} 
 
@@ -197,6 +200,12 @@ loopB returns [interfaces.Instruction lop, interfaces.Expresion p]
                         $p = instructionExpre.NewLoop($bloque_inst.l, $LOOP.line, $LOOP.pos ) 
                     }
 ;
+
+lWhile returns[interfaces.Instruction lwh]
+: WHILE expression bloque_inst { $lwh = instruction.NewWhile($expression.p, $bloque_inst.l, $WHILE.line, $WHILE.pos ) }
+;
+
+
 
 lBreak returns[interfaces.Instruction br]
 : BREAK { $br = instructionExpre.NewBreak(nil, $BREAK.line, $BREAK.pos) }
@@ -290,6 +299,9 @@ index_array   returns [interfaces.Expresion index]
 if_sent  returns [interfaces.Instruction instr]
     : IF expression bloque_inst  {$instr = instruction.NewIf($expression.p, $bloque_inst.l, nil,nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
     | IF expression bprin = bloque_inst ELSE  belse = bloque_inst   {$instr = instruction.NewIf($expression.p,$bprin.l,nil,$belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )}
+    | IF expression bprin = bloque_inst list_elseif {
+        $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, nil, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
+    }
     | IF expression bprin = bloque_inst list_elseif ELSE  belse = bloque_inst {
         $instr = instruction.NewIf($expression.p,$bprin.l,$list_elseif.lista, $belse.l, $IF.line, localctx.(*If_sentContext).Get_IF().GetColumn() )
     }
@@ -339,15 +351,23 @@ else_if_exp returns [interfaces.Expresion p]
     }
 ; */
 //  MATCH
-match_sent  returns [interfaces.Instruction instr]
+match_sent  returns [interfaces.Instruction instr, interfaces.Expresion p]
     : MATCH expression LLAVEIZQ brazos = match_brazos LLAVEDER {
-                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+                        $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn(), nil, false )
       }
-    | MATCH expression LLAVEIZQ brazos = match_brazos '_' th='=>' bloque_inst ',' LLAVEDER {
-                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $bloque_inst.l, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+    | MATCH expression LLAVEIZQ brazos = match_brazos '_' th='=>' bloque_inst ','? LLAVEDER {
+                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, $bloque_inst.l, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn(), nil, false )
       }
     | MATCH expression LLAVEIZQ brazos = match_brazos '_' th='=>' instruccion_only ',' LLAVEDER {
-                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil,  $instruccion_only.instr,  $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn() )
+                          $instr = instructionExpre.NewMatch($expression.p, $brazos.l_brazos, nil,  $instruccion_only.instr,  $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn(), nil, false )
+      }
+
+    /*match expresiones*/
+    | MATCH exp=expression LLAVEIZQ brazosexp = match_brazos_exp LLAVEDER {
+                        $p = instructionExpre.NewMatch($exp.p, $brazosexp.l_brazos, nil, nil, $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn(), nil, true )
+      }
+    | MATCH exp=expression LLAVEIZQ brazosexp = match_brazos_exp '_' th='=>' exp_= expression ',' LLAVEDER {
+                        $p = instructionExpre.NewMatch($exp.p, $brazosexp.l_brazos, nil,  nil,  $MATCH.line, localctx.(*Match_sentContext).Get_MATCH().GetColumn(), $exp_.p, true )
       }
 
 ;
@@ -363,13 +383,29 @@ match_brazos returns [*arrayList.List l_brazos]
     | matchbrazo {$l_brazos.Add($matchbrazo.brazo)}
 ;
 
+match_brazos_exp returns [*arrayList.List l_brazos]
+@init{
+    $l_brazos = arrayList.New()
+}
+    : listb = match_brazos_exp matchbrazo_exp   {
+                                    $listb.l_brazos.Add($matchbrazo_exp.brazo)
+                                    $l_brazos = $listb.l_brazos
+                                }
+    | matchbrazo_exp {$l_brazos.Add($matchbrazo_exp.brazo)}
+;
+
 matchbrazo returns [instructionExpre.BrazoMatch brazo]
-    : listaOpciones th='=>' bloque_inst ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, $bloque_inst.l, nil, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn() ) }
-    | listaOpciones th='=>' instruccion_only ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, nil,  $instruccion_only.instr, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn() ) }
+    : listaOpciones th='=>' bloque_inst ','? { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, $bloque_inst.l, nil, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn(), nil ) }
+    | listaOpciones th='=>' instruccion_only ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, nil,  $instruccion_only.instr, $th.line, localctx.(*MatchbrazoContext).GetTh().GetColumn(), nil ) }
     
     //: listaOpciones '=>' ((bloque_inst | instruccion) ',')? { $instr = expresion.NewArray($listaOpciones.lisop, $bloque_inst.l ) }
     //| listaOpciones '=>' (expression ',')? { $instr = expresion.NewArray($listaOpciones.lisop, $expression.p) }
 ;
+
+matchbrazo_exp returns [instructionExpre.BrazoMatch brazo]
+    : listaOpciones th='=>' expression ',' { $brazo = instructionExpre.NewBrazoMatch($listaOpciones.lisop, nil,  nil, $th.line, localctx.(*Matchbrazo_expContext).GetTh().GetColumn(), $expression.p ) }
+;
+
 
 listaOpciones returns [*arrayList.List lisop]
 @init{
@@ -445,6 +481,7 @@ expr_arit returns[interfaces.Expresion p]
     | PARIZQ expression PARDER {$p = $expression.p}
     | casteo {$p = $casteo.p} 
     | if_exp {$p = $if_exp.p}
+    | match_sent {$p = $match_sent.p}
     //| match_sent {$p = $match_sent.instr.(interfaces.Expresion)}
 
     | loopB { $p = $loopB.p }

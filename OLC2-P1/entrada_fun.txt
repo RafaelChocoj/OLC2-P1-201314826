@@ -12,21 +12,33 @@ fn recur(mut a:i64) -> i64 {
 }
 
 fn main () {
-    //let a = recur(2);
-    //let a:i64 = suma(2,3);
-    //println!(":{}", a);
+
+let numero = 25;
+let saber = loop {
+    // Después del match sigue una expresión
+    match numero {
+    // 1 | 2 | 3 estas son coincidencias
+    1 | 2 | 3 => {
+    let x = 100;
+    println!("Rango de 1 a 3");
+
+    println!("x: {}", x);
+    
+    }, //esto se conoce como brazo
+    6 | 7 | 8 => println!("Rango de 6 a 8"),//esto se conoce como brazo
+    9 => println!("9"), // esto es un error!
+    _ => break 55, //brazo por defecto
+    }
+
+    
+};
+ println!("saber: {}", saber);
+
+}
 
 
-    //// Expresion loop
-    let mut cont = 0;
-    let result = loop {
-        cont = cont + 1;
-        if cont == 10 {
-            break cont * 2;
-        }
-    };
-    // ¡No olvidar el punto y coma!
-    println!("El resultado es {}", result);
+}
+
 
 
 }

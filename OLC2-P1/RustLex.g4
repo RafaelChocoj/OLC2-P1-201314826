@@ -15,7 +15,7 @@ T_STR:   '&str';
 //sentences
 IF:       'if';
 ELSE:       'else';
-//P_WHILE:       'while';
+WHILE: 'while';
 
 LOOP: 'loop';
 

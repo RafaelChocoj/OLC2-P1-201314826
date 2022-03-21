@@ -20,9 +20,13 @@ type Match struct {
 
 	Line   int
 	Column int
+
+	DefExpre interfaces.Expresion
+	IsExpre  bool
 }
 
-func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Instrucciones *arrayList.List, defInstruc interfaces.Instruction, line int, column int) Match {
+func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Instrucciones *arrayList.List, defInstruc interfaces.Instruction, line int, column int,
+	defExpre interfaces.Expresion, isExpre bool) Match {
 
 	return Match{
 		Expre:       expre,
@@ -31,24 +35,30 @@ func NewMatch(expre interfaces.Expresion, list_Brazos *arrayList.List, defLB_Ins
 		DefLB_Instrucciones: defLB_Instrucciones,
 		DefInstruc:          defInstruc,
 
-		Line:   line,
-		Column: column,
+		Line:     line,
+		Column:   column,
+		DefExpre: defExpre,
+		IsExpre:  isExpre,
 	}
 }
 
-/*func (m Match) Ejecutar(env interface{}) interfaces.Symbol {
-
-	var resultado interface{}
-	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
-}*/
-
 func (m Match) Ejecutar(env interface{}) interface{} {
 
+	res := m.EjecutarValor(env)
+
+	//fmt.Println("antes de retorno")
+	return res
+}
+
+func (m Match) EjecutarValor(env interface{}) interfaces.Symbol {
+
 	//var resultado interface{}
+	var result_exp interfaces.Symbol
+	//fmt.Println("----entra en match: ", m.IsExpre)
 
 	var result interfaces.Symbol
 	result = m.Expre.EjecutarValor(env)
-	fmt.Println("----result.Valor: ", result.Valor)
+	//fmt.Println("----result.Valor: ", result.Valor)
 	//fmt.Println("----result.Tipo: ", result.Tipo)
 
 	var istrue = false
@@ -118,11 +128,12 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 	}
 
 	if valtypes == true {
-		return nil
-		//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+		//return nil
+		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 	}
 
 	/***************************/
+
 	encontrado := false
 	for _, bz := range m.List_Brazos.ToArray() {
 		list_cons := bz.(BrazoMatch).Concidencias
@@ -139,17 +150,43 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 
 				var tmpEnv environment.Environment
 				tmpEnv = environment.NewEnvironment("Match brazo", env.(environment.Environment))
+				if m.IsExpre == false {
 
-				/*es lista de instrucciones*/
-				if bz.(BrazoMatch).LB_Instrucciones != nil {
+					/*es lista de instrucciones*/
+					if bz.(BrazoMatch).LB_Instrucciones != nil {
 
-					for _, s := range bz.(BrazoMatch).LB_Instrucciones.ToArray() {
-						s.(interfaces.Instruction).Ejecutar(tmpEnv)
+						for _, s := range bz.(BrazoMatch).LB_Instrucciones.ToArray() {
+							rest := s.(interfaces.Instruction).Ejecutar(tmpEnv)
+							if rest != nil {
+								if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+									//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+									if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+										return rest.(interfaces.Symbol)
+									}
+								}
+							}
+
+						}
 					}
-				}
-				/*si es solo una instruccion*/
-				if bz.(BrazoMatch).Instruc != nil {
-					bz.(BrazoMatch).Instruc.Ejecutar(tmpEnv)
+					/*si es solo una instruccion*/
+					if bz.(BrazoMatch).Instruc != nil {
+						rest := bz.(BrazoMatch).Instruc.Ejecutar(tmpEnv)
+						if rest != nil {
+							if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+								//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+								if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+									return rest.(interfaces.Symbol)
+								}
+							}
+						}
+					}
+				} else if m.IsExpre == true {
+
+					/*si es una expresion*/
+					if bz.(BrazoMatch).B_Exp != nil {
+						result_exp = bz.(BrazoMatch).B_Exp.EjecutarValor(tmpEnv)
+					}
+
 				}
 				break
 			}
@@ -162,23 +199,50 @@ func (m Match) Ejecutar(env interface{}) interface{} {
 		var tmpEnv environment.Environment
 		tmpEnv = environment.NewEnvironment("Match brazo", env.(environment.Environment))
 
-		/*es lista de instrucciones*/
-		if m.DefLB_Instrucciones != nil {
+		if m.IsExpre == false {
+			/*es lista de instrucciones*/
+			if m.DefLB_Instrucciones != nil {
 
-			for _, sdef := range m.DefLB_Instrucciones.ToArray() {
-				sdef.(interfaces.Instruction).Ejecutar(tmpEnv)
+				for _, sdef := range m.DefLB_Instrucciones.ToArray() {
+					rest := sdef.(interfaces.Instruction).Ejecutar(tmpEnv)
+
+					if rest != nil {
+						if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+							//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+							if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+								return rest.(interfaces.Symbol)
+							}
+						}
+					}
+				}
 			}
-		}
 
-		/*si es solo una instruccion*/
-		if m.DefInstruc != nil {
-			m.DefInstruc.Ejecutar(tmpEnv)
+			/*si es solo una instruccion*/
+			if m.DefInstruc != nil {
+				rest := m.DefInstruc.Ejecutar(tmpEnv)
+				if rest != nil {
+					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+						//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+							return rest.(interfaces.Symbol)
+						}
+					}
+				}
+			}
+
+		} else if m.IsExpre == true {
+
+			if m.DefExpre != nil {
+				result_exp = m.DefExpre.EjecutarValor(tmpEnv)
+			}
+
 		}
 
 	}
 	/***********************/
 
-	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
-	return nil
+	return result_exp
+	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+	//return nil
 
 }

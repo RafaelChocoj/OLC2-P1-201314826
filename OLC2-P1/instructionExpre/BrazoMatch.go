@@ -12,9 +12,11 @@ type BrazoMatch struct {
 	Instruc          interfaces.Instruction
 	Line             int
 	Column           int
+
+	B_Exp interfaces.Expresion
 }
 
-func NewBrazoMatch(concidencias *arrayList.List, lb_Instrucciones *arrayList.List, instruc interfaces.Instruction, line int, column int) BrazoMatch {
+func NewBrazoMatch(concidencias *arrayList.List, lb_Instrucciones *arrayList.List, instruc interfaces.Instruction, line int, column int, b_Exp interfaces.Expresion) BrazoMatch {
 
 	return BrazoMatch{
 		Concidencias:     concidencias,
@@ -22,6 +24,7 @@ func NewBrazoMatch(concidencias *arrayList.List, lb_Instrucciones *arrayList.Lis
 		Instruc:          instruc,
 		Line:             line,
 		Column:           column,
+		B_Exp:            b_Exp,
 	}
 }
 

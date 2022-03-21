@@ -56,6 +56,9 @@ type RustParListener interface {
 	// EnterLoopB is called when entering the loopB production.
 	EnterLoopB(c *LoopBContext)
 
+	// EnterLWhile is called when entering the lWhile production.
+	EnterLWhile(c *LWhileContext)
+
 	// EnterLBreak is called when entering the lBreak production.
 	EnterLBreak(c *LBreakContext)
 
@@ -110,8 +113,14 @@ type RustParListener interface {
 	// EnterMatch_brazos is called when entering the match_brazos production.
 	EnterMatch_brazos(c *Match_brazosContext)
 
+	// EnterMatch_brazos_exp is called when entering the match_brazos_exp production.
+	EnterMatch_brazos_exp(c *Match_brazos_expContext)
+
 	// EnterMatchbrazo is called when entering the matchbrazo production.
 	EnterMatchbrazo(c *MatchbrazoContext)
+
+	// EnterMatchbrazo_exp is called when entering the matchbrazo_exp production.
+	EnterMatchbrazo_exp(c *Matchbrazo_expContext)
 
 	// EnterListaOpciones is called when entering the listaOpciones production.
 	EnterListaOpciones(c *ListaOpcionesContext)
@@ -197,6 +206,9 @@ type RustParListener interface {
 	// ExitLoopB is called when exiting the loopB production.
 	ExitLoopB(c *LoopBContext)
 
+	// ExitLWhile is called when exiting the lWhile production.
+	ExitLWhile(c *LWhileContext)
+
 	// ExitLBreak is called when exiting the lBreak production.
 	ExitLBreak(c *LBreakContext)
 
@@ -251,8 +263,14 @@ type RustParListener interface {
 	// ExitMatch_brazos is called when exiting the match_brazos production.
 	ExitMatch_brazos(c *Match_brazosContext)
 
+	// ExitMatch_brazos_exp is called when exiting the match_brazos_exp production.
+	ExitMatch_brazos_exp(c *Match_brazos_expContext)
+
 	// ExitMatchbrazo is called when exiting the matchbrazo production.
 	ExitMatchbrazo(c *MatchbrazoContext)
+
+	// ExitMatchbrazo_exp is called when exiting the matchbrazo_exp production.
+	ExitMatchbrazo_exp(c *Matchbrazo_expContext)
 
 	// ExitListaOpciones is called when exiting the listaOpciones production.
 	ExitListaOpciones(c *ListaOpcionesContext)

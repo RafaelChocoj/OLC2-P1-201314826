@@ -29,7 +29,7 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 	isBreak := false
 	var result interfaces.Symbol
 
-	fmt.Println("entra aqui")
+	//fmt.Println("entra aqui")
 
 	for {
 		limCont++
@@ -81,7 +81,7 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 		if isBreak == true {
 			break
 		}
-		if limCont > 600 {
+		if limCont > 15000 {
 			err.NewError("se ha excedido el máximo de ciclos permitidos en 'Loop' ", env.(environment.Environment).Nombre, p.Line, p.Column)
 			break
 		}
