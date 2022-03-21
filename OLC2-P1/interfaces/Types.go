@@ -15,9 +15,10 @@ const (
 	STRUCT
 	BREAK
 	CONTINUE
+	RETURN
 )
 
-var nametype = [11]string{
+var nametype = [12]string{
 	"i64",
 	"f64",
 	"String",
@@ -29,6 +30,7 @@ var nametype = [11]string{
 	"struct",
 	"break",
 	"continue",
+	"return",
 }
 
 const (

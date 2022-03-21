@@ -123,6 +123,12 @@ func (s *BaseRustParListener) EnterLWhile(ctx *LWhileContext) {}
 // ExitLWhile is called when production lWhile is exited.
 func (s *BaseRustParListener) ExitLWhile(ctx *LWhileContext) {}
 
+// EnterLForin is called when production lForin is entered.
+func (s *BaseRustParListener) EnterLForin(ctx *LForinContext) {}
+
+// ExitLForin is called when production lForin is exited.
+func (s *BaseRustParListener) ExitLForin(ctx *LForinContext) {}
+
 // EnterLBreak is called when production lBreak is entered.
 func (s *BaseRustParListener) EnterLBreak(ctx *LBreakContext) {}
 

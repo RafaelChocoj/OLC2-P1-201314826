@@ -59,6 +59,9 @@ type RustParListener interface {
 	// EnterLWhile is called when entering the lWhile production.
 	EnterLWhile(c *LWhileContext)
 
+	// EnterLForin is called when entering the lForin production.
+	EnterLForin(c *LForinContext)
+
 	// EnterLBreak is called when entering the lBreak production.
 	EnterLBreak(c *LBreakContext)
 
@@ -208,6 +211,9 @@ type RustParListener interface {
 
 	// ExitLWhile is called when exiting the lWhile production.
 	ExitLWhile(c *LWhileContext)
+
+	// ExitLForin is called when exiting the lForin production.
+	ExitLForin(c *LForinContext)
 
 	// ExitLBreak is called when exiting the lBreak production.
 	ExitLBreak(c *LBreakContext)

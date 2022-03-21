@@ -13,29 +13,29 @@ fn recur(mut a:i64) -> i64 {
 
 fn main () {
 
-let numero = 25;
-let saber = loop {
-    // Después del match sigue una expresión
-    match numero {
-    // 1 | 2 | 3 estas son coincidencias
-    1 | 2 | 3 => {
-    let x = 100;
-    println!("Rango de 1 a 3");
+//for n in 1..4 { // Recorre rango de 1:4
+//        println!("{} ", n); // Únicamente se recorre ascendentemente
+//    } // Imprime 1 2 3
+//    println!("");
+//}
 
-    println!("x: {}", x);
-    
-    }, //esto se conoce como brazo
-    6 | 7 | 8 => println!("Rango de 6 a 8"),//esto se conoce como brazo
-    9 => println!("9"), // esto es un error!
-    _ => break 55, //brazo por defecto
-    }
+// Ejemplo 5 - Es aplicable para arreglos o vectores
+let arr:[&str;3] = ["perro", "gato", "tortuga"];
+println!("{:?} arr", arr);
+//for letra in arr {
+let mut i = 0;
+for a in 0..2 {
 
-    
-};
- println!("saber: {}", saber);
+    println!("{} -", arr[a]);
 
+
+    //Imprime: perro es mi favorito, gato es mi favorito, tortuga es mi favorito,
 }
 
+println!("{}  es mi favorito", arr[0]);
+println!("{}  es mi favorito", arr[1]);
+println!("{}  es mi favorito", arr[2]);
+println!("{}  es mi favorito", arr[3]);
 
 }
 

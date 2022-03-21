@@ -124,6 +124,7 @@ instruccion returns [interfaces.Instruction instr]
 
   | loopB { $instr = $loopB.lop }
   | lWhile { $instr = $lWhile.lwh }
+  | lForin { $instr = $lForin.lfor }
   
 
   | lBreak ';' { $instr = $lBreak.br }
@@ -145,6 +146,7 @@ instruccion_only returns [interfaces.Instruction instr]
 
   | loopB { $instr = $loopB.lop }
   | lWhile { $instr = $lWhile.lwh }
+  | lForin { $instr = $lForin.lfor }
 
   | lBreak  { $instr = $lBreak.br }
   | lContinue  { $instr = $lContinue.cn }
@@ -206,6 +208,9 @@ lWhile returns[interfaces.Instruction lwh]
 ;
 
 
+lForin returns[interfaces.Instruction lfor]
+: FOR ID IN expression bloque_inst { $lfor = instruction.NewForIn($ID.text, $expression.p, $bloque_inst.l, $FOR.line, $FOR.pos) }
+;
 
 lBreak returns[interfaces.Instruction br]
 : BREAK { $br = instructionExpre.NewBreak(nil, $BREAK.line, $BREAK.pos) }
@@ -451,7 +456,7 @@ tipos_var returns[interfaces.TipoExpresion tipo]
 
 expression returns[interfaces.Expresion p]
     : expr_arit    {$p = $expr_arit.p}
-    //| if_exp {$p = $if_exp.p}
+    | e_ini=expression '.''.' e_fin=expression { $p = expresion.NewRangeF($e_ini.p, $e_fin.p, $e_ini.start.GetLine(),$e_ini.start.GetColumn() ) }
 ;
 
 expr_arit returns[interfaces.Expresion p]

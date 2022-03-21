@@ -15,9 +15,10 @@ T_STR:   '&str';
 //sentences
 IF:       'if';
 ELSE:       'else';
-WHILE: 'while';
-
-LOOP: 'loop';
+WHILE:  'while';
+LOOP:   'loop';
+FOR:    'for';
+IN:     'in';
 
 BREAK: 'break';
 CONTINUE: 'continue';
