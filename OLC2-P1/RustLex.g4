@@ -48,7 +48,10 @@ TO_OWNED:   '.to_owned()';
 
 LEN:   'len()';
 NEW:   'new()';
-CAPF:   'capacity()';
+CAPF:  'capacity()';
+PUSH:  'push';
+CONTAINS:  'contains';
+
 
 
 //funciones
@@ -59,7 +62,7 @@ FN:     'fn';
 MAIN:   'main';
 RETURN: 'return';
 
-REF: '&mut';
+//REF: '&mut';
 
 
 NUMBER: [0-9]+;

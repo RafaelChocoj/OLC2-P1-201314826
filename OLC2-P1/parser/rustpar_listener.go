@@ -38,6 +38,9 @@ type RustParListener interface {
 	// EnterInstruccion_only is called when entering the instruccion_only production.
 	EnterInstruccion_only(c *Instruccion_onlyContext)
 
+	// EnterPushVec is called when entering the pushVec production.
+	EnterPushVec(c *PushVecContext)
+
 	// EnterNewStruct is called when entering the newStruct production.
 	EnterNewStruct(c *NewStructContext)
 
@@ -70,6 +73,12 @@ type RustParListener interface {
 
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
+
+	// EnterListParamsCall is called when entering the listParamsCall production.
+	EnterListParamsCall(c *ListParamsCallContext)
+
+	// EnterIs_ref is called when entering the is_ref production.
+	EnterIs_ref(c *Is_refContext)
 
 	// EnterDeclaracion is called when entering the declaracion production.
 	EnterDeclaracion(c *DeclaracionContext)
@@ -191,6 +200,9 @@ type RustParListener interface {
 	// ExitInstruccion_only is called when exiting the instruccion_only production.
 	ExitInstruccion_only(c *Instruccion_onlyContext)
 
+	// ExitPushVec is called when exiting the pushVec production.
+	ExitPushVec(c *PushVecContext)
+
 	// ExitNewStruct is called when exiting the newStruct production.
 	ExitNewStruct(c *NewStructContext)
 
@@ -223,6 +235,12 @@ type RustParListener interface {
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)
+
+	// ExitListParamsCall is called when exiting the listParamsCall production.
+	ExitListParamsCall(c *ListParamsCallContext)
+
+	// ExitIs_ref is called when exiting the is_ref production.
+	ExitIs_ref(c *Is_refContext)
 
 	// ExitDeclaracion is called when exiting the declaracion production.
 	ExitDeclaracion(c *DeclaracionContext)

@@ -82,6 +82,21 @@ func (f Function) EjecutarParamets(env interface{}, expre_list *arrayList.List) 
 func (f Function) Ejecutar(env interface{}) interface{} {
 
 	for _, s := range f.ListaInstrucciones.ToArray() {
+		rest := s.(interfaces.Instruction).Ejecutar(env)
+		if rest != nil {
+			if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+				//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
+				if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
+					//fmt.Println("rest.(interfaces.Symbol).Id: ", rest.(interfaces.Symbol).Id)
+					return rest
+				}
+			}
+		}
+
+	}
+	return nil
+
+	/*for _, s := range f.ListaInstrucciones.ToArray() {
 		//fmt.Println("EEEEJJJJEECCUTA")
 		valorInst := s.(interfaces.Instruction).Ejecutar(env)
 
@@ -115,4 +130,5 @@ func (f Function) Ejecutar(env interface{}) interface{} {
 	}
 
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+	*/
 }

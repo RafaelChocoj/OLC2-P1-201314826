@@ -4,6 +4,7 @@ import (
 	"OLC2/environment"
 	err "OLC2/environment"
 	"OLC2/expresion"
+	"OLC2/instruction"
 	"OLC2/interfaces"
 	"fmt"
 	"reflect"
@@ -80,6 +81,9 @@ func (f CallFunction) ParametsExpre(env interface{}, expre_list *arrayList.List)
 
 func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 
+	listIdRef := arrayList.New()
+	listIdNew := arrayList.New()
+
 	fun_exist := env.(environment.Environment).ExistFunction(f.IdFun)
 	//fmt.Println("La variable no existe: ", fun_exist)
 	if !fun_exist {
@@ -89,16 +93,58 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 	}
 
 	var tmpEnv environment.Environment
-	//tmpEnv = environment.NewEnvironment("function", env.(environment.Environment))
-	tmpEnv = environment.NewEnvironment("function", env.(environment.Environment).GetFather())
+	tmpEnv = environment.NewEnvironment("Function", env.(environment.Environment).GetFather(env))
 
 	funcion := env.(environment.Environment).GetFunction(f.IdFun).(Function)
+	list_decla := funcion.ListaParamsDecl.Clone()
+	if list_decla.Len() != f.ListaExpresiones.Len() {
+		//fmt.Println("Error en variables")
+		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", funcion.ListaParamsDecl.Len(), f.ListaExpresiones.Len())
+		err.NewError("Cantidad de parametros en función incorrectos "+desc, env.(environment.Environment).Nombre, f.Line, f.Column)
+		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+	}
+	for i := 0; i < list_decla.Len(); i++ {
 
-	plantFunc := NewFunction(funcion.Id, funcion.ListaParamsDecl.Clone(), funcion.ListaInstrucciones.Clone(),
+		var_decla := list_decla.GetValue(i).(instruction.Declaration)
+		idNewVar := var_decla.Id
+		typeNewVar := var_decla.Tipo
+		symNewVar := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+
+		//fmt.Println("	symNewVar", symNewVar)
+		//fmt.Println("	idNewVar", idNewVar)
+		//fmt.Println("	symNewVar.Tipo", symNewVar.Tipo)
+		lin := var_decla.Line
+		col := var_decla.Column
+		if typeNewVar == symNewVar.Tipo {
+
+			if f.ListaExpresiones.GetValue(i).(ParameterBy).IsRef && (typeNewVar == interfaces.ARRAY || typeNewVar == interfaces.VECTOR) {
+				listIdRef.Add(symNewVar.Id)
+				listIdNew.Add(idNewVar)
+			}
+
+			tmpEnv.SaveVariable(idNewVar, symNewVar, typeNewVar, var_decla.IsMut, var_decla.Line, var_decla.Column, tmpEnv.Nombre, nil, 0)
+
+		} else {
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(symNewVar.Tipo), interfaces.GetType(typeNewVar))
+			err.NewError("Tipos invalidos "+desc, tmpEnv.Nombre, lin, col)
+			return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+		}
+	}
+
+	rest := funcion.Ejecutar(tmpEnv)
+	if rest != nil {
+		if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+			//fmt.Println("222rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
+			if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
+				//fmt.Println(" 22 rest.(interfaces.Symbol).Id: ", rest.(interfaces.Symbol).Id)
+				return rest.(interfaces.Symbol)
+			}
+		}
+	}
+
+	/*plantFunc := NewFunction(funcion.Id, funcion.ListaParamsDecl.Clone(), funcion.ListaInstrucciones.Clone(),
 		funcion.Tipo, funcion.Line, funcion.Column)
 
-	/*var tmpEnv environment.Environment
-	tmpEnv = funcion.EntornoFun.(environment.Environment)*/
 	listexprePar := f.ParametsExpre(env, f.ListaExpresiones)
 	//fmt.Println("******************************************")
 
@@ -118,12 +164,14 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 		fmt.Println("no es un return valuido", valfun)
 		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 	}
+	*/
 
-	return valfun.(interfaces.Symbol)
 	//return valfun.(interfaces.Symbol)
+	//return valfun.(interfaces.Symbol)
+	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 }
 func (f CallFunction) Ejecutar(env interface{}) interface{} {
 
-	f.EjecutarValor(env)
-	return nil
+	res := f.EjecutarValor(env)
+	return res
 }

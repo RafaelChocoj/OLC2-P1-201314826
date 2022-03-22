@@ -82,7 +82,7 @@ func main() {
 	//is := antlr.NewInputStream("\"El resultado es: \" + (10+5+5+5+5+5)")
 
 	//is, _ := antlr.NewFileStream("entrada.txt")
-	is, _ := antlr.NewFileStream("entrada_fun.txt")
+	is, _ := antlr.NewFileStream("entrada_funciones.txt")
 
 	// Create the Lexer
 	lexer := parser.NewRustLex(is)

@@ -51,18 +51,21 @@ func (i If) Ejecutar(env interface{}) interface{} {
 		var tmpEnv environment.Environment
 		tmpEnv = environment.NewEnvironment("if", env.(environment.Environment))
 
+		var rest interface{}
 		for _, s := range i.LB_Principal.ToArray() {
-			rest := s.(interfaces.Instruction).Ejecutar(tmpEnv)
+			//rest := s.(interfaces.Instruction).Ejecutar(tmpEnv)
+			rest = s.(interfaces.Instruction).Ejecutar(tmpEnv)
 			if rest != nil {
 
 				if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 					//fmt.Println("123123 rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
-					if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+					if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 						return rest
 					}
 				}
 			}
 		}
+		return rest
 
 	} else {
 		////////ELSE IF
@@ -86,15 +89,16 @@ func (i If) Ejecutar(env interface{}) interface{} {
 
 				if elseif.Valor == true {
 
+					var rest interface{}
 					var tmpEnv_elseif environment.Environment
 					tmpEnv_elseif = environment.NewEnvironment("else if", env.(environment.Environment))
 
 					for _, sif := range s.(If).LB_Principal.ToArray() {
-						rest := sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
-
+						//rest := sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
+						rest = sif.(interfaces.Instruction).Ejecutar(tmpEnv_elseif)
 						if rest != nil {
 							if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
-								if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+								if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 									return rest
 								}
 							}
@@ -102,7 +106,8 @@ func (i If) Ejecutar(env interface{}) interface{} {
 
 					}
 
-					return nil
+					return rest
+					//return nil
 					//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
 
 				}
@@ -113,6 +118,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 		//////ELSE
 
 		if i.LB_Else != nil {
+
 			var tmpEnv environment.Environment
 			tmpEnv = environment.NewEnvironment("else", env.(environment.Environment))
 
@@ -121,7 +127,7 @@ func (i If) Ejecutar(env interface{}) interface{} {
 
 				if rest != nil {
 					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
-						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 							return rest
 						}
 					}
@@ -131,5 +137,5 @@ func (i If) Ejecutar(env interface{}) interface{} {
 	}
 
 	return nil
-	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: resultado}
+	//return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 }

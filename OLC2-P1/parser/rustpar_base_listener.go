@@ -81,6 +81,12 @@ func (s *BaseRustParListener) EnterInstruccion_only(ctx *Instruccion_onlyContext
 // ExitInstruccion_only is called when production instruccion_only is exited.
 func (s *BaseRustParListener) ExitInstruccion_only(ctx *Instruccion_onlyContext) {}
 
+// EnterPushVec is called when production pushVec is entered.
+func (s *BaseRustParListener) EnterPushVec(ctx *PushVecContext) {}
+
+// ExitPushVec is called when production pushVec is exited.
+func (s *BaseRustParListener) ExitPushVec(ctx *PushVecContext) {}
+
 // EnterNewStruct is called when production newStruct is entered.
 func (s *BaseRustParListener) EnterNewStruct(ctx *NewStructContext) {}
 
@@ -146,6 +152,18 @@ func (s *BaseRustParListener) EnterListParams(ctx *ListParamsContext) {}
 
 // ExitListParams is called when production listParams is exited.
 func (s *BaseRustParListener) ExitListParams(ctx *ListParamsContext) {}
+
+// EnterListParamsCall is called when production listParamsCall is entered.
+func (s *BaseRustParListener) EnterListParamsCall(ctx *ListParamsCallContext) {}
+
+// ExitListParamsCall is called when production listParamsCall is exited.
+func (s *BaseRustParListener) ExitListParamsCall(ctx *ListParamsCallContext) {}
+
+// EnterIs_ref is called when production is_ref is entered.
+func (s *BaseRustParListener) EnterIs_ref(ctx *Is_refContext) {}
+
+// ExitIs_ref is called when production is_ref is exited.
+func (s *BaseRustParListener) ExitIs_ref(ctx *Is_refContext) {}
 
 // EnterDeclaracion is called when production declaracion is entered.
 func (s *BaseRustParListener) EnterDeclaracion(ctx *DeclaracionContext) {}

@@ -1,0 +1,61 @@
+
+fn ack(mut m: i64, mut n: i64) -> i64 {
+    if m == 0 {
+        return n + 1;
+    } else if n == 0 {
+        return ack(m - 1, 1);
+    } else {
+        return ack(m - 1, ack(m, n - 1));
+    }
+}
+
+
+fn valores(x: &mut [i64;3]) {
+    x[0] = 3;
+}
+
+fn main() {
+    let mut x: [i64; 3] = [10, 12, 45];
+    println!("1 {:?}", x);
+    valores(&mut x);
+    println!("2 {:?}", x);
+}
+
+
+
+fn m_ain_() {
+    println!("estoy en main");
+    let a = ack(3, 5);
+   println!("res: {}", a); // 253
+
+   // println!("la suma es {}", forfun(1));
+}
+
+fn forfun(mut a:i64) -> i64 { 
+    if (a == 5) {
+        return a;
+        
+    } else {
+        a = a +1;
+        forfun(a);
+    }
+}
+
+////
+fn suma( a: i64,  b:i64) -> i64 { 
+    println!("estoy en funcion");
+     //println!("la v var {}", v); 
+
+    return a+b;
+
+    println!("hla aqui"); 
+    return b;
+}
+
+fn main_() {
+    println!("estoy en main");
+    //let a = ack(3, 5);
+    let v = 2;
+    let a = suma(v,3);
+    println!("la suma es {}", a); // 253
+}

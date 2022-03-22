@@ -100,10 +100,11 @@ declar_parametros returns [interfaces.Instruction in_dec]
                         $in_dec = decl
                     }
     /*arrays*/
-    | isMut=is_mut ID ':' '&mut' array_type {
+    //| isMut=is_mut ID ':' '&''mut' array_type {
+    | ID ':' AMP MUT array_type {
                         listaIdes := arrayList.New()
                         listaIdes.Add(expresion.NewIdentificador($ID.text, $ID.line, $ID.pos ))
-                        decl := instruction.NewArrayDeclaration($ID.text, $array_type.ty, nil, $isMut.mut, $ID.line, $ID.pos )
+                        decl := instruction.NewArrayDeclaration($ID.text, $array_type.ty, nil, true, $ID.line, $ID.pos )
                         $in_dec = decl
                     }
 ;
@@ -119,6 +120,9 @@ instruccion returns [interfaces.Instruction instr]
   : printconsola ';' {$instr = $printconsola.instr}
   | declaracion ';' {$instr = $declaracion.instr}
   | asignacion ';' {$instr = $asignacion.instr}
+
+  | pushVec ';' {$instr = $pushVec.instr}
+
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
 
@@ -141,6 +145,9 @@ instruccion_only returns [interfaces.Instruction instr]
   : printconsola /*';'*/ {$instr = $printconsola.instr}
   | declaracion /*';'*/ {$instr = $declaracion.instr}
   | asignacion /*';'*/ {$instr = $asignacion.instr}
+
+  | pushVec  {$instr = $pushVec.instr}
+
   | if_sent  {$instr = $if_sent.instr}
   | match_sent {$instr = $match_sent.instr}
 
@@ -157,6 +164,10 @@ instruccion_only returns [interfaces.Instruction instr]
   | returnFun  {$instr = $returnFun.instr} 
 ;
 
+/*vector funciones*/
+pushVec returns [interfaces.Instruction instr]
+    : exp=expression '.' PUSH '('val=expression')' {$instr = instruction.NewPush($exp.p, $val.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+;
 newStruct returns[interfaces.Instruction str]
 : STRUCT ID LLAVEIZQ listdecStruct LLAVEDER { $str = instructionExpre.NewStruct($ID.text, $listdecStruct.l, $STRUCT.line, $STRUCT.pos) }
 ;
@@ -180,15 +191,15 @@ callFunction returns [interfaces.Instruction instr, interfaces.Expresion p]
                         $instr = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
                         $p = instructionExpre.NewCallFunction($ID.text, arrayList.New(), $ID.line, $ID.pos )
                     }
-    | ID '(' listParams ')' {
-                        $instr = instructionExpre.NewCallFunction($ID.text, $listParams.l_e, $ID.line, $ID.pos )
-                        $p = instructionExpre.NewCallFunction($ID.text, $listParams.l_e, $ID.line, $ID.pos )
+    | ID '(' listParamsCall ')' {
+                        $instr = instructionExpre.NewCallFunction($ID.text, $listParamsCall.l_e, $ID.line, $ID.pos )
+                        $p = instructionExpre.NewCallFunction($ID.text, $listParamsCall.l_e, $ID.line, $ID.pos )
                     }
 ;
 
 returnFun returns [interfaces.Instruction instr]
-    : RETURN                { $instr = instructionExpre.NewReturn(interfaces.VOID,nil)}
-    | RETURN  expression    { $instr = instructionExpre.NewReturn(interfaces.NULL,$expression.p)}
+    : RETURN                { $instr = instructionExpre.NewReturn(nil, $RETURN.line, $RETURN.pos )}
+    | RETURN  expression    { $instr = instructionExpre.NewReturn($expression.p, $RETURN.line, $RETURN.pos )}
 ;
 
 printconsola returns [interfaces.Instruction instr]
@@ -230,6 +241,26 @@ listParams returns [*arrayList.List l_e]
                                     $l_e = $list.l_e
                                 }
     | expression {$l_e.Add($expression.p)}
+;
+
+
+listParamsCall returns [*arrayList.List l_e]
+@init{
+    $l_e = arrayList.New()
+}
+    : list = listParamsCall ',' is_ref expression   {
+                                    ref := instructionExpre.NewParameterBy($expression.p, $is_ref.ref)
+                                    $list.l_e.Add(ref)
+                                    $l_e = $list.l_e
+                                }
+    | is_ref expression    {   ref := instructionExpre.NewParameterBy($expression.p, $is_ref.ref)
+                        $l_e.Add(ref)
+                    }
+;
+
+is_ref returns [bool ref]
+   : AMP MUT { $ref = true }
+   | { $ref = false }
 ;
 
 declaracion returns [interfaces.Instruction instr]
@@ -465,7 +496,10 @@ expression returns[interfaces.Expresion p]
     : expr_arit    {$p = $expr_arit.p}
     /*funciones primitivas */
     | exp=expression '.' LEN {$p = expresion.NewLen($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
-    | exp=expression '.' CAPF {$p = expresion.NewLen($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+    | exp=expression '.' CAPF {$p = expresion.NewCapacity($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+
+    | exp=expression '.' CONTAINS '(''&' val=expression')' {$p = expresion.NewContains($exp.p, $val.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+
     /*rango for */
     | e_ini=expression '.''.' e_fin=expression { $p = expresion.NewRangeF($e_ini.p, $e_fin.p, $e_ini.start.GetLine(),$e_ini.start.GetColumn() ) }
 ;

@@ -17,9 +17,38 @@ type Environment struct {
 	//TablaFunciones map[string]interface{}
 }
 
-func (env Environment) GetFather() interface{} {
-	return env.father
+/*var tmpEnv Environment
+tmpEnv = env
+
+for {
+	if variable, ok := tmpEnv.Tabla[id]; ok {
+		return variable
+	}
+
+	if tmpEnv.father == nil {
+		break
+	} else {
+		tmpEnv = tmpEnv.father.(Environment)
+	}
+}*/
+
+func (env Environment) GetFather(env2 interface{}) Environment {
+
+	var EnvGbl Environment
+	EnvGbl = env2.(Environment)
+	for {
+		if EnvGbl.Nombre == "GLOBAL" {
+			return EnvGbl
+		}
+		if EnvGbl.father == nil {
+			break
+		} else {
+			EnvGbl = EnvGbl.father.(Environment)
+		}
+	}
+	return EnvGbl
 }
+
 func NewEnvironment(nombre string, father interface{}) Environment {
 	//Tabla := make(map[string]interface{})
 	Tabla := make(map[string]interfaces.Symbol)
@@ -32,7 +61,7 @@ func NewEnvironment(nombre string, father interface{}) Environment {
 func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, isMut bool, Line int, Column int, nameentorno string, tipos *arrayList.List, capacidad int) {
 	if variable, ok := env.Tabla[id]; ok {
 		//fmt.Println("La variable " + variable.Id + " ya existe")
-		NewError("La variable "+variable.Id+" ya declarada en entorno "+nameentorno, nameentorno, Line, Column)
+		NewError("La variable '"+variable.Id+"' ya declarada en entorno "+nameentorno, nameentorno, Line, Column)
 		return
 	}
 	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column, TiposArr: tipos, Capacity: capacidad}
@@ -42,7 +71,7 @@ func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo int
 func (env Environment) SaveStruct(id string, value *arrayList.List, isMut bool) {
 	if structs, ok := env.TablaStructs[id]; ok {
 		//fmt.Println("La variable " + variable.Id + " ya existe")
-		NewError("El struct"+structs.Id+" ya declarada en entorno "+env.Nombre, env.Nombre, 0, 0)
+		NewError("El struct '"+structs.Id+"' ya declarada en entorno "+env.Nombre, env.Nombre, 0, 0)
 		return
 	}
 	env.TablaStructs[id] = interfaces.Symbol{Id: id, Tipo: interfaces.STRUCT, Valor: value, IsMut: isMut, Line: 0, Column: 0}
@@ -67,7 +96,7 @@ func (env Environment) GetVariable(id string, Line int, Column int, nameentorno 
 	}
 
 	//fmt.Println("La variable no existe")
-	NewError("La variable "+id+" no existe en entorno "+nameentorno, nameentorno, Line, Column)
+	NewError("La variable '"+id+"' no existe en entorno "+nameentorno, nameentorno, Line, Column)
 
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
 }
@@ -216,6 +245,23 @@ func (env Environment) IsLoopEnt() bool {
 	tmpEnv = env
 	for {
 		if tmpEnv.Nombre == "While" || tmpEnv.Nombre == "Forin" || tmpEnv.Nombre == "Loop" {
+			return true
+		}
+		if tmpEnv.father == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.father.(Environment)
+		}
+	}
+	//fmt.Println("la sentencia tiene que estar dentro de un ciclo")
+	return false
+}
+
+func (env Environment) IsFunction() bool {
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if tmpEnv.Nombre == "Function" {
 			return true
 		}
 		if tmpEnv.father == nil {

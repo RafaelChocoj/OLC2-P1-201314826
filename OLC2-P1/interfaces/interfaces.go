@@ -16,6 +16,8 @@ type Symbol struct {
 	ListParams *arrayList.List
 
 	Capacity int
+
+	TipoRet TipoExpresion
 }
 
 type Expresion interface {
