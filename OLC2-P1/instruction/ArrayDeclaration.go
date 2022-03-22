@@ -52,7 +52,7 @@ func (p ArrayDeclaration) Ejecutar(env interface{}) interface{} {
 
 		//validar array
 		if p.IsArray_Valido(env, result, p.Tipos.Clone()) {
-			env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, p.Tipos)
+			env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, p.Tipos, 0)
 			//fmt.Println("TODO OK")
 		} else {
 			//fmt.Println("Los tipos no coinciden")

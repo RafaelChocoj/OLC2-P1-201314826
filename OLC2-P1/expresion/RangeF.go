@@ -47,8 +47,8 @@ func (p RangeF) EjecutarValor(env interface{}) interfaces.Symbol {
 		array.Add(tmpSym)
 
 		for {
+			inival++
 			if inival < val2.Valor.(int) {
-				inival++
 				tmpSym = interfaces.Symbol{
 					Line:   p.Line,
 					Column: p.Column,

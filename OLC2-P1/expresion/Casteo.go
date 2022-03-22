@@ -1,6 +1,7 @@
 package expresion
 
 import (
+	"OLC2/environment"
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
@@ -64,7 +65,7 @@ func (p Casteo) EjecutarValor(env interface{}) interfaces.Symbol {
 
 		} else {
 			desc := fmt.Sprintf("%v a %v", interfaces.GetType(retornoExp.Tipo), interfaces.GetType(p.Tipo))
-			err.NewError("No se puede castear de "+desc, "casteo", p.Line, p.Column)
+			err.NewError("No se puede castear de "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		}
 	}
 

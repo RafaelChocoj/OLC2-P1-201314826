@@ -41,14 +41,14 @@ func (p Imprimir) PrintArray(env interface{}, arrlist *arrayList.List) string {
 
 		expre_print := arr.(interfaces.Symbol)
 
-		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY {
+		if arr.(interfaces.Symbol).Tipo == interfaces.ARRAY || arr.(interfaces.Symbol).Tipo == interfaces.VECTOR {
 			//fmt.Println("	1111111expre_print.Tipo: 				", interfaces.GetType(expre_print.Tipo) )
 
-			/*var coma = "";
-			if arr.(interfaces.Symbol).Valor.(*arrayList.List).Len() > 0 {
+			var coma = ""
+			if i < (arrlist.Len() - 1) {
 				coma = ", "
-			}*/
-			getres := p.PrintArray(env, arr.(interfaces.Symbol).Valor.(*arrayList.List))
+			}
+			getres := p.PrintArray(env, arr.(interfaces.Symbol).Valor.(*arrayList.List)) + coma
 			//fmt.Println("	1getresgetresgetres: 				", getres )
 			array_format = array_format + getres
 		} else {
@@ -83,7 +83,9 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 		result = p.L_Expresion.GetValue(0).(interfaces.Expresion).EjecutarValor(env)
 		format_str := fmt.Sprintf("%v", result.Valor)
 
-		p.L_Expresion.RemoveAtIndex(0)
+		List_Expresion := p.L_Expresion.Clone()
+		//p.L_Expresion.RemoveAtIndex(0)
+		List_Expresion.RemoveAtIndex(0)
 
 		//fmt.Println("format_str: ", format_str)
 		//fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
@@ -92,20 +94,21 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 		//fmt.Println("noformat: ", noformat)
 		//fmt.Println("p.L_Expresion.Len(): ", p.L_Expresion.Len())
 
-		if noformat != p.L_Expresion.Len() {
+		//if noformat != p.L_Expresion.Len() {
+		if noformat != List_Expresion.Len() {
 			//fmt.Println("Formato y número de expresiones incorrecto")
-			desc := fmt.Sprintf("format: '%v' parametros: '%v'", noformat, p.L_Expresion.Len())
+			desc := fmt.Sprintf("format: '%v' parametros: '%v'", noformat, List_Expresion.Len())
 			err.NewError("Formato y número de expresiones incorrecto, "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		}
 
-		for _, exp := range p.L_Expresion.ToArray() {
+		for _, exp := range List_Expresion.ToArray() {
 			expre_print := exp.(interfaces.Expresion).EjecutarValor(env)
 			//fmt.Println("-----expre_print.Tipo: ", interfaces.GetType(expre_print.Tipo) )
 			//fmt.Println("-----reflect.TypeOf(expre_print.Valor: ", reflect.TypeOf(expre_print.Valor) )
 
-			if expre_print.Tipo == interfaces.ARRAY {
+			if expre_print.Tipo == interfaces.ARRAY || expre_print.Tipo == interfaces.VECTOR {
 				str_arr := p.PrintArray(env, expre_print.Valor.(*arrayList.List))
-				str_arr = strings.ReplaceAll(str_arr, "][", "], [")
+				///////////str_arr = strings.ReplaceAll(str_arr, "][", "], [")
 				//fmt.Println("str_arr: ", str_arr)
 
 				format_str = strings.Replace(format_str, "{:?}", str_arr, 1)

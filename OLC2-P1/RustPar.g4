@@ -243,6 +243,13 @@ declaracion returns [interfaces.Instruction instr]
     | LET isMut=is_mut id=ID ':' array_type asig ='=' expression {
                       $instr = instruction.NewArrayDeclaration($id.text, $array_type.ty, $expression.p, $isMut.mut, $asig.line, localctx.(*DeclaracionContext).GetAsig().GetColumn())
                     }
+    /*vectores*/
+    | LET isMut=is_mut id=ID ':' VECN '<' tipos_var '>' '=' VECN '::' NEW {
+                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, nil, $isMut.mut, $VECN.line, $VECN.pos)
+                    }
+    | LET isMut=is_mut id=ID ':' VECN '<' tipos_var '>' '=' VECN '::' CAPACITY '('expression')' {
+                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, $expression.p, $isMut.mut, $VECN.line, $VECN.pos)
+                    }
 ;
 
 is_mut returns [bool mut]
@@ -456,8 +463,16 @@ tipos_var returns[interfaces.TipoExpresion tipo]
 
 expression returns[interfaces.Expresion p]
     : expr_arit    {$p = $expr_arit.p}
+    /*funciones primitivas */
+    | exp=expression '.' LEN {$p = expresion.NewLen($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+    | exp=expression '.' CAPF {$p = expresion.NewLen($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+    /*rango for */
     | e_ini=expression '.''.' e_fin=expression { $p = expresion.NewRangeF($e_ini.p, $e_fin.p, $e_ini.start.GetLine(),$e_ini.start.GetColumn() ) }
 ;
+
+/*len_f returns[interfaces.Expresion p]
+    : exp=expression '.' LEN {$p = expresion.NewLen($exp.p, $exp.start.GetLine(), $exp.start.GetColumn()  )}
+;*/
 
 expr_arit returns[interfaces.Expresion p]
     : op='-' opU = expr_arit {$p = expresion.NewOperacion($opU.p,"-",nil,true, $op.line, localctx.(*Expr_aritContext).GetOp().GetColumn())}
@@ -479,6 +494,10 @@ expr_arit returns[interfaces.Expresion p]
     | CORIZQ exp = expression ';' tam = expression CORDER { $p = expresion.NewArray(nil, $exp.p, $tam.p, 2, $CORIZQ.line, $CORIZQ.pos ) }
     | CORIZQ listParams CORDER { $p = expresion.NewArray($listParams.l_e, nil, nil, 1, $CORIZQ.line, $CORIZQ.pos ) }
 
+    /*vector*/
+    | VEC CORIZQ exp = expression ';' tam = expression CORDER { $p = expresion.NewVector(nil, $exp.p, $tam.p, 2, $CORIZQ.line, $CORIZQ.pos ) }
+    | VEC CORIZQ listParams CORDER { $p = expresion.NewVector($listParams.l_e, nil, nil, 1, $CORIZQ.line, $CORIZQ.pos ) }
+
     /*struct*/
     | ID LLAVEIZQ l_StructExp LLAVEDER { $p = instructionExpre.NewStructExpre($ID.text, $l_StructExp.l, $ID.line, $ID.pos ) }
 
@@ -492,11 +511,15 @@ expr_arit returns[interfaces.Expresion p]
     | loopB { $p = $loopB.p }
 
     | callFunction {$p = $callFunction.p} 
+
+
 ;
 
 /*casteo returns[interfaces.Expresion p]
   : PARIZQ expression AS Tipo_cast PARDER {$p = expresion.NewCasteo($expression.p, interfaces.FLOAT)}
 ;*/
+
+
 
 casteo returns[interfaces.Expresion p]
   : PARIZQ expression AS typec = tipo_cast PARDER {$p = expresion.NewCasteo($expression.p, $typec.tc, $PARIZQ.line, localctx.(*CasteoContext).Get_PARIZQ().GetColumn() )}

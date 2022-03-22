@@ -16,9 +16,10 @@ const (
 	BREAK
 	CONTINUE
 	RETURN
+	VECTOR
 )
 
-var nametype = [12]string{
+var nametype = [13]string{
 	"i64",
 	"f64",
 	"String",
@@ -31,6 +32,7 @@ var nametype = [12]string{
 	"break",
 	"continue",
 	"return",
+	"vector",
 }
 
 const (

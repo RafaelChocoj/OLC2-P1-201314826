@@ -30,24 +30,24 @@ func (p ForIn) Ejecutar(env interface{}) interface{} {
 	var arr *arrayList.List
 	//si es tipo array
 
-	//fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.ARRAY), interfaces.GetType(p.Exp.EjecutarValor(env).Tipo))
-	fmt.Println("p.Exp.EjecutarValor(env).Tipo: ", interfaces.GetType(p.Exp.EjecutarValor(env).Tipo))
-	fmt.Println("interfaces.ARRAY: ", interfaces.GetType(interfaces.ARRAY))
+	////fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.ARRAY), interfaces.GetType(p.Exp.EjecutarValor(env).Tipo))
+	//fmt.Println("p.Exp.EjecutarValor(env).Tipo: ", interfaces.GetType(p.Exp.EjecutarValor(env).Tipo))
+	//fmt.Println("interfaces.ARRAY: ", interfaces.GetType(interfaces.ARRAY))
 
 	if p.Exp.EjecutarValor(env).Tipo == interfaces.ARRAY {
 		//se extrae la lista
 		arr = p.Exp.EjecutarValor(env).Valor.(*arrayList.List)
 
-		fmt.Println("arr: ", arr)
+		//fmt.Println("arr: ", arr)
 		//se recorre
 		for _, s := range arr.ToArray() {
 			//crendo entorno
 			var loopEnv environment.Environment
 			loopEnv = environment.NewEnvironment("Forin", env.(environment.Environment))
 			//agregando variable al entorno
-			fmt.Println("s: ", s)
+			////fmt.Println("s: ", s)
 
-			loopEnv.SaveVariable(p.Id, s.(interfaces.Symbol), interfaces.ARRAY, true, p.Line, p.Column, env.(environment.Environment).Nombre, nil)
+			loopEnv.SaveVariable(p.Id, s.(interfaces.Symbol), interfaces.ARRAY, true, p.Line, p.Column, env.(environment.Environment).Nombre, nil, 0)
 
 			//instrucciones
 			for _, b := range p.Inst.ToArray() {

@@ -46,7 +46,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		}
 
 		if result.Tipo == p.Tipo {
-			env.(environment.Environment).SaveVariable(p.Id, result, p.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil)
+			env.(environment.Environment).SaveVariable(p.Id, result, p.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, 0)
 			/*} else if p.IsArray {
 				env.(environment.Environment).SaveVariable(p.Id, result, interfaces.ARRAY)
 			} else if p.IsStruct {
@@ -65,7 +65,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 				}*/
 			}
 			/*no tiene tipo en asignacion, se le asigna el tipo de la expresion*/
-			env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil)
+			env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, 0)
 		} else {
 			//fmt.Println("Los tipos no coinciden")
 			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))

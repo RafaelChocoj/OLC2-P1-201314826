@@ -14,7 +14,7 @@ tipo = 1 //let arr1: [&str; 2] = ["Hola", "Mundo"];
 tipo = 2 //let arr1: [&str; 4] = ["Hola"; 4];
 */
 
-type Array struct {
+type Vector struct {
 	ListExp *arrayList.List
 
 	Expresion interfaces.Expresion
@@ -26,25 +26,23 @@ type Array struct {
 	Column int
 }
 
-func NewArray(list *arrayList.List, expresion interfaces.Expresion, tam interfaces.Expresion, tipoDec int, line int, column int) Array {
+func NewVector(list *arrayList.List, expresion interfaces.Expresion, tam interfaces.Expresion, tipoDec int, line int, column int) Array {
 	exp := Array{list, expresion, tam, tipoDec, line, column}
 	return exp
 }
 
-func (p Array) EjecutarValor(env interface{}) interfaces.Symbol {
+func (p Vector) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
 
-	//fmt.Println("p.TipoDec: ", p.TipoDec)
-
-	/*array declarada con tipo y array asignado*/
+	/*vector declarada con tipo y vector asignado*/
 	if p.TipoDec == 1 {
 		for _, s := range p.ListExp.ToArray() {
 			tempExp.Add(s.(interfaces.Expresion).EjecutarValor(env))
 		}
 
-		/*array formato tipo;tam*/
+		/*vector formato tipo;tam*/
 	} else if p.TipoDec == 2 {
 		res_tam := p.Tam.(interfaces.Expresion).EjecutarValor(env)
 
@@ -67,7 +65,7 @@ func (p Array) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	return interfaces.Symbol{
 		Id:    "",
-		Tipo:  interfaces.ARRAY,
+		Tipo:  interfaces.VECTOR,
 		Valor: tempExp,
 	}
 }

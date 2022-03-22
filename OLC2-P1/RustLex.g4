@@ -38,10 +38,18 @@ LET:   'let';
 MUT:   'mut';
 
 STRUCT:  'struct';
+VEC:     'vec!';
+VECN:     'Vec';
+CAPACITY:     'with_capacity';
 
 //functions
 TO_STRING:   '.to_string()';
 TO_OWNED:   '.to_owned()';
+
+LEN:   'len()';
+NEW:   'new()';
+CAPF:   'capacity()';
+
 
 //funciones
 PUBLIC:     'pub';

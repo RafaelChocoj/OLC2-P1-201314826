@@ -13,30 +13,57 @@ fn recur(mut a:i64) -> i64 {
 
 fn main () {
 
-//for n in 1..4 { // Recorre rango de 1:4
-//        println!("{} ", n); // Únicamente se recorre ascendentemente
-//    } // Imprime 1 2 3
-//    println!("");
-//}
+    let mut animals =  ["perro", "gato", "tortuga"];
+    println!("animals.len {}", animals.len());
+    for letra in 0..animals.len() {
+        println!("{} - es mi favorito {} ", letra, animals[letra]);
+    }
 
-// Ejemplo 5 - Es aplicable para arreglos o vectores
-let arr:[&str;3] = ["perro", "gato", "tortuga"];
-println!("{:?} arr", arr);
-//for letra in arr {
-let mut i = 0;
-for a in 0..2 {
+let a:i64 = 34;
+    let mut arr2 = [
+    [ [ 1, 3, 5, 7], [ 5;4 ] ],
+    [ [ 2, 4, 6, 8], [ 10;4 ] ],
+    [ [ 2; 4 ], [ 0; 4 ] ]
+    ];
+    println!("{:?}", arr2);
 
-    println!("{} -", arr[a]);
+    println!("len {}", arr2.len());
+    println!("len {}", arr2[0].len());
+    println!("len {}", arr2[0][1].len());
+
+    //// Tamaño del vector n = 5
+    //// Posiciones de acceso desde 0 a 4
+    let mut vector = vec![1,2,3,4,5];
+
+    println!("vector {:?}", vector);
+
+    let mut v = vec![vec![1; 10],vec![2; 8],vec![3; 15],vec![5; 2],vec![8; 1]];
+    println!("v: {:?}", v); 
+
+    // Vector con valores iniciales
+    let v1 = vec![1,2,3,4,5];
+    // Valores repetidos
+    let v2 = vec![0; 10];
+    // es un vector de diez 0’s [0,0,0,0,0,0,0,0,0,0]
+
+    println!("{:?}", v1); 
+    println!("{:?}", v2); 
+
+println!("***************"); 
+    let mut v3: Vec<i64> = Vec::new();
+    println!("{:?}", v3); 
+
+    let mut v4: Vec<i64> = Vec::with_capacity(10);
+    println!("{:?}", v4); 
+
+    println!("v3 len: {}", v3.len()); 
+    println!("v4 len: {}", v4.len()); 
+
+    println!("v3 cap {}", v3.capacity()); 
+    println!("v4 cap {}", v4.capacity()); 
 
 
-    //Imprime: perro es mi favorito, gato es mi favorito, tortuga es mi favorito,
-}
-
-println!("{}  es mi favorito", arr[0]);
-println!("{}  es mi favorito", arr[1]);
-println!("{}  es mi favorito", arr[2]);
-println!("{}  es mi favorito", arr[3]);
-
+    v4.push(1);
 }
 
 

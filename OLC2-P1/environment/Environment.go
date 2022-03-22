@@ -29,13 +29,13 @@ func NewEnvironment(nombre string, father interface{}) Environment {
 	return env
 }
 
-func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, isMut bool, Line int, Column int, nameentorno string, tipos *arrayList.List) {
+func (env Environment) SaveVariable(id string, value interfaces.Symbol, tipo interfaces.TipoExpresion, isMut bool, Line int, Column int, nameentorno string, tipos *arrayList.List, capacidad int) {
 	if variable, ok := env.Tabla[id]; ok {
 		//fmt.Println("La variable " + variable.Id + " ya existe")
 		NewError("La variable "+variable.Id+" ya declarada en entorno "+nameentorno, nameentorno, Line, Column)
 		return
 	}
-	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column, TiposArr: tipos}
+	env.Tabla[id] = interfaces.Symbol{Id: id, Tipo: tipo, Valor: value, IsMut: isMut, Line: Line, Column: Column, TiposArr: tipos, Capacity: capacidad}
 }
 
 ///save struct
