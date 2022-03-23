@@ -53,12 +53,15 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 						result = rest.(interfaces.Symbol)
 
 						//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
-						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK {
 							isBreak = true
 							break
 						}
-						if rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE {
 							break
+						}
+						if rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
+							return result
 						}
 
 					} else {
@@ -81,7 +84,7 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 		if isBreak == true {
 			break
 		}
-		if limCont > 15000 {
+		if limCont > 25000 {
 			err.NewError("se ha excedido el máximo de ciclos permitidos en 'Loop' ", env.(environment.Environment).Nombre, p.Line, p.Column)
 			break
 		}

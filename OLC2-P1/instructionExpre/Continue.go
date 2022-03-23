@@ -21,11 +21,12 @@ func (p Continue) Ejecutar(env interface{}) interface{} {
 	//validar ciclo entorno
 	if env.(environment.Environment).IsLoopEnt() {
 		result = interfaces.Symbol{
-			Line:   p.Line,
-			Column: p.Column,
-			Id:     "CONTINUE",
-			Tipo:   interfaces.CONTINUE,
-			Valor:  nil,
+			Line:    p.Line,
+			Column:  p.Column,
+			Id:      "CONTINUE",
+			Tipo:    interfaces.CONTINUE,
+			TipoRet: interfaces.CONTINUE,
+			Valor:   nil,
 		}
 	} else {
 		err.NewError("La sentencia 'continue' tiene que estar dentro de un ciclo ",

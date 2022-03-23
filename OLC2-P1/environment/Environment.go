@@ -236,7 +236,7 @@ func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfa
 		}
 	}
 
-	fmt.Println("La variable no existe")
+	fmt.Println("-La variable no existe")
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
 }
 

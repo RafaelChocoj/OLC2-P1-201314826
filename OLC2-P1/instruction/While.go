@@ -2,6 +2,7 @@ package instruction
 
 import (
 	"OLC2/environment"
+	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
 	"reflect"
@@ -43,15 +44,19 @@ func (p While) Ejecutar(env interface{}) interface{} {
 
 					if rest != nil {
 						if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
-							if rest.(interfaces.Symbol).Tipo == interfaces.BREAK {
+							if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK {
 								isBreak = true
 								if rest.(interfaces.Symbol).Valor != nil {
-									fmt.Println("No se permite retornar valor mediante un Break en un While")
+									//fmt.Println("No se permite retornar valor mediante un Break en un While")
+									err.NewError("No se permite retornar valor mediante un 'break' en un While", env.(environment.Environment).Nombre, p.Line, p.Column)
 								}
 								break
 							}
-							if rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+							if rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE {
 								break
+							}
+							if rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
+								return rest
 							}
 						}
 					}
@@ -68,7 +73,8 @@ func (p While) Ejecutar(env interface{}) interface{} {
 						break
 					}*/
 				} else {
-					fmt.Println("error en bloque")
+					//fmt.Println("error en bloque")
+					err.NewError("Ocurrió error en instrucciones de while :"+fmt.Sprintf("%T", s), env.(environment.Environment).Nombre, p.Line, p.Column)
 				}
 			}
 			if isBreak == true {
@@ -77,8 +83,9 @@ func (p While) Ejecutar(env interface{}) interface{} {
 		} else {
 			break
 		}
-		if limCont >= 1000 {
-			fmt.Println("StackOverflowError: se ha excedido el máximo de ciclos permitidos")
+		if limCont >= 2500 {
+			//fmt.Println("StackOverflowError: se ha excedido el máximo de ciclos permitidos")
+			err.NewError("se ha excedido el máximo de ciclos permitidos en 'While' ", env.(environment.Environment).Nombre, p.Line, p.Column)
 			break
 		}
 	}

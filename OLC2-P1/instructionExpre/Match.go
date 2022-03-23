@@ -160,7 +160,7 @@ func (m Match) EjecutarValor(env interface{}) interfaces.Symbol {
 							if rest != nil {
 								if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 									//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
-									if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+									if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 										return rest.(interfaces.Symbol)
 									}
 								}
@@ -174,7 +174,7 @@ func (m Match) EjecutarValor(env interface{}) interfaces.Symbol {
 						if rest != nil {
 							if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 								//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
-								if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+								if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 									return rest.(interfaces.Symbol)
 								}
 							}
@@ -209,7 +209,7 @@ func (m Match) EjecutarValor(env interface{}) interfaces.Symbol {
 					if rest != nil {
 						if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 							//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
-							if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+							if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 								return rest.(interfaces.Symbol)
 							}
 						}
@@ -223,7 +223,7 @@ func (m Match) EjecutarValor(env interface{}) interfaces.Symbol {
 				if rest != nil {
 					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 						//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
-						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK || rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 							return rest.(interfaces.Symbol)
 						}
 					}

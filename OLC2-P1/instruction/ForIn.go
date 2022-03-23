@@ -54,14 +54,14 @@ func (p ForIn) Ejecutar(env interface{}) interface{} {
 				rest := b.(interfaces.Instruction).Ejecutar(loopEnv)
 				if rest != nil {
 					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
-						if rest.(interfaces.Symbol).Tipo == interfaces.BREAK {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK {
 							Isbreak = true
 							break
 						}
-						if rest.(interfaces.Symbol).Tipo == interfaces.CONTINUE {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE {
 							break
 						}
-						if rest.(interfaces.Symbol).Tipo == interfaces.RETURN {
+						if rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
 							return result
 						}
 					}

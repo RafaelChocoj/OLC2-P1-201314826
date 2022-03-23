@@ -9,12 +9,43 @@ fn ack(mut m: i64, mut n: i64) -> i64 {
     }
 }
 
-
-fn valores(x: &mut [i64;3]) {
-    x[0] = 3;
+fn funcion() -> i64 {
+    let mut num = 0;
+    while num < 10 {
+        num = num + 1;
+        if num == 5 {
+            return 5;
+        }
+        println!("No: {} ", num);
+    }
+    return 0;
 }
 
 fn main() {
+    //println!("estoy en main");
+    //let a = ack(3, 5);
+    //println!("a es: {}", a); // 253
+
+ let mut num = 0;
+while num < 10 {
+    num = num + 1;
+        if num == 5 {
+        continue;
+        }
+    println!("{}", num); // Imprime 1234678910
+}
+println!("funcion: {}", funcion());
+
+
+}
+
+fn valores(x: & mut [i64;3]) {
+    
+    x[0] = 3;
+    println!("---- {:?}", x);
+}
+
+fn m_ain() {
     let mut x: [i64; 3] = [10, 12, 45];
     println!("1 {:?}", x);
     valores(&mut x);
@@ -42,7 +73,7 @@ fn forfun(mut a:i64) -> i64 {
 }
 
 ////
-fn suma( a: i64,  b:i64) -> i64 { 
+fn su_ma( a: i64,  b:i64) -> i64 { 
     println!("estoy en funcion");
      //println!("la v var {}", v); 
 

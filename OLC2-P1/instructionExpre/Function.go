@@ -20,6 +20,12 @@ type Function struct {
 	Column int
 
 	EntornoFun interface{}
+
+	lLocal *arrayList.List
+	lFunc  *arrayList.List
+
+	eLocal interface{}
+	eFunc  interface{}
 }
 
 func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arrayList.List, tipo interfaces.TipoExpresion, line int, column int) Function {
@@ -33,6 +39,12 @@ func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arr
 		Line:               line,
 		Column:             column,
 		EntornoFun:         nil,
+
+		lLocal: arrayList.New(),
+		lFunc:  arrayList.New(),
+
+		eLocal: nil,
+		eFunc:  nil,
 	}
 }
 
@@ -79,20 +91,51 @@ func (f Function) EjecutarParamets(env interface{}, expre_list *arrayList.List) 
 
 	return true
 }
+
+func (f Function) SetReference(listLocal *arrayList.List, listFunc *arrayList.List, entLocal, entFunc environment.Environment) {
+	f.lLocal = listLocal
+	f.lFunc = listFunc
+	f.eLocal = entLocal
+	f.eFunc = entFunc
+
+	//fmt.Println("1 listLocal : ", listLocal.Len())
+	//fmt.Println("1 listFunc : ", listFunc.Len())
+
+	//fmt.Println("1 entFunc : ", entFunc)
+}
+func (f Function) SaveReference(listLocal *arrayList.List, listFunc *arrayList.List, entLocal, entFunc environment.Environment) {
+	//lista de id
+	for i := 0; i < listLocal.Len(); i++ {
+		//simbolo en fun
+		tmpSym := entFunc.GetVariable(listFunc.GetValue(i).(string), f.Line, f.Column, entFunc.Nombre)
+		//set nuew val
+		entLocal.AlterVariable(listLocal.GetValue(i).(string), tmpSym)
+	}
+}
+
 func (f Function) Ejecutar(env interface{}) interface{} {
 
-	for _, s := range f.ListaInstrucciones.ToArray() {
-		rest := s.(interfaces.Instruction).Ejecutar(env)
-		if rest != nil {
-			if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
-				//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
-				if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
-					//fmt.Println("rest.(interfaces.Symbol).Id: ", rest.(interfaces.Symbol).Id)
-					return rest
+	if env.(environment.Environment).Nombre == "main" {
+		for _, s := range f.ListaInstrucciones.ToArray() {
+			rest := s.(interfaces.Instruction).Ejecutar(env)
+
+			//if env.(environment.Environment).Nombre != "main" {
+			//	f.SaveReference(f.lLocal, f.lFunc, f.eLocal.(environment.Environment), f.eFunc.(environment.Environment))
+			//}
+
+			if rest != nil {
+
+				if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
+
+					//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
+					if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
+						//fmt.Println("rest.(interfaces.Symbol).Id: ", rest.(interfaces.Symbol).Id)
+						return rest
+					}
 				}
 			}
-		}
 
+		}
 	}
 	return nil
 

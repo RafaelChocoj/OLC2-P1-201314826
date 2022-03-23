@@ -24,23 +24,25 @@ func (p Break) Ejecutar(env interface{}) interface{} {
 		if p.Exp == nil {
 
 			result = interfaces.Symbol{
-				Line:   p.Line,
-				Column: p.Column,
-				Id:     "BREAK",
-				Tipo:   interfaces.BREAK,
-				Valor:  nil,
+				Line:    p.Line,
+				Column:  p.Column,
+				Id:      "BREAK",
+				Tipo:    interfaces.BREAK,
+				TipoRet: interfaces.BREAK,
+				Valor:   nil,
 			}
 			return result
 		} else {
 
-			varbreak := p.Exp.EjecutarValor(env).Valor
+			varbreak := p.Exp.EjecutarValor(env)
 			//fmt.Println("++++ varbreak: ", varbreak)
 			result = interfaces.Symbol{
-				Line:   p.Line,
-				Column: p.Column,
-				Id:     "BREAK",
-				Tipo:   interfaces.BREAK,
-				Valor:  varbreak,
+				Line:    p.Line,
+				Column:  p.Column,
+				Id:      "BREAK",
+				Tipo:    varbreak.Tipo,
+				TipoRet: interfaces.BREAK,
+				Valor:   varbreak.Valor,
 			}
 		}
 	} else {
