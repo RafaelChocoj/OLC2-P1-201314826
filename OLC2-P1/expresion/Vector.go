@@ -26,8 +26,8 @@ type Vector struct {
 	Column int
 }
 
-func NewVector(list *arrayList.List, expresion interfaces.Expresion, tam interfaces.Expresion, tipoDec int, line int, column int) Array {
-	exp := Array{list, expresion, tam, tipoDec, line, column}
+func NewVector(list *arrayList.List, expresion interfaces.Expresion, tam interfaces.Expresion, tipoDec int, line int, column int) Vector {
+	exp := Vector{list, expresion, tam, tipoDec, line, column}
 	return exp
 }
 
@@ -36,10 +36,21 @@ func (p Vector) EjecutarValor(env interface{}) interfaces.Symbol {
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
 
+	tempType := p.ListExp.GetValue(0).(interfaces.Expresion).EjecutarValor(env).Tipo
+
 	/*vector declarada con tipo y vector asignado*/
 	if p.TipoDec == 1 {
 		for _, s := range p.ListExp.ToArray() {
-			tempExp.Add(s.(interfaces.Expresion).EjecutarValor(env))
+			valsym := s.(interfaces.Expresion).EjecutarValor(env)
+			if valsym.Tipo == tempType {
+				tempExp.Add(valsym)
+			} else {
+				//fmt.Println("Error en el tipo del vector")
+				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(tempType), interfaces.GetType(valsym.Tipo))
+				err.NewError("Vector incorrecta "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+
+			}
+
 		}
 
 		/*vector formato tipo;tam*/

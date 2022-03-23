@@ -28,7 +28,7 @@ func (p ArrayAccess) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	//fmt.Println("--tempArray: ", tempArray)
 
-	if tempArray.Tipo == interfaces.ARRAY {
+	if tempArray.Tipo == interfaces.ARRAY || tempArray.Tipo == interfaces.VECTOR {
 		var tempIndex interfaces.Symbol
 		tempIndex = p.Index.EjecutarValor(env)
 
@@ -83,8 +83,8 @@ func (p ArrayAccess) EjecutarValor(env interface{}) interfaces.Symbol {
 		return tempValue.(*arrayList.List).GetValue(index).(interfaces.Symbol)
 	} else {
 		//fmt.Println("no es arreglo")
-		//desc := fmt.Sprintf("index '%v' en array Size '%v'", index, size_arr )
-		err.NewError("No es un Array ", env.(environment.Environment).Nombre, p.Line, p.Column)
+		desc := fmt.Sprintf("'%v' o '%v' se tiene '%v'", interfaces.GetType(interfaces.ARRAY), interfaces.GetType(interfaces.VECTOR), interfaces.GetType(tempArray.Tipo))
+		err.NewError("Se esperaba "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 
 	}
 

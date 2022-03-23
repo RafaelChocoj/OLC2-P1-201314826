@@ -209,7 +209,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		if result_mut.TiposArr != nil {
 			if p.IsArray_Valido(env, sym, result_mut.TiposArr.Clone()) {
 			} else {
-				fmt.Println("hay err y va en nil")
+				//fmt.Println("hay err y va en nil")
 				return nil
 			}
 		}
@@ -237,13 +237,13 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		//return result.Valor
 	} else {
 		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
-		err.NewError("3: Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+		err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 
-		fmt.Println("reflect.TypeOf(result_mut.Tipo) ", reflect.TypeOf(result_mut))
-		fmt.Println("reflect.TypeOf(result.Tipo) ", reflect.TypeOf(result))
+		//fmt.Println("reflect.TypeOf(result_mut.Tipo) ", reflect.TypeOf(result_mut))
+		//fmt.Println("reflect.TypeOf(result.Tipo) ", reflect.TypeOf(result))
 
-		fmt.Println(" result_mut.Tipo ", result_mut.Tipo)
-		fmt.Println(" result.Tipo ", result.Tipo)
+		//fmt.Println(" result_mut.Tipo ", result_mut.Tipo)
+		//fmt.Println(" result.Tipo ", result.Tipo)
 
 		return nil
 	}

@@ -49,6 +49,7 @@ func (p VectorDeclaration) Ejecutar(env interface{}) interface{} {
 		Valor:    tempExp,
 		Capacity: capacidad,
 		IsMut:    p.IsMut,
+		TipoRet:  p.Tipos,
 	}
 
 	env.(environment.Environment).SaveVariable(p.Id, valvec, interfaces.VECTOR, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, capacidad)

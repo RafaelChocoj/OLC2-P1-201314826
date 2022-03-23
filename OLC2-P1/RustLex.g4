@@ -46,11 +46,14 @@ CAPACITY:     'with_capacity';
 TO_STRING:   '.to_string()';
 TO_OWNED:   '.to_owned()';
 
-LEN:   'len()';
-NEW:   'new()';
-CAPF:  'capacity()';
-PUSH:  'push';
-CONTAINS:  'contains';
+LEN:        'len()';
+NEW:        'new()';
+CAPF:       'capacity()';
+PUSH:       'push';
+CONTAINS:   'contains';
+
+INSERT:     'insert';
+REMOVE:     'remove';
 
 
 

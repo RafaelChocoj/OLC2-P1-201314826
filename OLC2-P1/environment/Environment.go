@@ -223,7 +223,7 @@ func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfa
 
 	for {
 		if variable, ok := tmpEnv.Tabla[id]; ok {
-			tmpEnv.Tabla[id] = interfaces.Symbol{Id: id, Tipo: variable.Tipo, Valor: value, IsMut: variable.IsMut, TiposArr: variable.TiposArr}
+			tmpEnv.Tabla[id] = interfaces.Symbol{Id: id, Tipo: variable.Tipo, Valor: value, IsMut: variable.IsMut, TiposArr: variable.TiposArr, Capacity: value.Capacity}
 			//fmt.Println("variable.IsMutvariable.IsMutvariable.IsMutvariable.IsMut: ", variable.IsMut)
 			//fmt.Println("00variable.Id: ", variable.Id)
 			return variable
@@ -236,7 +236,32 @@ func (env Environment) AlterVariable(id string, value interfaces.Symbol) interfa
 		}
 	}
 
-	fmt.Println("-La variable no existe")
+	//fmt.Println("-La variable no existe")
+	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
+}
+
+func (env Environment) AlterVariableVec(id string, value interfaces.Symbol) interfaces.Symbol {
+
+	var tmpEnv Environment
+	tmpEnv = env
+
+	for {
+		if variable, ok := tmpEnv.Tabla[id]; ok {
+			tmpEnv.Tabla[id] = interfaces.Symbol{Id: id, Tipo: variable.Tipo, Valor: value.Valor, IsMut: variable.IsMut, TiposArr: variable.TiposArr, Capacity: value.Capacity}
+			//tmpEnv.Tabla[id] = value
+			//fmt.Println("variable.IsMutvariable.IsMutvariable.IsMutvariable.IsMut: ", variable.IsMut)
+			//fmt.Println("00variable.Id: ", variable.Id)
+			return variable
+		}
+
+		if tmpEnv.father == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.father.(Environment)
+		}
+	}
+
+	//fmt.Println("-La variable no existe")
 	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}}
 }
 

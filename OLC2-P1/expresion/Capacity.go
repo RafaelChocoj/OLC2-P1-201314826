@@ -8,21 +8,25 @@ import (
 )
 
 type Capacity struct {
-	Expre  interfaces.Expresion
+	//Expre  interfaces.Expresion
+	Id     string
 	Line   int
 	Column int
 }
 
-func NewCapacity(Expre interfaces.Expresion, line int, column int) Capacity {
+func NewCapacity(Id string, line int, column int) Capacity {
 
-	exp := Capacity{Expre, line, column}
+	exp := Capacity{Id, line, column}
 	return exp
 }
 
 func (p Capacity) EjecutarValor(env interface{}) interfaces.Symbol {
 
+	/*var retornoExp interfaces.Symbol
+	retornoExp = p.Expre.EjecutarValor(env)*/
+
 	var retornoExp interfaces.Symbol
-	retornoExp = p.Expre.EjecutarValor(env)
+	retornoExp = env.(environment.Environment).GetVariable(p.Id, p.Line, p.Column, env.(environment.Environment).Nombre)
 
 	if retornoExp.Tipo == interfaces.VECTOR {
 

@@ -54,7 +54,8 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 			*/
 		} else if p.Tipo == interfaces.NULL {
 
-			if result.Tipo == interfaces.ARRAY {
+			//fmt.Println("ES  ALGO???: ", interfaces.GetType(result.Tipo))
+			if result.Tipo == interfaces.ARRAY || result.Tipo == interfaces.VECTOR {
 				//fmt.Println("ES  ARRAY: ", interfaces.GetType(result.Tipo))
 				//fmt.Println("-----reflect.TypeOf(result.Valor: ", reflect.TypeOf(result.Valor) )
 
@@ -63,9 +64,12 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 				} else {
 					//fmt.Println("ERRR Los tipos no coinciden")
 				}*/
+				env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, result.Valor.(*arrayList.List).Len())
+			} else {
+				/*no tiene tipo en asignacion, se le asigna el tipo de la expresion*/
+				env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, 0)
 			}
-			/*no tiene tipo en asignacion, se le asigna el tipo de la expresion*/
-			env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, 0)
+
 		} else {
 			//fmt.Println("Los tipos no coinciden")
 			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipo), interfaces.GetType(result.Tipo))

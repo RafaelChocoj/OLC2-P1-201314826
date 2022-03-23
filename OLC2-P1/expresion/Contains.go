@@ -1,6 +1,7 @@
 package expresion
 
 import (
+	"OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
 
@@ -8,47 +9,46 @@ import (
 )
 
 type Contains struct {
-	Expre1 interfaces.Expresion
-	Expre2 interfaces.Expresion
+	Id     string
+	Expre  interfaces.Expresion
 	Line   int
 	Column int
 }
 
-func NewContains(Expre1 interfaces.Expresion, Expre2 interfaces.Expresion, line int, column int) Contains {
+func NewContains(Id string, Expre interfaces.Expresion, line int, column int) Contains {
 
-	exp := Contains{Expre1, Expre2, line, column}
+	exp := Contains{Id, Expre, line, column}
 	return exp
 }
 
 func (p Contains) EjecutarValor(env interface{}) interfaces.Symbol {
 
-	var ret1 interfaces.Symbol
-	ret1 = p.Expre1.EjecutarValor(env)
+	var tmpSymbol interfaces.Symbol
+	tmpSymbol = env.(environment.Environment).GetVariable(p.Id, p.Line, p.Column, env.(environment.Environment).Nombre)
 
-	var ret2 interfaces.Symbol
-	ret2 = p.Expre2.EjecutarValor(env)
+	var tmpExp interfaces.Symbol
+	tmpExp = p.Expre.EjecutarValor(env)
 
-	fmt.Println("---     contains", ret1.Valor.(*arrayList.List).Contains(&ret2))
+	if tmpSymbol.Tipo == interfaces.VECTOR {
+		//validar tipo de vector con expression
+		/*if tmpSymbol.TipoRet != nil {
 
-	fmt.Println("*******************************")
-	fmt.Println("---      ret1.Valor", ret1.Valor.(*arrayList.List))
-	fmt.Println("---      ret2", &ret2)
-
-	if ret1.Valor == ret2.Valor {
-		fmt.Println("**iguales")
+		}*/
+		if tmpExp.Tipo == tmpSymbol.TipoRet {
+			//recorrer expresion
+			for _, s := range tmpSymbol.Valor.(interfaces.Symbol).Valor.(*arrayList.List).ToArray() {
+				if s.(interfaces.Symbol).Valor == tmpExp.Valor {
+					return interfaces.Symbol{Line: p.Line, Column: p.Column, Tipo: interfaces.BOOLEAN, Valor: true}
+				}
+			}
+			return interfaces.Symbol{Line: p.Line, Column: p.Column, Tipo: interfaces.BOOLEAN, Valor: false}
+		} else {
+			fmt.Println("Tipo de expression incorrecta")
+			return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+		}
 	} else {
-		fmt.Println("**no iguales")
+		fmt.Println("Solo se puede hacer Contains sobre vectores")
+		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 	}
 
-	/*if retornoExp.Tipo == interfaces.VECTOR {
-
-		//fmt.Println("---      reflect.TypeOf(retornoExp)..Valor", reflect.TypeOf(retornoExp.Valor))
-		return interfaces.Symbol{Id: "", Tipo: interfaces.INTEGER, Valor: retornoExp.Capacity}
-
-	} else {
-		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", "array o vector", interfaces.GetType(retornoExp.Tipo))
-		err.NewError("Uso de Función incorrecta "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
-	}*/
-
-	return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 }
