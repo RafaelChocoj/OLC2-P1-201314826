@@ -14,17 +14,26 @@ type RustParListener interface {
 	// EnterInstrucciones is called when entering the instrucciones production.
 	EnterInstrucciones(c *InstruccionesContext)
 
-	// EnterList_Funciones is called when entering the list_Funciones production.
-	EnterList_Funciones(c *List_FuncionesContext)
+	// EnterList_globals is called when entering the list_globals production.
+	EnterList_globals(c *List_globalsContext)
 
-	// EnterItemRust is called when entering the itemRust production.
-	EnterItemRust(c *ItemRustContext)
+	// EnterIn_global is called when entering the in_global production.
+	EnterIn_global(c *In_globalContext)
 
-	// EnterFuncion is called when entering the funcion production.
-	EnterFuncion(c *FuncionContext)
+	// EnterModule is called when entering the module production.
+	EnterModule(c *ModuleContext)
+
+	// EnterBodyModule_l is called when entering the bodyModule_l production.
+	EnterBodyModule_l(c *BodyModule_lContext)
 
 	// EnterT_access is called when entering the t_access production.
 	EnterT_access(c *T_accessContext)
+
+	// EnterItemMod is called when entering the itemMod production.
+	EnterItemMod(c *ItemModContext)
+
+	// EnterFuncion is called when entering the funcion production.
+	EnterFuncion(c *FuncionContext)
 
 	// EnterParams_declar is called when entering the params_declar production.
 	EnterParams_declar(c *Params_declarContext)
@@ -52,6 +61,12 @@ type RustParListener interface {
 
 	// EnterCallFunction is called when entering the callFunction production.
 	EnterCallFunction(c *CallFunctionContext)
+
+	// EnterCallModulo is called when entering the callModulo production.
+	EnterCallModulo(c *CallModuloContext)
+
+	// EnterListModulec is called when entering the listModulec production.
+	EnterListModulec(c *ListModulecContext)
 
 	// EnterReturnFun is called when entering the returnFun production.
 	EnterReturnFun(c *ReturnFunContext)
@@ -88,6 +103,12 @@ type RustParListener interface {
 
 	// EnterIs_mut is called when entering the is_mut production.
 	EnterIs_mut(c *Is_mutContext)
+
+	// EnterLetid is called when entering the letid production.
+	EnterLetid(c *LetidContext)
+
+	// EnterVector_types is called when entering the vector_types production.
+	EnterVector_types(c *Vector_typesContext)
 
 	// EnterArray_type is called when entering the array_type production.
 	EnterArray_type(c *Array_typeContext)
@@ -179,17 +200,26 @@ type RustParListener interface {
 	// ExitInstrucciones is called when exiting the instrucciones production.
 	ExitInstrucciones(c *InstruccionesContext)
 
-	// ExitList_Funciones is called when exiting the list_Funciones production.
-	ExitList_Funciones(c *List_FuncionesContext)
+	// ExitList_globals is called when exiting the list_globals production.
+	ExitList_globals(c *List_globalsContext)
 
-	// ExitItemRust is called when exiting the itemRust production.
-	ExitItemRust(c *ItemRustContext)
+	// ExitIn_global is called when exiting the in_global production.
+	ExitIn_global(c *In_globalContext)
 
-	// ExitFuncion is called when exiting the funcion production.
-	ExitFuncion(c *FuncionContext)
+	// ExitModule is called when exiting the module production.
+	ExitModule(c *ModuleContext)
+
+	// ExitBodyModule_l is called when exiting the bodyModule_l production.
+	ExitBodyModule_l(c *BodyModule_lContext)
 
 	// ExitT_access is called when exiting the t_access production.
 	ExitT_access(c *T_accessContext)
+
+	// ExitItemMod is called when exiting the itemMod production.
+	ExitItemMod(c *ItemModContext)
+
+	// ExitFuncion is called when exiting the funcion production.
+	ExitFuncion(c *FuncionContext)
 
 	// ExitParams_declar is called when exiting the params_declar production.
 	ExitParams_declar(c *Params_declarContext)
@@ -217,6 +247,12 @@ type RustParListener interface {
 
 	// ExitCallFunction is called when exiting the callFunction production.
 	ExitCallFunction(c *CallFunctionContext)
+
+	// ExitCallModulo is called when exiting the callModulo production.
+	ExitCallModulo(c *CallModuloContext)
+
+	// ExitListModulec is called when exiting the listModulec production.
+	ExitListModulec(c *ListModulecContext)
 
 	// ExitReturnFun is called when exiting the returnFun production.
 	ExitReturnFun(c *ReturnFunContext)
@@ -253,6 +289,12 @@ type RustParListener interface {
 
 	// ExitIs_mut is called when exiting the is_mut production.
 	ExitIs_mut(c *Is_mutContext)
+
+	// ExitLetid is called when exiting the letid production.
+	ExitLetid(c *LetidContext)
+
+	// ExitVector_types is called when exiting the vector_types production.
+	ExitVector_types(c *Vector_typesContext)
 
 	// ExitArray_type is called when exiting the array_type production.
 	ExitArray_type(c *Array_typeContext)

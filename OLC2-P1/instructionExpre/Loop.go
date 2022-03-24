@@ -41,10 +41,13 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 			//fmt.Println("fmt.Sprintf(, s)", fmt.Sprintf("%T", s))
 			//return nil
 
+			//fmt.Println("loop	reflect.TypeOf.s: ", reflect.TypeOf(s))
+			//fmt.Println("loop	fmt.Sprintf(, s): ", fmt.Sprintf("%T", s))
+
 			if strings.Contains(fmt.Sprintf("%T", s), "instruction") || strings.Contains(fmt.Sprintf("%T", s), "instructionExpre") {
 				//result =
 				rest := s.(interfaces.Instruction).Ejecutar(loopEnv)
-				//fmt.Println("reflect.TypeOf.rest: ", reflect.TypeOf(rest))
+				//fmt.Println("loop	reflect.TypeOf.rest: ", reflect.TypeOf(rest))
 				//fmt.Println("reflect.TypeOf.rest: ", rest.(interfaces.Symbol))
 
 				if rest != nil {
@@ -52,7 +55,7 @@ func (p Loop) EjecutarValor(env interface{}) interfaces.Symbol {
 					if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 						result = rest.(interfaces.Symbol)
 
-						//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
+						//fmt.Println("loop	rest.(interfaces.Symbol).Tipo: ", reflect.TypeOf(rest.(interfaces.Symbol).Tipo))
 						if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK {
 							isBreak = true
 							break

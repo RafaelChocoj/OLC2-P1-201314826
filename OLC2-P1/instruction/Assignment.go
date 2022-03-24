@@ -5,7 +5,6 @@ import (
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
-	"reflect"
 
 	arrayList "github.com/colegno/arraylist"
 )
@@ -27,6 +26,11 @@ func (p Assignment) IsArray_Valido(env interface{}, arr1 interfaces.Symbol, l_ti
 	a_valido := true
 	ar_noelementos := 0
 	arrType := l_tipo.GetValue(l_tipo.Len() - 1)
+
+	///si es nulo no valido xd
+	if arrType.(interfaces.ArrayType).SizeA == nil {
+		return true
+	}
 	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
 	var arrSize int
 
@@ -75,7 +79,7 @@ func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol,
 	inx := indexs.GetValue(0)
 	res_ind := inx.(interfaces.Expresion).EjecutarValor(env)
 	index := res_ind.Valor.(int)
-	//	fmt.Println("-	index	: ", index)
+	//fmt.Println("-	index	: ", index)
 	indexs.RemoveAtIndex(0)
 
 	for i := 0; i < arrlist.Valor.(*arrayList.List).Len(); i++ {
@@ -95,7 +99,7 @@ func (p Assignment) Assignment_Array(env interface{}, arrlist interfaces.Symbol,
 					//	Valor: resul, IsMut: arr.(interfaces.Symbol).IsMut}
 
 					if resul.Tipo == interfaces.ARRAY {
-						fmt.Println("						reflect.TypeOf(resul.Valor)", reflect.TypeOf(resul.Valor))
+						//fmt.Println("						reflect.TypeOf(resul.Valor)", reflect.TypeOf(resul.Valor))
 						if resul.Valor.(*arrayList.List).Len() != arr.(interfaces.Symbol).Valor.(*arrayList.List).Len() {
 							//fmt.Println(" error en dimensiones")
 							desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", arr.(interfaces.Symbol).Valor.(*arrayList.List).Len(), resul.Valor.(*arrayList.List).Len())
@@ -154,9 +158,10 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 	}
 
 	if result_mut.Tipo == interfaces.ARRAY {
-		fmt.Println("++++++++++++++++++++++-is array ", result_mut.Tipo)
+		///////////fmt.Println("++++++++++++++++++++++-is array ", result_mut.Tipo)
 		//fmt.Println("---         	  reflect.TypeOf(result_mut)", reflect.TypeOf(result_mut))
 		//fmt.Println("---         	  reflect.TypeOf(result_mut.Valor)", reflect.TypeOf(result_mut.Valor))
+		//////////fmt.Println("++++++++++p.Dimensiones ", p.Dimensiones)
 
 		if p.Dimensiones == nil {
 			/*var tamar *arrayList.List
@@ -185,6 +190,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 				}
 			}
 
+			result.Id = p.Id
 			env.(environment.Environment).AlterVariable(p.Id, result)
 			return nil
 		}
@@ -193,7 +199,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		var result interfaces.Symbol
 		result = p.Expresion.EjecutarValor(env)
 
-		tempExp, is_Correct := p.Assignment_Array(env, result_mut.Valor.(interfaces.Symbol), p.Dimensiones, result)
+		tempExp, is_Correct := p.Assignment_Array(env, result_mut.Valor.(interfaces.Symbol), p.Dimensiones.Clone(), result)
 
 		//		fmt.Println("LLLLLLLLLLLLUEGA a FINNNNN")
 		if is_Correct == false {
@@ -209,13 +215,14 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 		if result_mut.TiposArr != nil {
 			if p.IsArray_Valido(env, sym, result_mut.TiposArr.Clone()) {
 			} else {
-				//fmt.Println("hay err y va en nil")
+				fmt.Println("hay err y va en nil")
 				return nil
 			}
 		}
+		result.Id = p.Id
 		env.(environment.Environment).AlterVariable(p.Id, sym)
 
-		fmt.Println("LLLLLLLLLLLLUEGA a FINNNNN 222")
+		///////////////fmt.Println("LLLLLLLLLLLLUEGA a FINNNNN 222")
 
 		return nil //
 	}
@@ -228,6 +235,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 	//fmt.Println("----result.Tipo ", result.Tipo)
 	if result_mut.Tipo == result.Tipo {
 
+		result.Id = p.Id
 		env.(environment.Environment).AlterVariable(p.Id, result)
 
 		//fmt.Println("-123123---p.Id ", p.Id)

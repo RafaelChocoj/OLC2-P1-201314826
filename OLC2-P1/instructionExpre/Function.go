@@ -26,9 +26,11 @@ type Function struct {
 
 	eLocal interface{}
 	eFunc  interface{}
+
+	IdObje string
 }
 
-func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arrayList.List, tipo interfaces.TipoExpresion, line int, column int) Function {
+func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arrayList.List, tipo interfaces.TipoExpresion, line int, column int, idObje string) Function {
 	//funcSimbolo := entorno.NewSimboloFuncion(0, 0, nombre, tipo, listaParams)
 	funcSymbol := interfaces.Symbol{Id: id, Tipo: tipo, Valor: nil, ListParams: listaParams}
 
@@ -45,6 +47,8 @@ func NewFunction(id string, listaParams *arrayList.List, listaInstrucciones *arr
 
 		eLocal: nil,
 		eFunc:  nil,
+
+		IdObje: idObje,
 	}
 }
 
@@ -115,6 +119,7 @@ func (f Function) SaveReference(listLocal *arrayList.List, listFunc *arrayList.L
 
 func (f Function) Ejecutar(env interface{}) interface{} {
 
+	//fmt.Println("		estoy en funcion : ", f.Id)
 	if env.(environment.Environment).Nombre == "main" {
 		for _, s := range f.ListaInstrucciones.ToArray() {
 			rest := s.(interfaces.Instruction).Ejecutar(env)

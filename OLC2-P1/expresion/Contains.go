@@ -2,6 +2,7 @@ package expresion
 
 import (
 	"OLC2/environment"
+	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
 
@@ -34,7 +35,8 @@ func (p Contains) EjecutarValor(env interface{}) interfaces.Symbol {
 		/*if tmpSymbol.TipoRet != nil {
 
 		}*/
-		if tmpExp.Tipo == tmpSymbol.TipoRet {
+		//if tmpExp.Tipo == tmpSymbol.TipoRet {
+		if tmpExp.Tipo == tmpSymbol.TipoVecCon {
 			//recorrer expresion
 			for _, s := range tmpSymbol.Valor.(interfaces.Symbol).Valor.(*arrayList.List).ToArray() {
 				if s.(interfaces.Symbol).Valor == tmpExp.Valor {
@@ -43,7 +45,9 @@ func (p Contains) EjecutarValor(env interface{}) interfaces.Symbol {
 			}
 			return interfaces.Symbol{Line: p.Line, Column: p.Column, Tipo: interfaces.BOOLEAN, Valor: false}
 		} else {
-			fmt.Println("Tipo de expression incorrecta")
+			fmt.Println("-Tipo de expression incorrecta")
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(tmpExp.Tipo), interfaces.GetType(tmpSymbol.TipoVecCon))
+			err.NewError("Tipos no coinciden en Contains "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 		}
 	} else {

@@ -1,6 +1,7 @@
 package expresion
 
 import (
+	"OLC2/environment"
 	err "OLC2/environment"
 	"OLC2/interfaces"
 	"fmt"
@@ -172,7 +173,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: r1 + r2}
 			} else {
 				desc := fmt.Sprintf("'%v' con '%v'", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en suma "+desc, "suma", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en suma "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -207,7 +208,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 				} else {
 					desc := fmt.Sprintf("'%v' con '%v'", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-					err.NewError("Tipos incompatibles en resta "+desc, "resta", p.Line, p.Column)
+					err.NewError("Tipos incompatibles en resta "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 					//fmt.Print("ERROR: No es posible restar")
 				}
 			}
@@ -228,7 +229,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 			} else {
 				//fmt.Print("ERROR: No es posible Multiplicar")
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Multiplicación "+desc, "Multiplicación", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Multiplicación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -239,7 +240,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			if dominante == interfaces.INTEGER {
 				if retornoDer.Valor.(int) == 0 {
-					err.NewError("No se pude dividir un número entre 0", "Divición 0", p.Line, p.Column)
+					err.NewError("No se pude dividir un número entre 0", env.(environment.Environment).Nombre, p.Line, p.Column)
 
 				} else {
 					return interfaces.Symbol{Id: "", Tipo: dominante, Valor: retornoIzq.Valor.(int) / retornoDer.Valor.(int)}
@@ -253,7 +254,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 			} else {
 				//fmt.Print("ERROR: No es posible Dividir")
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Divición "+desc, "Divición", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Divición "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -264,7 +265,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			if dominante == interfaces.INTEGER {
 				if retornoDer.Valor.(int) == 0 {
-					err.NewError("No se pude dividir(%) un número entre 0", "Modulo 0", p.Line, p.Column)
+					err.NewError("No se pude dividir(%) un número entre 0", env.(environment.Environment).Nombre, p.Line, p.Column)
 
 				} else {
 					return interfaces.Symbol{Id: "", Tipo: dominante, Valor: retornoIzq.Valor.(int) % retornoDer.Valor.(int)}
@@ -280,7 +281,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 			} else {
 				//fmt.Print("ERROR: No es posible Dividir")
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Módulo "+desc, "Módulo", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Módulo "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -299,7 +300,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v , %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en i64::pow "+desc, "Potencia", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en i64::pow "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 		}
 
@@ -316,7 +317,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 				return interfaces.Symbol{Id: "", Tipo: dominante, Valor: val_pow}
 			} else {
 				desc := fmt.Sprintf("%v , %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en f64::pow "+desc, "Potencia f64", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en f64::pow "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 		}
 
@@ -346,7 +347,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (<) "+desc, "Relacional <", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (<) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -377,7 +378,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (>) "+desc, "Relacional >", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (>) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 		}
 
@@ -407,7 +408,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (<=) "+desc, "Relacional <=", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (<=) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 		}
 
@@ -437,7 +438,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (>=) "+desc, "Relacional >=", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (>=) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -468,7 +469,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (==) "+desc, "Relacional ==", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (==) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -499,7 +500,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles en Relaciónal (!=) "+desc, "Relacional !=", p.Line, p.Column)
+				err.NewError("Tipos incompatibles en Relaciónal (!=) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -518,7 +519,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles Logicos (&&) "+desc, "Logico AND", p.Line, p.Column)
+				err.NewError("Tipos incompatibles Logicos (&&) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -534,7 +535,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			} else {
 				desc := fmt.Sprintf("%v con %v", interfaces.GetType(retornoIzq.Tipo), interfaces.GetType(retornoDer.Tipo))
-				err.NewError("Tipos incompatibles Logicos (||) "+desc, "Logico OR", p.Line, p.Column)
+				err.NewError("Tipos incompatibles Logicos (||) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 			}
 
 		}
@@ -551,7 +552,7 @@ func (p Aritmetica) EjecutarValor(env interface{}) interfaces.Symbol {
 
 				} else {
 					desc := fmt.Sprintf("%v ", interfaces.GetType(retornoIzq.Tipo))
-					err.NewError("Tipos incompatibles Logicos (!) "+desc, "Logico NOT", p.Line, p.Column)
+					err.NewError("Tipos incompatibles Logicos (!) "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 				}
 
 			}

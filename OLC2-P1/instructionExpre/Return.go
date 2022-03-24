@@ -42,20 +42,34 @@ func (r Return) Ejecutar(env interface{}) interface{} {
 				Column:  r.Column,
 				Id:      "RETURN",
 				Tipo:    interfaces.VOID,
-				TipoRet: interfaces.VOID,
+				TipoRet: interfaces.RETURN,
 				Valor:   nil,
 			}
 		} else {
+			//fmt.Println("r.ValReturn.typeof*sc**: ", reflect.TypeOf(r.ValReturn))
 			valexpre := r.ValReturn.EjecutarValor(env)
-			//fmt.Println("	valexpre: ", valexpre.Valor)
+			//fmt.Println("valexpre.typeof*sc**: ", reflect.TypeOf(valexpre.Valor))
+			//fmt.Println("______________valexpre.TipoVecCon***: ", interfaces.GetType(valexpre.TipoVecCon))
+
+			//fmt.Println("-retornando  **: ", interfaces.GetType(valexpre.Tipo))
+			//fmt.Println("-retornando obje **: ", valexpre.RetObjeto)
+
 			returnExpre = interfaces.Symbol{
 				Line:   r.Line,
 				Column: r.Column,
-				Id:     "RETURN",
+				//Id:     "RETURN",
+				Id: valexpre.Id,
 				//Tipo:   interfaces.RETURN,
-				Tipo:    valexpre.Tipo,
-				TipoRet: interfaces.RETURN,
-				Valor:   valexpre.Valor,
+				Tipo:      valexpre.Tipo,
+				TipoRet:   interfaces.RETURN,
+				Valor:     valexpre.Valor,
+				RetObjeto: valexpre.RetObjeto,
+				Capacity:  valexpre.Capacity,
+
+				IsMut:      valexpre.IsMut,
+				TiposArr:   valexpre.TiposArr,
+				ListParams: valexpre.ListParams,
+				TipoVecCon: valexpre.TipoVecCon,
 			}
 		}
 

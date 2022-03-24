@@ -17,7 +17,16 @@ type Symbol struct {
 
 	Capacity int
 
-	TipoRet TipoExpresion
+	TipoRet    TipoExpresion
+	RetObjeto  string
+	TipoVecCon TipoExpresion
+}
+
+type SymbolModule struct {
+	IdMod  string
+	Body   *arrayList.List
+	Line   int
+	Column int
 }
 
 type Expresion interface {

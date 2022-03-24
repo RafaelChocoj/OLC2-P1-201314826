@@ -36,13 +36,17 @@ func (p Vector) EjecutarValor(env interface{}) interfaces.Symbol {
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
 
-	tempType := p.ListExp.GetValue(0).(interfaces.Expresion).EjecutarValor(env).Tipo
+	var tempType interfaces.TipoExpresion
 
 	/*vector declarada con tipo y vector asignado*/
+	//fmt.Println("--p.TipoDec: ", p.TipoDec)
 	if p.TipoDec == 1 {
+		tempType = p.ListExp.GetValue(0).(interfaces.Expresion).EjecutarValor(env).Tipo
+
 		for _, s := range p.ListExp.ToArray() {
 			valsym := s.(interfaces.Expresion).EjecutarValor(env)
 			if valsym.Tipo == tempType {
+				//fmt.Println("--		valsym.Valor: ", valsym.Valor)
 				tempExp.Add(valsym)
 			} else {
 				//fmt.Println("Error en el tipo del vector")
@@ -66,7 +70,7 @@ func (p Vector) EjecutarValor(env interface{}) interfaces.Symbol {
 			//return false
 		}
 		//fmt.Println("		arrSize: ", arrSize)
-
+		tempType = p.Expresion.(interfaces.Expresion).EjecutarValor(env).Tipo
 		//for _, s := range arrSize {
 		for i := 0; i < arrSize; i++ {
 			//tempExp.Add(s.(interfaces.Expresion).EjecutarValor(env))
@@ -74,9 +78,12 @@ func (p Vector) EjecutarValor(env interface{}) interfaces.Symbol {
 		}
 	}
 
+	//fmt.Println("--interfaces.GetType(tempType): ", interfaces.GetType(tempType))
 	return interfaces.Symbol{
-		Id:    "",
-		Tipo:  interfaces.VECTOR,
-		Valor: tempExp,
+		Id:         "",
+		Tipo:       interfaces.VECTOR,
+		Valor:      tempExp,
+		TipoRet:    tempType,
+		TipoVecCon: tempType,
 	}
 }

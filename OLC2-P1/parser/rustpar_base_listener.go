@@ -33,29 +33,47 @@ func (s *BaseRustParListener) EnterInstrucciones(ctx *InstruccionesContext) {}
 // ExitInstrucciones is called when production instrucciones is exited.
 func (s *BaseRustParListener) ExitInstrucciones(ctx *InstruccionesContext) {}
 
-// EnterList_Funciones is called when production list_Funciones is entered.
-func (s *BaseRustParListener) EnterList_Funciones(ctx *List_FuncionesContext) {}
+// EnterList_globals is called when production list_globals is entered.
+func (s *BaseRustParListener) EnterList_globals(ctx *List_globalsContext) {}
 
-// ExitList_Funciones is called when production list_Funciones is exited.
-func (s *BaseRustParListener) ExitList_Funciones(ctx *List_FuncionesContext) {}
+// ExitList_globals is called when production list_globals is exited.
+func (s *BaseRustParListener) ExitList_globals(ctx *List_globalsContext) {}
 
-// EnterItemRust is called when production itemRust is entered.
-func (s *BaseRustParListener) EnterItemRust(ctx *ItemRustContext) {}
+// EnterIn_global is called when production in_global is entered.
+func (s *BaseRustParListener) EnterIn_global(ctx *In_globalContext) {}
 
-// ExitItemRust is called when production itemRust is exited.
-func (s *BaseRustParListener) ExitItemRust(ctx *ItemRustContext) {}
+// ExitIn_global is called when production in_global is exited.
+func (s *BaseRustParListener) ExitIn_global(ctx *In_globalContext) {}
 
-// EnterFuncion is called when production funcion is entered.
-func (s *BaseRustParListener) EnterFuncion(ctx *FuncionContext) {}
+// EnterModule is called when production module is entered.
+func (s *BaseRustParListener) EnterModule(ctx *ModuleContext) {}
 
-// ExitFuncion is called when production funcion is exited.
-func (s *BaseRustParListener) ExitFuncion(ctx *FuncionContext) {}
+// ExitModule is called when production module is exited.
+func (s *BaseRustParListener) ExitModule(ctx *ModuleContext) {}
+
+// EnterBodyModule_l is called when production bodyModule_l is entered.
+func (s *BaseRustParListener) EnterBodyModule_l(ctx *BodyModule_lContext) {}
+
+// ExitBodyModule_l is called when production bodyModule_l is exited.
+func (s *BaseRustParListener) ExitBodyModule_l(ctx *BodyModule_lContext) {}
 
 // EnterT_access is called when production t_access is entered.
 func (s *BaseRustParListener) EnterT_access(ctx *T_accessContext) {}
 
 // ExitT_access is called when production t_access is exited.
 func (s *BaseRustParListener) ExitT_access(ctx *T_accessContext) {}
+
+// EnterItemMod is called when production itemMod is entered.
+func (s *BaseRustParListener) EnterItemMod(ctx *ItemModContext) {}
+
+// ExitItemMod is called when production itemMod is exited.
+func (s *BaseRustParListener) ExitItemMod(ctx *ItemModContext) {}
+
+// EnterFuncion is called when production funcion is entered.
+func (s *BaseRustParListener) EnterFuncion(ctx *FuncionContext) {}
+
+// ExitFuncion is called when production funcion is exited.
+func (s *BaseRustParListener) ExitFuncion(ctx *FuncionContext) {}
 
 // EnterParams_declar is called when production params_declar is entered.
 func (s *BaseRustParListener) EnterParams_declar(ctx *Params_declarContext) {}
@@ -110,6 +128,18 @@ func (s *BaseRustParListener) EnterCallFunction(ctx *CallFunctionContext) {}
 
 // ExitCallFunction is called when production callFunction is exited.
 func (s *BaseRustParListener) ExitCallFunction(ctx *CallFunctionContext) {}
+
+// EnterCallModulo is called when production callModulo is entered.
+func (s *BaseRustParListener) EnterCallModulo(ctx *CallModuloContext) {}
+
+// ExitCallModulo is called when production callModulo is exited.
+func (s *BaseRustParListener) ExitCallModulo(ctx *CallModuloContext) {}
+
+// EnterListModulec is called when production listModulec is entered.
+func (s *BaseRustParListener) EnterListModulec(ctx *ListModulecContext) {}
+
+// ExitListModulec is called when production listModulec is exited.
+func (s *BaseRustParListener) ExitListModulec(ctx *ListModulecContext) {}
 
 // EnterReturnFun is called when production returnFun is entered.
 func (s *BaseRustParListener) EnterReturnFun(ctx *ReturnFunContext) {}
@@ -182,6 +212,18 @@ func (s *BaseRustParListener) EnterIs_mut(ctx *Is_mutContext) {}
 
 // ExitIs_mut is called when production is_mut is exited.
 func (s *BaseRustParListener) ExitIs_mut(ctx *Is_mutContext) {}
+
+// EnterLetid is called when production letid is entered.
+func (s *BaseRustParListener) EnterLetid(ctx *LetidContext) {}
+
+// ExitLetid is called when production letid is exited.
+func (s *BaseRustParListener) ExitLetid(ctx *LetidContext) {}
+
+// EnterVector_types is called when production vector_types is entered.
+func (s *BaseRustParListener) EnterVector_types(ctx *Vector_typesContext) {}
+
+// ExitVector_types is called when production vector_types is exited.
+func (s *BaseRustParListener) ExitVector_types(ctx *Vector_typesContext) {}
 
 // EnterArray_type is called when production array_type is entered.
 func (s *BaseRustParListener) EnterArray_type(ctx *Array_typeContext) {}

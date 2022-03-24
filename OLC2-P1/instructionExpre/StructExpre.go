@@ -45,9 +45,9 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 			valor = make(map[string]interfaces.Symbol)
 			var contAtrib = 0
 			//run
-			for _, strAlm := range reStruct.Valor.(*arrayList.List).ToArray() { //StructType
+			for _, strAlm := range reStruct.Valor.(*arrayList.List).ToArray() {
 				//values
-				for _, strEnt := range p.List_Exp.ToArray() { // StructContentido
+				for _, strEnt := range p.List_Exp.ToArray() {
 					//equasl
 					if strAlm.(interfaces.StructType).Id == strEnt.(StructContenido).Id {
 						tempVal := strEnt.(StructContenido).Exp.(interfaces.Expresion).EjecutarValor(env)
@@ -83,8 +83,8 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 			}
 			//struc valido
 			if p.List_Exp.Len() == contAtrib {
-
-				result = interfaces.Symbol{Id: p.Id, Tipo: interfaces.STRUCT, Valor: valor, Line: p.Line, Column: p.Column, IsMut: true}
+				//fmt.Println("p.Id se creo expresion de struck: -", p.Id, " - ", valor)
+				result = interfaces.Symbol{Id: p.Id, Tipo: interfaces.STRUCT, Valor: valor, Line: p.Line, Column: p.Column, IsMut: true, RetObjeto: p.Id}
 			} else {
 				err.NewError("Faltan atributos que asignar dentro del struct '"+p.Id+"'", env.(environment.Environment).Nombre, p.Line, p.Column)
 				return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}

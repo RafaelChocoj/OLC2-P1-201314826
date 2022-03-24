@@ -69,6 +69,11 @@ func (p ArrayDeclaration) IsArray_Valido(env interface{}, arr1 interfaces.Symbol
 	a_valido := true
 	ar_noelementos := 0
 	arrType := l_tipo.GetValue(l_tipo.Len() - 1)
+
+	///si es  nulo no valido xd
+	if arrType.(interfaces.ArrayType).SizeA == nil {
+		return true
+	}
 	res_exp := arrType.(interfaces.ArrayType).SizeA.(interfaces.Expresion).EjecutarValor(env)
 	var arrSize int
 

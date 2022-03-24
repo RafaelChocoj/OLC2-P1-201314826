@@ -8,6 +8,7 @@ import (
 	"OLC2/interfaces"
 	"fmt"
 	"reflect"
+	"strings"
 
 	arrayList "github.com/colegno/arraylist"
 )
@@ -51,13 +52,20 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 	fun_exist := env.(environment.Environment).ExistFunction(f.IdFun)
 	//fmt.Println("La variable no existe: ", fun_exist)
 	if !fun_exist {
-		err.NewError("La función "+f.IdFun+" no existe en entorno "+env.(environment.Environment).Nombre,
+		err.NewError("La función "+f.IdFun+" no existe en entorno "+env.(environment.Environment).Nombre+" o no es accesible",
 			env.(environment.Environment).Nombre, f.Line, f.Column)
 		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 	}
-
+	/////fmt.Println("						f.IdFun: ", f.IdFun, "env: ", env.(environment.Environment).Nombre)
 	var tmpEnv environment.Environment
-	tmpEnv = environment.NewEnvironment("Function", env.(environment.Environment).GetFather(env))
+
+	//tmpEnv = environment.NewEnvironment("Function", env.(environment.Environment)) ////******
+	if strings.Contains(env.(environment.Environment).Nombre, "Module") {
+		//fmt.Println("es modulo ")
+		tmpEnv = environment.NewEnvironment("Function", env.(environment.Environment))
+	} else {
+		tmpEnv = environment.NewEnvironment("Function", env.(environment.Environment).GetFather(env))
+	}
 
 	funcion := env.(environment.Environment).GetFunction(f.IdFun).(Function)
 	list_decla := funcion.ListaParamsDecl.Clone()
@@ -70,7 +78,7 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 	for i := 0; i < list_decla.Len(); i++ {
 
 		//var var_decla interface{}
-		//fmt.Println("++++++++++++++++reflect.TypeOf(list_decla.GetValue(i)): ", reflect.TypeOf(list_decla.GetValue(i)))
+		//fmt.Println("-------------------reflect.TypeOf(list_decla.GetValue(i)): ", reflect.TypeOf(list_decla.GetValue(i)))
 
 		if reflect.TypeOf(list_decla.GetValue(i)) == reflect.TypeOf(instruction.Declaration{}) {
 
@@ -81,7 +89,14 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 			typeNewVar := var_decla.Tipo
 			lin := var_decla.Line
 			col := var_decla.Column
-			symNewVar := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			//symNewVar := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			var symNewVar interfaces.Symbol
+			if strings.Contains(env.(environment.Environment).Nombre, "Module") {
+
+				symNewVar = f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(err.Main_Env)
+			} else {
+				symNewVar = f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			}
 
 			//fmt.Println("	symNewVar", symNewVar)
 			//fmt.Println("	idNewVar", idNewVar)
@@ -92,6 +107,9 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 				if f.ListaExpresiones.GetValue(i).(ParameterBy).IsRef && (typeNewVar == interfaces.ARRAY || typeNewVar == interfaces.VECTOR) {
 					listIdRef.Add(symNewVar.Id)
 					listIdNew.Add(idNewVar)
+
+					//fmt.Println("		*symNewVar.Id", symNewVar.Id)
+					//fmt.Println("			*idNewVar", idNewVar)
 				}
 
 				tmpEnv.SaveVariable(idNewVar, symNewVar, typeNewVar, var_decla.IsMut, var_decla.Line, var_decla.Column, tmpEnv.Nombre, nil, 0)
@@ -112,19 +130,39 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 			typeNewVar := var_decla.Tipos
 			lin := var_decla.Line
 			col := var_decla.Column
-			symNewVar := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			//symNewVar := f.ListaExpresiones.Clone().GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			var symNewVar interfaces.Symbol
+			if strings.Contains(env.(environment.Environment).Nombre, "Module") {
+
+				symNewVar = f.ListaExpresiones.Clone().GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(err.Main_Env)
+			} else {
+				symNewVar = f.ListaExpresiones.Clone().GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			}
+
+			var idref string
+			if reflect.TypeOf(f.ListaExpresiones.GetValue(i).(ParameterBy).Expre) == reflect.TypeOf(expresion.Identificador{}) {
+				identificador := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(expresion.Identificador)
+				idref = identificador.Id
+				//fmt.Println("++++++++++++++++identificador.Id", identificador.Id)
+
+			} else {
+				idref = ""
+			}
 
 			//fmt.Println("	symNewVar", symNewVar.Valor)
-			//fmt.Println("	idNewVar", idNewVar)
-			//fmt.Println("-	symNewVar.Id", symNewVar.Id)
 
 			if interfaces.ARRAY == symNewVar.Tipo {
 
-				if f.ListaExpresiones.GetValue(i).(ParameterBy).IsRef && (symNewVar.Tipo == interfaces.ARRAY || symNewVar.Tipo == interfaces.VECTOR) {
+				if f.ListaExpresiones.Clone().GetValue(i).(ParameterBy).IsRef && (symNewVar.Tipo == interfaces.ARRAY || symNewVar.Tipo == interfaces.VECTOR) {
 					//fmt.Println("	symNewVar.Tipo", interfaces.GetType(symNewVar.Tipo))
 
-					listIdRef.Add(symNewVar.Id)
+					//listIdRef.Add(symNewVar.Id)
+					listIdRef.Add(idref)
 					listIdNew.Add(idNewVar)
+					//fmt.Println("		*symNewVar.Id", idref)
+					//fmt.Println("			*idNewVar", idNewVar)
+
+					//symNewVar.Id = idNewVar
 				}
 
 				tmpEnv.SaveVariable(idNewVar, symNewVar, symNewVar.Tipo, var_decla.IsMut, var_decla.Line, var_decla.Column, tmpEnv.Nombre, typeNewVar, 0)
@@ -136,7 +174,76 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 			}
 
 			/*****/
+		} else if reflect.TypeOf(list_decla.GetValue(i)) == reflect.TypeOf(instruction.VectorDeclaration{}) {
+			var_decla := list_decla.GetValue(i).(instruction.VectorDeclaration)
 
+			/*****/
+			//var_decla = list_decla.GetValue(i).(instruction.Declaration)
+			idNewVar := var_decla.Id
+			//typeNewVar := var_decla.Tipos
+			//typeObjecVector := var_decla.IdVector
+			lin := var_decla.Line
+			col := var_decla.Column
+
+			//var tmpMain environment.Environment
+			//tmpMain = env.(environment.Environment).GetFather(env)
+			var symNewVar interfaces.Symbol
+			if strings.Contains(env.(environment.Environment).Nombre, "Module") {
+
+				symNewVar = f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(err.Main_Env)
+			} else {
+				symNewVar = f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
+			}
+
+			//fmt.Println("	=================== env actual: ", env.(environment.Environment).Nombre)
+			//fmt.Println("	=== env padre name: ", tmpMain.Nombre)
+			//fmt.Println("	=== env main name: ", err.Main_Env.Nombre)
+			//fmt.Println("	=== interfaces.GetType(symNewVar.Tipo)", interfaces.GetType(symNewVar.Tipo))
+
+			//var identificador = expresion.Identificador{}
+			var idref string
+			//fmt.Println("++++++++++++++++reflect.TypeOf(f.ListaExpresiones.GetValue(i)  ",
+			//reflect.TypeOf(f.ListaExpresiones.GetValue(i).(ParameterBy).Expre))
+
+			if reflect.TypeOf(f.ListaExpresiones.GetValue(i).(ParameterBy).Expre) == reflect.TypeOf(expresion.Identificador{}) {
+				identificador := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(expresion.Identificador)
+				idref = identificador.Id
+				//fmt.Println("++++++++++++++++identificador.Id", identificador.Id)
+
+			} else {
+				idref = ""
+			}
+			//fmt.Println("	idNewVar", idNewVar)
+			//fmt.Println("	 idref", idref)
+			//fmt.Println("-	var_decla.IdVector", var_decla.IdVector)
+
+			if interfaces.VECTOR == symNewVar.Tipo {
+
+				if f.ListaExpresiones.GetValue(i).(ParameterBy).IsRef && (symNewVar.Tipo == interfaces.ARRAY || symNewVar.Tipo == interfaces.VECTOR) {
+					//fmt.Println("x	symNewVar.Tipo", interfaces.GetType(symNewVar.Tipo))
+
+					//listIdRef.Add(symNewVar.Id)
+					listIdRef.Add(idref)
+					listIdNew.Add(idNewVar)
+
+					fmt.Println("		*symNewVar.Id", idref)
+					fmt.Println("			*idNewVar", idNewVar)
+
+					//symNewVar.Id = idNewVar
+				}
+				symNewVar.RetObjeto = var_decla.IdVector
+				//symNewVar.TipoRet = var_decla.TipoRet
+				/////fmt.Println("	---**---	*symNewVar.TipoVecCon", interfaces.GetType(symNewVar.TipoVecCon))
+
+				tmpEnv.SaveVariableVec(idNewVar, symNewVar, symNewVar.Tipo, var_decla.IsMut, var_decla.Line, var_decla.Column, tmpEnv.Nombre, nil, var_decla.IdVector)
+
+			} else {
+				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.VECTOR), interfaces.GetType(symNewVar.Tipo))
+				err.NewError("Tipos invalidos "+desc, tmpEnv.Nombre, lin, col)
+				return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+			}
+
+			/****/
 		} else {
 			err.NewError("Error en tipos ", env.(environment.Environment).Nombre, f.Line, f.Column)
 			return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
@@ -169,10 +276,34 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 
 			if reflect.TypeOf(rest) == reflect.TypeOf(interfaces.Symbol{}) {
 
-				//fmt.Println("rest.(interfaces.Symbol).Tipo: ", rest.(interfaces.Symbol).Tipo)
+				var restsym interfaces.Symbol
+				restsym = rest.(interfaces.Symbol)
+
+				//fmt.Println("call rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+				//fmt.Println("funcion.Tipo: ", funcion.Tipo)
+				//fmt.Println("call rest.(interfaces.Symbol).Valor: ", rest.(interfaces.Symbol).Valor)
+
 				if rest.(interfaces.Symbol).TipoRet == interfaces.BREAK || rest.(interfaces.Symbol).TipoRet == interfaces.CONTINUE || rest.(interfaces.Symbol).TipoRet == interfaces.RETURN {
-					//fmt.Println("rest.(interfaces.Symbol).Id: ", rest.(interfaces.Symbol).Id)
-					return rest.(interfaces.Symbol)
+
+					//fmt.Println("funcion.IdObje: ", funcion.IdObje)
+					//fmt.Println("rest.(interfaces.Symbol).RetObjeto: ", rest.(interfaces.Symbol).RetObjeto)
+
+					//fmt.Println("funcion.Tipo: ", interfaces.GetType(funcion.Tipo))
+					//fmt.Println("rest.(interfaces.Symbol).Tipo: ", interfaces.GetType(rest.(interfaces.Symbol).Tipo))
+
+					//rest.(interfaces.Symbol).TipoRet = interfaces.NULL
+					restsym.TipoRet = interfaces.NULL
+					if funcion.Tipo == rest.(interfaces.Symbol).Tipo || funcion.IdObje == rest.(interfaces.Symbol).RetObjeto {
+						//fmt.Println("		--restsym ret: ", interfaces.GetType(restsym.Tipo))
+						//return rest.(interfaces.Symbol)
+						return restsym
+
+					} else {
+						desc := fmt.Sprintf("se esperaba '%v' se tiene '%v', objeto '%v'", interfaces.GetType(funcion.Tipo), interfaces.GetType(rest.(interfaces.Symbol).Tipo), funcion.IdObje)
+						err.NewError("Tipos no coinciden en Return "+desc, env.(environment.Environment).Nombre, f.Line, f.Column)
+						return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+					}
+
 				}
 			}
 		}
@@ -211,6 +342,7 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 func (f CallFunction) SaveReference(listLocal *arrayList.List, listFunc *arrayList.List, entLocal environment.Environment, entFunc environment.Environment) {
 	//lista de id
 	//fmt.Println(" listLocal.Len(): ", listLocal.Len())
+	//fmt.Println("env actu: ", entLocal.Nombre, "env in: ", entLocal.Nombre)
 	for i := 0; i < listLocal.Len(); i++ {
 		//simbolo en fun
 		tmpSym := entFunc.GetVariable(listFunc.GetValue(i).(string), f.Line, f.Column, entFunc.Nombre)

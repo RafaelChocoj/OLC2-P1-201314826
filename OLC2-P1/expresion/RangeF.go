@@ -31,7 +31,7 @@ func (p RangeF) EjecutarValor(env interface{}) interfaces.Symbol {
 	val2 = p.Exp_fin.EjecutarValor(env)
 	p.Tipo = val1.Tipo
 
-	if (val1.Valor.(int) < val2.Valor.(int)) && (val1.Tipo == interfaces.INTEGER) && (val2.Tipo == interfaces.INTEGER) {
+	if (val1.Valor.(int) < val2.Valor.(int)) && (val1.Tipo == interfaces.INTEGER && val2.Tipo == interfaces.INTEGER) {
 
 		var tmpSym interfaces.Symbol
 		inival := val1.Valor.(int)
@@ -65,8 +65,11 @@ func (p RangeF) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	} else {
 
-		desc := fmt.Sprintf("valor inicial '%v' valor final '%v'", val1.Valor, val2.Valor)
-		err.NewError("Indices incorrectos en Forin "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+		if val1.Valor.(int) != val2.Valor.(int) {
+
+			desc := fmt.Sprintf("valor inicial '%v' valor final '%v'", val1.Valor, val2.Valor)
+			err.NewError("Indices incorrectos en Forin "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+		}
 	}
 
 	return interfaces.Symbol{

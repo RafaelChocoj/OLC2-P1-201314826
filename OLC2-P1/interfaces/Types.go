@@ -17,9 +17,10 @@ const (
 	CONTINUE
 	RETURN
 	VECTOR
+	CHAR
 )
 
-var nametype = [13]string{
+var nametype = [14]string{
 	"i64",
 	"f64",
 	"String",
@@ -33,16 +34,21 @@ var nametype = [13]string{
 	"continue",
 	"return",
 	"vector",
+	"char",
 }
 
 const (
 	PUBLIC TipoAccess = iota
 	PRIVATE
+	MOD
+	INS
 )
 
-var nameAccesstype = [2]string{
+var nameAccesstype = [4]string{
 	"pub",
 	"private",
+	"modulo",
+	"instruccion",
 }
 
 func GetType(tipo TipoExpresion) string {

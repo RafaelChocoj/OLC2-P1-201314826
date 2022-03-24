@@ -32,38 +32,72 @@ func (p Insert) Ejecutar(env interface{}) interface{} {
 	tmpExp2 := p.Exp2.EjecutarValor(env) //val
 	tmpArr = arrayList.New()
 	if tmpSyVec.Tipo == interfaces.VECTOR {
-		if tmpExp2.Tipo == tmpSyVec.TipoRet && tmpExp1.Tipo == interfaces.INTEGER {
-			if tmpExp1.Valor.(int) < tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() && tmpExp1.Valor.(int) >= 0 {
-				for i := 0; i < tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len(); i++ {
-					if tmpSyVec.IsMut {
-						if tmpExp1.Valor.(int) == i {
-							tmpArr.Add(tmpExp2)
-							tmpArr.Add(tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).GetValue(i))
+		if (tmpExp2.Tipo == tmpSyVec.TipoVecCon || tmpExp2.Id == tmpSyVec.Valor.(interfaces.Symbol).Id) && tmpExp1.Tipo == interfaces.INTEGER {
 
-							//fmt.Println("tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len()", tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len())
-							//fmt.Println("tmpSyVec.Capacity", tmpSyVec.Capacity)
-							if (tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() + 1) > tmpSyVec.Capacity {
-								var newCap = 0
-								if tmpSyVec.Capacity <= 0 {
-									tmpSyVec.Capacity = 1
-								}
-								newCap = tmpSyVec.Capacity * 2
-								tmpSyVec.Capacity = newCap
-
-							}
-
-						} else {
-							tmpArr.Add(tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).GetValue(i))
-						}
-					} else {
-						err.NewError("La variable '"+p.Id+"' es inmutable, no puede cambiar valor", env.(environment.Environment).Nombre, p.Line, p.Column)
-						return nil
-					}
-				}
+			if tmpSyVec.IsMut {
 			} else {
-				err.NewError("Rango no permitido en vector", env.(environment.Environment).Nombre, p.Line, p.Column)
+				err.NewError("La variable '"+p.Id+"' es inmutable, no puede cambiar valor", env.(environment.Environment).Nombre, p.Line, p.Column)
 				return nil
 			}
+
+			/*if tmpExp1.Valor.(int) == tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() {
+				tmpArr.Add(tmpExp2)
+
+				///
+				if (tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() + 1) > tmpSyVec.Capacity {
+					var newCap = 0
+					if tmpSyVec.Capacity <= 0 {
+						tmpSyVec.Capacity = 1
+					}
+					newCap = tmpSyVec.Capacity * 2
+					tmpSyVec.Capacity = newCap
+
+				}
+				///
+			} else {*/
+
+			if tmpExp1.Valor.(int) <= tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() && tmpExp1.Valor.(int) >= 0 {
+				//fmt.Println("index tmpExp1.Valor.(int) ", tmpExp1.Valor.(int))
+				//fmt.Println("tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len()  ", tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len())
+
+				/*if tmpExp1.Valor.(int) == 0 && tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() == 0 {
+					tmpArr.Add(tmpExp2)
+					fmt.Println("inserto 0 ")
+				}*/
+				for i := 0; i <= tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len(); i++ {
+					//fmt.Println("			i: ", i, " - index: ", tmpExp1.Valor.(int))
+					if tmpExp1.Valor.(int) == i {
+						tmpArr.Add(tmpExp2)
+
+						//fmt.Println("i: insertando", i)
+						if i < tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() {
+							tmpArr.Add(tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).GetValue(i))
+						}
+
+						//fmt.Println("tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len()", tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len())
+						//fmt.Println("tmpSyVec.Capacity", tmpSyVec.Capacity)
+						if (tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len() + 1) > tmpSyVec.Capacity {
+							var newCap = 0
+							if tmpSyVec.Capacity <= 0 {
+								tmpSyVec.Capacity = 1
+							}
+							newCap = tmpSyVec.Capacity * 2
+							tmpSyVec.Capacity = newCap
+
+						}
+
+					} else {
+						//fmt.Println("			i: ", i, " inserto???")
+						tmpArr.Add(tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).GetValue(i))
+					}
+
+				}
+			} else {
+				desc := fmt.Sprintf("se quiere insertar en '%v' len vector '%v'", tmpExp1.Valor.(int), tmpSyVec.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Len())
+				err.NewError("Rango no permitido en vector "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+				return nil
+			}
+			//}
 		} else {
 			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.VECTOR), interfaces.GetType(tmpSyVec.Tipo))
 			err.NewError("Uso de Función incorrecta "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)

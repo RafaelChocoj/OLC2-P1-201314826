@@ -48,13 +48,19 @@ func (p Push) Ejecutar(env interface{}) interface{} {
 	var ValAdd interfaces.Symbol
 	ValAdd = p.ValAdd.EjecutarValor(env)
 
-	//fmt.Println(interfaces.GetType(retornoExp.TipoRet), "-", interfaces.GetType(ValAdd.Tipo))
-	if ValAdd.Tipo == retornoExp.TipoRet {
+	//fmt.Println("()", interfaces.GetType(retornoExp.TipoVecCon), "-", interfaces.GetType(ValAdd.Tipo))
+	//fmt.Println(reflect.TypeOf(retornoExp.Valor), "---", reflect.TypeOf(ValAdd.Valor))
+
+	//fmt.Println("()", retornoExp.Valor.(interfaces.Symbol).Id, "-", ValAdd.Id)
+	//fmt.Println(interfaces.GetType(retornoExp.Tipo), "-", interfaces.GetType(ValAdd.Tipo))
+	if ValAdd.Tipo == retornoExp.TipoVecCon || retornoExp.Valor.(interfaces.Symbol).Id == ValAdd.Id {
 	} else {
-		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(retornoExp.TipoRet), interfaces.GetType(ValAdd.Tipo))
+		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(retornoExp.TipoVecCon), interfaces.GetType(ValAdd.Tipo))
 		err.NewError("Tipos incorrectos en vector "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 		return nil
 	}
+
+	//fmt.Println(reflect.TypeOf(retornoExp.Valor), "---", reflect.TypeOf(ValAdd.Valor))
 
 	retornoExp.Valor.(interfaces.Symbol).Valor.(*arrayList.List).Add(ValAdd)
 

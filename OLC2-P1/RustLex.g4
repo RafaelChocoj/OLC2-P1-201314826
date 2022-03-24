@@ -11,6 +11,10 @@ T_FLOAT:   'f64';
 T_STRING:   'String';
 T_BOOL:   'bool';
 T_STR:   '&str';
+T_CHAT:   'char';
+T_ARRAY:   'array';
+T_VECTOR:   'Vector';
+USIZE: 'usize';
 
 //sentences
 IF:       'if';
@@ -49,13 +53,16 @@ TO_OWNED:   '.to_owned()';
 LEN:        'len()';
 NEW:        'new()';
 CAPF:       'capacity()';
+CLONE:      'clone()';
+ABS:        'abs()';
+SQRT:       'sqrt()';
 PUSH:       'push';
 CONTAINS:   'contains';
 
 INSERT:     'insert';
 REMOVE:     'remove';
 
-
+MODULO:        'mod';
 
 //funciones
 PUBLIC:     'pub';
@@ -115,8 +122,11 @@ LLAVEDER:       '}';
 CORIZQ:         '[';
 CORDER:         ']';
 
+CHAR: ['][a-zA-Z0-9]['];
+
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 L_COMMENT : '//' ~[\r\n]* -> skip;
+COMMENT : '/*' .*? '*/' -> skip;
 
 fragment
 ESC_SEQ

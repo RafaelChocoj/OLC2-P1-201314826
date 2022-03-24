@@ -30,7 +30,7 @@ func NewDeclaration(id string, tipo interfaces.TipoExpresion, val interfaces.Exp
 
 func (p Declaration) Ejecutar(env interface{}) interface{} {
 
-	//fmt.Println("aaaaaarrrraayy				tipo: ", interfaces.GetType(p.Tipo), " - ", p.Id)
+	//fmt.Println("	entra en declaracion		tipo: ", interfaces.GetType(p.Tipo), " - ", p.Id)
 
 	/*si es una declaracion sin valor, parametros*/
 	if p.Expresion != nil {
@@ -38,7 +38,8 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		result = p.Expresion.EjecutarValor(env)
 
 		//fmt.Println("----p.IsMut: ", p.IsMut)
-		//fmt.Println("result.Tipo: ", interfaces.GetType(result.Tipo))
+		//fmt.Println("	result.Tipo: ", interfaces.GetType(result.Tipo))
+		//fmt.Println("	result.Valor: ", result.Valor)
 		//fmt.Println("p.Tipo: ", interfaces.GetType(p.Tipo))
 
 		if result.Tipo == interfaces.NULL {
@@ -54,7 +55,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 			*/
 		} else if p.Tipo == interfaces.NULL {
 
-			//fmt.Println("ES  ALGO???: ", interfaces.GetType(result.Tipo))
+			//fmt.Println("se crea xd: ", interfaces.GetType(result.Tipo))
 			if result.Tipo == interfaces.ARRAY || result.Tipo == interfaces.VECTOR {
 				//fmt.Println("ES  ARRAY: ", interfaces.GetType(result.Tipo))
 				//fmt.Println("-----reflect.TypeOf(result.Valor: ", reflect.TypeOf(result.Valor) )
@@ -63,6 +64,7 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 					//fmt.Println("TODO OK")
 				} else {
 					//fmt.Println("ERRR Los tipos no coinciden")
+
 				}*/
 				env.(environment.Environment).SaveVariable(p.Id, result, result.Tipo, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, result.Valor.(*arrayList.List).Len())
 			} else {
@@ -77,13 +79,15 @@ func (p Declaration) Ejecutar(env interface{}) interface{} {
 		}
 
 		//return result.Valor
+		/*} else {
+		fmt.Println("la expresion es nula xd")*/
 	}
 	return nil
 }
 
 func (p Declaration) IsArray_Valido(env interface{}, arrlist *arrayList.List) bool {
 
-	fmt.Println("00000000000000 arr LEN			: ", arrlist.Len())
+	//fmt.Println("00000000000000 arr LEN			: ", arrlist.Len())
 	//for _, arr := range arrlist.ToArray() {
 	for i := 0; i < arrlist.Len(); i++ {
 		arr := arrlist.GetValue(i)
