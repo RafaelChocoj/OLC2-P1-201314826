@@ -1,27 +1,18 @@
 
-
 fn main() {
    
-    struct Personaje {
-    nombre: String,
-    edad: i64,
-    descripcion: String
-    }
-// Struct
-struct Carro {
-    placa: String,
-    color: String,
-    tipo: String,
-    perso: Personaje
-    }
+struct CentroTuristico {
+    nombre:String
+}
 
-let mut p1 = Carro {
-placa:"palc".to_string(),
-color:"red".to_string(),
-tipo:"nose".to_string(),
-perso: Personaje { nombre:"Fer".to_string(), edad:18,
-descripcion:"No hace nada".to_string()}
-};
+let mut v: Vec<CentroTuristico> = Vec::new();
+println!("{:?}", v);
 
-println!("{:?}", p1);
+v.push(CentroTuristico{nombre:"Volcan de pacaya".to_string()} );
+//v.push(CentroTuristico{nombre:"Rio dulce".to_string()} );
+
+//println!("{}", v[1]);
+//println!("{}", v[1].nombre);
+
+
 }

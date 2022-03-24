@@ -39,6 +39,12 @@ func (s *BaseRustParListener) EnterList_Funciones(ctx *List_FuncionesContext) {}
 // ExitList_Funciones is called when production list_Funciones is exited.
 func (s *BaseRustParListener) ExitList_Funciones(ctx *List_FuncionesContext) {}
 
+// EnterItemRust is called when production itemRust is entered.
+func (s *BaseRustParListener) EnterItemRust(ctx *ItemRustContext) {}
+
+// ExitItemRust is called when production itemRust is exited.
+func (s *BaseRustParListener) ExitItemRust(ctx *ItemRustContext) {}
+
 // EnterFuncion is called when production funcion is entered.
 func (s *BaseRustParListener) EnterFuncion(ctx *FuncionContext) {}
 

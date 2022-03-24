@@ -16,10 +16,14 @@ type VectorDeclaration struct {
 	IsMut     bool
 	Line      int
 	Column    int
+
+	Expresion interfaces.Expresion
+	IdVector  string
 }
 
-func NewVectorDeclaration(id string, tipo interfaces.TipoExpresion, cap interfaces.Expresion, IsMut bool, line int, column int) VectorDeclaration {
-	instr := VectorDeclaration{id, tipo, cap, IsMut, line, column}
+func NewVectorDeclaration(id string, tipo interfaces.TipoExpresion, cap interfaces.Expresion, IsMut bool, line int, column int,
+	expresion interfaces.Expresion, idVector string) VectorDeclaration {
+	instr := VectorDeclaration{id, tipo, cap, IsMut, line, column, expresion, idVector}
 	return instr
 }
 func (p VectorDeclaration) Ejecutar(env interface{}) interface{} {
@@ -42,14 +46,52 @@ func (p VectorDeclaration) Ejecutar(env interface{}) interface{} {
 
 	var tempExp *arrayList.List
 	tempExp = arrayList.New()
+	var valvec interfaces.Symbol
 
-	valvec := interfaces.Symbol{
-		Id:       "",
-		Tipo:     interfaces.VECTOR,
-		Valor:    tempExp,
-		Capacity: capacidad,
-		IsMut:    p.IsMut,
-		TipoRet:  p.Tipos,
+	if p.Expresion != nil {
+
+		reval2 := p.Expresion.EjecutarValor(env)
+		if reval2.Tipo == interfaces.VECTOR {
+
+			for _, s := range reval2.Valor.(interfaces.Symbol).Valor.(*arrayList.List).ToArray() {
+
+				if p.Tipos == interfaces.NULL {
+					if p.IdVector == s.(interfaces.Symbol).Id {
+						continue
+					}
+				}
+				if s.(interfaces.Symbol).Tipo != p.Tipos {
+					desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(p.Tipos), interfaces.GetType(s.(interfaces.Symbol).Tipo))
+					err.NewError("Tipos no coinciden en epresion "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+					return nil
+				}
+			}
+			valvec = interfaces.Symbol{
+				Id:       p.IdVector,
+				Tipo:     interfaces.VECTOR,
+				Valor:    reval2.Valor,
+				Capacity: capacidad,
+				IsMut:    p.IsMut,
+				TipoRet:  p.Tipos,
+			}
+
+		} else {
+
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(interfaces.VECTOR), interfaces.GetType(reval2.Tipo))
+			err.NewError("Tipos no coinciden en epresion "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+			return nil
+		}
+
+	} else {
+
+		valvec = interfaces.Symbol{
+			Id:       p.IdVector,
+			Tipo:     interfaces.VECTOR,
+			Valor:    tempExp,
+			Capacity: capacidad,
+			IsMut:    p.IsMut,
+			TipoRet:  p.Tipos,
+		}
 	}
 
 	env.(environment.Environment).SaveVariable(p.Id, valvec, interfaces.VECTOR, p.IsMut, p.Line, p.Column, env.(environment.Environment).Nombre, nil, capacidad)

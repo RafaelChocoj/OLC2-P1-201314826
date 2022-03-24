@@ -36,7 +36,7 @@ instrucciones returns [*arrayList.List l]
     }
 ;
 
-list_Funciones returns [*arrayList.List lista]
+/*list_Funciones returns [*arrayList.List lista]
 @init{
     $lista = arrayList.New()
 }
@@ -45,6 +45,22 @@ list_Funciones returns [*arrayList.List lista]
                                           $lista =  $lisfun.lista
                                         }
     | funcion     { $lista.Add( $funcion.instr ) }
+;*/
+
+list_Funciones returns [*arrayList.List lista]
+@init{
+    $lista = arrayList.New()
+}
+    : lisfun =  list_Funciones itemRust  {
+                                          $lisfun.lista.Add( $itemRust.instr)
+                                          $lista =  $lisfun.lista
+                                        }
+    | itemRust     { $lista.Add( $itemRust.instr ) }
+;
+
+itemRust returns[interfaces.Instruction instr]
+    : funcion       {$instr = $funcion.instr}
+    | newStruct     {$instr = $newStruct.str} 
 ;
 
 
@@ -288,10 +304,16 @@ declaracion returns [interfaces.Instruction instr]
                     }
     /*vectores*/
     | LET isMut=is_mut id=ID ':' VECN '<' tipos_var '>' '=' VECN '::' NEW {
-                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, nil, $isMut.mut, $VECN.line, $VECN.pos)
+                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, nil, $isMut.mut, $VECN.line, $VECN.pos, nil, "")
+                    }
+    | LET isMut=is_mut id=ID ':' VECN '<' idob=ID '>' '=' VECN '::' NEW {
+                        $instr = instruction.NewVectorDeclaration($id.text, interfaces.NULL, nil, $isMut.mut, $VECN.line, $VECN.pos, nil, $idob.text)
                     }
     | LET isMut=is_mut id=ID ':' VECN '<' tipos_var '>' '=' VECN '::' CAPACITY '('expression')' {
-                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, $expression.p, $isMut.mut, $VECN.line, $VECN.pos)
+                        $instr = instruction.NewVectorDeclaration($id.text, $tipos_var.tipo, $expression.p, $isMut.mut, $VECN.line, $VECN.pos, nil, "")
+                    }
+    | LET isMut=is_mut id=ID ':' VECN '<' idob=ID '>' '=' VECN '::' CAPACITY '('expression')' {
+                        $instr = instruction.NewVectorDeclaration($id.text, interfaces.NULL, $expression.p, $isMut.mut, $VECN.line, $VECN.pos, nil, $idob.text)
                     }
 ;
 

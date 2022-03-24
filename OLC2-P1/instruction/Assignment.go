@@ -173,7 +173,7 @@ func (p Assignment) Ejecutar(env interface{}) interface{} {
 			if result_mut.Tipo == result.Tipo {
 			} else {
 				desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", interfaces.GetType(result_mut.Tipo), interfaces.GetType(result.Tipo))
-				err.NewError("2: Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+				err.NewError("Tipos no coinciden en Asignación "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 				return nil
 			}
 

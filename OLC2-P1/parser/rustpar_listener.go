@@ -17,6 +17,9 @@ type RustParListener interface {
 	// EnterList_Funciones is called when entering the list_Funciones production.
 	EnterList_Funciones(c *List_FuncionesContext)
 
+	// EnterItemRust is called when entering the itemRust production.
+	EnterItemRust(c *ItemRustContext)
+
 	// EnterFuncion is called when entering the funcion production.
 	EnterFuncion(c *FuncionContext)
 
@@ -178,6 +181,9 @@ type RustParListener interface {
 
 	// ExitList_Funciones is called when exiting the list_Funciones production.
 	ExitList_Funciones(c *List_FuncionesContext)
+
+	// ExitItemRust is called when exiting the itemRust production.
+	ExitItemRust(c *ItemRustContext)
 
 	// ExitFuncion is called when exiting the funcion production.
 	ExitFuncion(c *FuncionContext)
