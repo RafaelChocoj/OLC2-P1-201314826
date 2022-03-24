@@ -41,42 +41,6 @@ func (f CallFunction) ParametsExpre(env interface{}, expre_list *arrayList.List)
 
 	}
 	return listExprePar
-
-	/*l_declaraciones := f.ListaParamsDecl.Clone()
-
-	//fmt.Println("**	", expre_list)
-	//fmt.Println("**	", l_declaraciones)
-
-	if l_declaraciones.Len() != expre_list.Len() {
-		//fmt.Println("Error en variables")
-		desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", l_declaraciones.Len(), expre_list.Len())
-		err.NewError("Cantidad de parametros en función incorrectos "+desc, env.(environment.Environment).Nombre, f.Line, f.Column)
-		return false
-	}
-
-	for i := 0; i < l_declaraciones.Len(); i++ {
-
-		//fmt.Println("++++++++++++++++reflect.TypeOf(l_declaraciones.GetValue(i)): ", reflect.TypeOf(l_declaraciones.GetValue(i)))
-
-		//par_i := l_declaraciones.GetValue(i).(instruction.Declaration)
-		if reflect.TypeOf(l_declaraciones.GetValue(i)) == reflect.TypeOf(instruction.Declaration{}) {
-			par_i := l_declaraciones.GetValue(i).(instruction.Declaration)
-			par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
-			par_i.Ejecutar(env)
-
-		} else if reflect.TypeOf(l_declaraciones.GetValue(i)) == reflect.TypeOf(instruction.ArrayDeclaration{}) {
-			par_i := l_declaraciones.GetValue(i).(instruction.ArrayDeclaration)
-			par_i.Expresion = expre_list.GetValue(i).(interfaces.Expresion)
-			par_i.Ejecutar(env)
-
-		} else {
-			return false
-		}
-
-	}
-
-	return true
-	*/
 }
 
 func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
@@ -150,14 +114,14 @@ func (f CallFunction) EjecutarValor(env interface{}) interfaces.Symbol {
 			col := var_decla.Column
 			symNewVar := f.ListaExpresiones.GetValue(i).(ParameterBy).Expre.(interfaces.Expresion).EjecutarValor(env)
 
-			fmt.Println("	symNewVar", symNewVar.Valor)
-			fmt.Println("	idNewVar", idNewVar)
-			fmt.Println("-	symNewVar.Id", symNewVar.Id)
+			//fmt.Println("	symNewVar", symNewVar.Valor)
+			//fmt.Println("	idNewVar", idNewVar)
+			//fmt.Println("-	symNewVar.Id", symNewVar.Id)
 
 			if interfaces.ARRAY == symNewVar.Tipo {
 
 				if f.ListaExpresiones.GetValue(i).(ParameterBy).IsRef && (symNewVar.Tipo == interfaces.ARRAY || symNewVar.Tipo == interfaces.VECTOR) {
-					fmt.Println("	symNewVar.Tipo", interfaces.GetType(symNewVar.Tipo))
+					//fmt.Println("	symNewVar.Tipo", interfaces.GetType(symNewVar.Tipo))
 
 					listIdRef.Add(symNewVar.Id)
 					listIdNew.Add(idNewVar)

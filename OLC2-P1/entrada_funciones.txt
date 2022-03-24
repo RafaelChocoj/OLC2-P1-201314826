@@ -2,6 +2,17 @@
 
 fn main() {
     println!("estoy en main");
-    
 
+    // Ejemplo 1 - Es aplicable para arreglos o vectores
+    let vector = vec!["Este", "semestre", "si", "sale"];
+    for valor in vector {
+        println!("{}", valor);
+    }
+     println!("-------");
+    // Ejemplo 2 - Es aplicable para arreglos o vectores
+    let arreglo = vec!["Este", "semestre", "si", "sale"];
+    for valor in 0..arreglo.len() {
+        println!("{}", arreglo[valor]);
+    }
+    
 }

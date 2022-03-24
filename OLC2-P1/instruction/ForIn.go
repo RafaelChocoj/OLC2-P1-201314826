@@ -34,7 +34,7 @@ func (p ForIn) Ejecutar(env interface{}) interface{} {
 	//fmt.Println("p.Exp.EjecutarValor(env).Tipo: ", interfaces.GetType(p.Exp.EjecutarValor(env).Tipo))
 	//fmt.Println("interfaces.ARRAY: ", interfaces.GetType(interfaces.ARRAY))
 
-	if p.Exp.EjecutarValor(env).Tipo == interfaces.ARRAY {
+	if p.Exp.EjecutarValor(env).Tipo == interfaces.ARRAY || p.Exp.EjecutarValor(env).Tipo == interfaces.VECTOR {
 		//se extrae la lista
 		arr = p.Exp.EjecutarValor(env).Valor.(*arrayList.List)
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DB RUST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+  />
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!--<link rel="shortcut icon" href="https://www.nicepng.com/png/full/34-348422_community-spotlight-rust-programming-language.png" type="image/x-icon">-->
+  <link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/57653830?v=4" type="image/x-icon">
+
+  <!-- Scripts for Codemirror -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"
+          integrity="sha512-xwrAU5yhWwdTvvmMNheFn9IyuDbl/Kyghz2J3wQRDR8tyNmT8ZIYOd0V3iPYY/g4XdNPy0n/g0NvqGu9f0fPJQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Mode rust -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/mode/simple.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/rust/rust.min.js"
+          integrity="sha512-g3Nhw36S0p4ZJQcky87D5M+vZbFvLrgsHWYltUy5IW0zKbvi8GlPRjJSo2CyUyQiU01Ier7u+rBABDs3BawKyQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Styles for Codemirror -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css"
+        integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Theme moxer -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/moxer.min.css"
+        integrity="sha512-zrCGHGmTpiZpzVJ6BdiDfsUT6t8+oOKmOtfU82GhBo/7sk/cns7phhKXSWmGH6uACPqgjP8QmgczNBY7HMB9TQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body style="background-color: #212121;">
+<div>
+  <div>
+    <ul id="dropdown1" class="dropdown-content">
+      <li><a href="./dist/graph.html" target="_blank"> CST </a></li>
+      <li class="divider"></li>
+      <li><a href="./dist//errors.html" target="_blank"> Error Report </a></li>
+      <li><a href="./dist/symbolTable.html" target="_blank"> Symbol Table Report </a></li>
+      <li><a href="./dist/symbolCompiler.html" target="_blank"> Symbol Table Compiler </a></li>
+      <li><a href="./dist/gramatical.html" target="_blank"> Gramatical Report </a></li>
+    </ul>
+    <ul id="dp2" class="dropdown-content">
+      <li><a href="Bodega"> Nuevo </a></li>
+      <li><a href="listaBodega"> Abrir </a></li>
+      <li class="divider"></li>
+      <li><a href="Entrada"> Guradar... </a></li>
+      <li><a href="Salida"> Guradar Como... </a></li>
+    </ul>
+    <ul id="dropdown2" class="dropdown-content">
+      <li><a href="./dist/graph.html" target="_blank"> CST </a></li>
+      <li class="divider"></li>
+      <li><a href="./dist/errors.html" target="_blank"> Error Report </a></li>
+      <li><a href="./dist/symbolTable.html" target="_blank"> Symbol Table Report </a></li>
+      <li><a href="./dist/symbolCompiler.html" target="_blank"> Symbol Table Compiler </a></li>
+      <li><a href="./dist/gramatical.html" target="_blank"> Gramatical Report </a></li>
+    </ul>
+    <ul id="dp3" class="dropdown-content">
+      <li><a href="Bodega"> Nuevo </a></li>
+      <li><a href="listaBodega"> Abrir </a></li>
+      <li class="divider"></li>
+      <li><a href="Entrada"> Guradar... </a></li>
+      <li><a href="Salida"> Guradar Como... </a></li>
+    </ul>
+    <div class="navbar-fixed">
+      <nav>
+        <div class="nav-wrapper blue">
+          <a href="" class="brand-logo" style="margin-left: 20px;"> Compiladores 2 D</a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger"
+          ><i class="material-icons"> menu </i></a
+          >
+          <ul class="right hide-on-med-and-down">
+            <li>
+              <!--<a class="dropdown-trigger" href="#" data-target="dp2">
+                Menu <i class="material-icons right"> arrow_drop_down</i>
+              </a>-->
+            </li>
+            <!-- Dropdown Trigger -->
+            <li>
+              <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                Reportes
+                <i class="material-icons right">arrow_drop_down</i></a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <ul class="sidenav" id="mobile-demo">
+      <li>
+        <a class="dropdown-trigger" href="#" data-target="dp3">
+          Menu <i class="material-icons right"> arrow_drop_down</i>
+        </a>
+      </li>
+      <!-- Dropdown Trigger -->
+      <li>
+        <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+          Reports <i class="material-icons right">arrow_drop_down</i></a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div style="align-self: center">
+  <div class="container">
+    <div class="container">
+      <div style="text-align: center" class="card grey darken-3 z-depth-4">
+        <div class="container">
+          <h4 style="color: white; padding: 3%">Proyecto 1</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form action="http://localhost:8080/data" method="post" id="form1">
+      <div class="col s6">
+        <div>
+          <p class="white-text">Editor:</p>
+        </div>
+        <div id="test1" class="CodeMirror CodeMirror-focused" style="border: 5px solid #757575">
+          <textarea name="code" id="code" cols="30" rows="10">{{ .Input }}</textarea>
+        </div>
+      </div>
+      <div class="col s6">
+        <div>
+          <p class="white-text">Console:</p>
+        </div>
+        <div class="CodeMirror" style=" border: 5px solid #757575 ">
+                <textarea
+                        id="output"
+                        cols="30"
+                        rows="10"
+                >{{ .Output }}</textarea>
+        </div>
+      </div>
+
+      <div class="center">
+        <button id="btnAnalyze" class="btn-large waves-effect" style="margin-top: 15px; background-color: rgb(0, 122, 204);">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal Structure -->
+<div id="modal1" class="modal is-active">
+  <div class="modal-content">
+    <div id="table0"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    M.AutoInit();
+
+    myCodeMirror = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      styleActivateLine: true,
+      matchBrackets: true,
+      theme: "moxer",
+      mode: "text/x-rustsrc"
+    });
+
+    myCodeMirror2 = CodeMirror.fromTextArea(document.getElementById("output"), {
+      lineNumbers: false,
+      theme: "moxer",
+      readOnly: true,
+    });
+
+  });
+
+</script>
+<!--<script src="static/js/index.js"></script>-->
+</body>
+</html>
