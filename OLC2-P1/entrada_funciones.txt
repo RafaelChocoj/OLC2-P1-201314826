@@ -1,18 +1,27 @@
 
 
 fn main() {
-    println!("estoy en main");
+   
+    struct Personaje {
+    nombre: String,
+    edad: i64,
+    descripcion: String
+    }
+// Struct
+struct Carro {
+    placa: String,
+    color: String,
+    tipo: String,
+    perso: Personaje
+    }
 
-    // Ejemplo 1 - Es aplicable para arreglos o vectores
-    let vector = vec!["Este", "semestre", "si", "sale"];
-    for valor in vector {
-        println!("{}", valor);
-    }
-     println!("-------");
-    // Ejemplo 2 - Es aplicable para arreglos o vectores
-    let arreglo = vec!["Este", "semestre", "si", "sale"];
-    for valor in 0..arreglo.len() {
-        println!("{}", arreglo[valor]);
-    }
-    
+let mut p1 = Carro {
+placa:"palc".to_string(),
+color:"red".to_string(),
+tipo:"nose".to_string(),
+perso: Personaje { nombre:"Fer".to_string(), edad:18,
+descripcion:"No hace nada".to_string()}
+};
+
+println!("{:?}", p1);
 }

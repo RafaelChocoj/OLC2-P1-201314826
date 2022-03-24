@@ -26,6 +26,20 @@ func NewImprimir(val *arrayList.List, line int, column int) Imprimir {
 	return exp
 }
 
+func (p Imprimir) PrintStruct(structSymbol interfaces.Symbol) string {
+	formatStructS := "{ "
+	for key, element := range structSymbol.Valor.(map[string]interfaces.Symbol) {
+		formatStructS = formatStructS + key + ": "
+		if element.Tipo == interfaces.STRUCT {
+			formatStructS = formatStructS + p.PrintStruct(element)
+		} else {
+			formatStructS = formatStructS + fmt.Sprintf("%v", element.Valor) + ", "
+		}
+	}
+	formatStructS = strings.TrimRight(formatStructS, ", ")
+	return formatStructS + " }"
+}
+
 func (p Imprimir) PrintArray(env interface{}, arrlist *arrayList.List) string {
 
 	array_format := ""
@@ -111,6 +125,10 @@ func (p Imprimir) Ejecutar(env interface{}) interface{} {
 				///////////str_arr = strings.ReplaceAll(str_arr, "][", "], [")
 				//fmt.Println("str_arr: ", str_arr)
 
+				format_str = strings.Replace(format_str, "{:?}", str_arr, 1)
+
+			} else if expre_print.Tipo == interfaces.STRUCT {
+				str_arr := p.PrintStruct(expre_print)
 				format_str = strings.Replace(format_str, "{:?}", str_arr, 1)
 
 			} else {

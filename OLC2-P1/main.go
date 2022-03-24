@@ -1,4 +1,4 @@
-package main
+/*package main
 
 import (
 	//"OLC2/environment"
@@ -37,16 +37,16 @@ func NewTreeShapeListener() *TreeShapeListener {
 func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	result := ctx.GetLista()
 
-	/*original ini*/
-	/*var globalEnv environment.Environment
-	globalEnv = environment.NewEnvironment("GLOBAL", nil)
+	//original ini
+	//var globalEnv environment.Environment
+	//globalEnv = environment.NewEnvironment("GLOBAL", nil)
 
-	for _, s := range result.ToArray() {
-		s.(interfaces.Instruction).Ejecutar(globalEnv)
-	}*/
-	/*original fin*/
+	//for _, s := range result.ToArray() {
+	//	s.(interfaces.Instruction).Ejecutar(globalEnv)
+	//}
+	//original fin
 
-	/*************************/
+	////************************
 	var globalEnv environment.Environment
 	globalEnv = environment.NewEnvironment("GLOBAL", nil)
 
@@ -74,7 +74,7 @@ func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 		}
 	}
 
-	/*corriendo main*/
+	///*corriendo main
 	var mainEnv environment.Environment
 	mainEnv = environment.NewEnvironment("main", globalEnv)
 	for _, s := range List_Funcs.ToArray() {
@@ -140,10 +140,10 @@ func main() {
 		return
 	}
 
-}
+}*/
 
 /************/
-/*package main
+package main
 
 import (
 	//"OLC2/environment"
@@ -170,7 +170,6 @@ func NewTreeShapeListener() *TreeShapeListener {
 
 func (this *TreeShapeListener) ExitStart(ctx *parser.StartContext) {
 	result := ctx.GetLista()
-
 
 	var globalEnv environment.Environment
 	globalEnv = environment.NewEnvironment("GLOBAL", nil)
@@ -233,4 +232,3 @@ func main() {
 	antlr.ParseTreeWalkerDefault.Walk(NewTreeShapeListener(), tree)
 
 }
-*/

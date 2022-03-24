@@ -174,13 +174,24 @@ newStruct returns[interfaces.Instruction str]
 ;
 
 listdecStruct returns[*arrayList.List l]
-: list=listdecStruct COMA ID ':' tipos_var {
-                                        Str_atrib := interfaces.NewStructType($ID.text, $tipos_var.tipo)
+: list=listdecStruct COMA id=ID ':' tipos_var {
+                                        Str_atrib := interfaces.NewStructType($id.text, $tipos_var.tipo, "")
                                         $list.l.Add(Str_atrib);
                                         $l = $list.l;
                                     }
-| ID ':' tipos_var {
-                    Str_atrib := interfaces.NewStructType($ID.text, $tipos_var.tipo)
+| list=listdecStruct COMA id=ID ':' idstru=ID {
+                                        Str_atrib := interfaces.NewStructType($id.text, interfaces.NULL, $idstru.text)
+                                        $list.l.Add(Str_atrib);
+                                        $l = $list.l;
+                                    }
+
+| id=ID ':' tipos_var {
+                    Str_atrib := interfaces.NewStructType($id.text, $tipos_var.tipo, "")
+                    $l = arrayList.New();
+                    $l.Add(Str_atrib);
+                }
+| id=ID ':' idstru=ID {
+                    Str_atrib := interfaces.NewStructType($id.text, interfaces.NULL, $idstru.text)
                     $l = arrayList.New();
                     $l.Add(Str_atrib);
                 }

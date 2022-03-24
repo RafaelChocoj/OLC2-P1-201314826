@@ -26,31 +26,29 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 
 	var valor map[string]interfaces.Symbol
 	var result interfaces.Symbol
-	var tempExp *arrayList.List
-	tempExp = arrayList.New()
+	var tExpStr *arrayList.List
+	tExpStr = arrayList.New()
 	//se guarda el listado de valores nuevos
 	for _, s := range p.List_Exp.ToArray() {
-		tempExp.Add(s)
+		tExpStr.Add(s)
 	}
-	//se obtiene la estructura guardada
-	resultStruct := env.(environment.Environment).GetStruct(p.Id, p.Line, p.Column)
+	reStruct := env.(environment.Environment).GetStruct(p.Id, p.Line, p.Column)
 
-	//fmt.Println("esultStruct.Tipo: ", interfaces.GetType(resultStruct.Tipo))
-	if resultStruct.Tipo == interfaces.NULL {
+	//fmt.Println("esultStruct.Tipo: ", interfaces.GetType(reStruct.Tipo))
+	if reStruct.Tipo == interfaces.NULL {
 		return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 	}
-	//se valida si existe struct
-	if resultStruct.Tipo == interfaces.STRUCT {
-		//Validar tamaño y que cada tipo coincida con el struct existente
-		if resultStruct.Valor.(*arrayList.List).Len() == p.List_Exp.Len() {
+	//todo bien struck
+	if reStruct.Tipo == interfaces.STRUCT {
+		//tamaño
+		if reStruct.Valor.(*arrayList.List).Len() == p.List_Exp.Len() {
 			valor = make(map[string]interfaces.Symbol)
-			//contador de definiciones
 			var contAtrib = 0
-			//recorrer el struct almacenado
-			for _, strAlm := range resultStruct.Valor.(*arrayList.List).ToArray() { //StructType
-				//recorrer los valores
+			//run
+			for _, strAlm := range reStruct.Valor.(*arrayList.List).ToArray() { //StructType
+				//values
 				for _, strEnt := range p.List_Exp.ToArray() { // StructContentido
-					//si tipos iguales
+					//equasl
 					if strAlm.(interfaces.StructType).Id == strEnt.(StructContenido).Id {
 						tempVal := strEnt.(StructContenido).Exp.(interfaces.Expresion).EjecutarValor(env)
 						if strAlm.(interfaces.StructType).Tipo == tempVal.Tipo {
@@ -58,6 +56,21 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 							tempVal.IsMut = true
 							valor[strAlm.(interfaces.StructType).Id] = tempVal
 							break
+							/*si es struck pero con id*/
+						} else if strAlm.(interfaces.StructType).Tipo == interfaces.NULL {
+
+							if strAlm.(interfaces.StructType).IdStruct == tempVal.Id {
+								contAtrib++
+								tempVal.IsMut = true
+								valor[strAlm.(interfaces.StructType).Id] = tempVal
+								break
+							} else {
+								desc := fmt.Sprintf("'%v' se esperaba '%v' se tiene '%v'", tempVal.Id, interfaces.GetType(strAlm.(interfaces.StructType).Tipo), interfaces.GetType(tempVal.Tipo))
+								err.NewError("El ID no es struct "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
+
+								return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
+							}
+
 						} else {
 
 							desc := fmt.Sprintf("'%v' se esperaba '%v' se tiene '%v'", p.Id, interfaces.GetType(strAlm.(interfaces.StructType).Tipo), interfaces.GetType(tempVal.Tipo))
@@ -77,7 +90,7 @@ func (p StructExpre) EjecutarValor(env interface{}) interfaces.Symbol {
 				return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
 			}
 		} else {
-			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", resultStruct.Valor.(*arrayList.List).Len(), p.List_Exp.Len())
+			desc := fmt.Sprintf("se esperaba '%v' se tiene '%v'", reStruct.Valor.(*arrayList.List).Len(), p.List_Exp.Len())
 			err.NewError("La Cantidad de atributos en el struct es incorrecta "+desc, env.(environment.Environment).Nombre, p.Line, p.Column)
 
 			return interfaces.Symbol{Id: "", Tipo: interfaces.NULL, Valor: nil}
